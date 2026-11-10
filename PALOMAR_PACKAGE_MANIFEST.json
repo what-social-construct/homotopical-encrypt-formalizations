@@ -1,7 +1,7 @@
 {
   "format_version": 1,
   "entry": "paper1",
-  "source_checkpoint": "c397e7788ea43f378629d3c69445dfe3478eff0d",
+  "source_checkpoint": "b737ce8b4cd233fefb3a2c33f01f554de8de4a81",
   "scope": "one selected entry, actual local Lean proof closure and corresponding manuscript evidence",
   "challenge_module": "Palomar.PaperOne.Challenge",
   "solution_module": "Palomar.PaperOne.Solution",
@@ -86,7 +86,7 @@
     "lean/Sheaf/Hodge.lean": "2230263e2894bb6b08b29a2fa58731e770fdf1f52d7ccda52b7fda92052bb943",
     "lean/Sheaf/Integral.lean": "71191a7999d5c4b36a4d2df9d591d8f43a1008b68c4cb746b45c2c7d42e611a9",
     "lean/lake-manifest.json": "a2eb32cfec2e1f17c6a9a165a2bac704f86e5913c42477061dff2b178b62fa06",
-    "lean/lakefile.lean": "63c5c7c993bf03b7dbcac1770de5bda481f43bcc1e9c835138239290e3edf7b4",
+    "lean/lakefile.lean": "78ab1bb6eb56753676662080d3440e86f81e70f4500a77bac7f9115862b06a40",
     "lean/lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
     "papers/paper1/macros.tex": "bca408ca3865acde4063280082acfabf26f74ab9ff7ee8f0ce1e90a342a4f277",
     "papers/paper1/main.pdf": "aa1a803afe0d2b607598a2f18b40011f5e9ce9f37b23dab993adcc3344ce30fa",
@@ -98,7 +98,7 @@
     "papers/paper1/sections/03-cvp-comparison.tex": "73ca8ffaf8dab8f567e3272721355ff6be7e3e1a7a7bedfdf347a7be0cd87dda",
     "papers/paper1/sections/04-conclusion.tex": "b285248c9822b536695a0e31d87fad6cd735b498ea128c97abc8d97c5f947293",
     "papers/paper1/sections/appendices.tex": "2561b372b9c8a1316319869bf12c9ebc610a43ee8d03b442615c2d04cea1618e",
-    "scripts/export_palomar_entries.py": "4c45990f21e795781a7c6a115f1c1865477e5ddaad28f469b7969fe0d1ff7062"
+    "scripts/export_palomar_entries.py": "eace74eeb58f4fb6f565d898b841ff40105e070e85ac1761c664167aa258d507"
   },
   "selected_inputs_changed_from_checkpoint": [],
   "byte_identical_source_copies": [
@@ -170,7 +170,7 @@
     ".github/workflows/palomar-preflight.yml": "67ca89d2a11b9b54163b107ab4c5ddc2b976d0018bd9e4a407ec5b55e4b2c35b",
     ".gitignore": "f9f942b86ead20061f84b037415bef6c127c2cb809a8523d35064aa22b626f1b",
     "LICENSE": "13ffbec1c04b8b063ab00cbf6b069715e859783dc5cb3741eec5f010955e22e5",
-    "README.md": "3c11181d5b4900b9345f11198608ca46b8f74a17d71ca94c4d2d1cf754e09a33",
+    "README.md": "cd7d5ea5e5c9e123877a3e7cd97572f5dfc60a89d69a705f770bbe88b617f24f",
     "lean/Axioms/HelferFOL.lean": "bce5db703f489bed8c1e11688335662d7d4ecb0d5b013fdb92e53a2255b1b22f",
     "lean/CVP.lean": "d5854dbbf339c65c824c20c3398ad35c3bde545639b596810b37390cd3087465",
     "lean/HCP.lean": "1622b434eb90de20bc604446ddd6b7adc641df740c5ffddf77be349a39485b1f",
