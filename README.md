@@ -27,6 +27,6 @@ of an immutable public snapshot. No registry submission is made by packaging.
 The [manual preflight workflow](.github/workflows/palomar-preflight.yml) pins
 pipeline `14aa8d6b3c2f14a8540605e37144560b9a00e7e7`.
 
-Source checkpoint: `dfd660e7b16131a656c087c9aee70d301375dcf7`. The [manifest](PALOMAR_PACKAGE_MANIFEST.json) records source
+Source checkpoint: `c397e7788ea43f378629d3c69445dfe3478eff0d`. The [manifest](PALOMAR_PACKAGE_MANIFEST.json) records source
 hashes and navigation rewrites. Immutable upstream metadata URLs record
 provenance; the bundled source is available for review. [MIT licence](LICENSE).

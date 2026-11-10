@@ -1,7 +1,7 @@
 {
   "format_version": 1,
   "entry": "paper1",
-  "source_checkpoint": "dfd660e7b16131a656c087c9aee70d301375dcf7",
+  "source_checkpoint": "c397e7788ea43f378629d3c69445dfe3478eff0d",
   "scope": "one selected entry, actual local Lean proof closure and corresponding manuscript evidence",
   "challenge_module": "Palomar.PaperOne.Challenge",
   "solution_module": "Palomar.PaperOne.Solution",
@@ -73,10 +73,10 @@
     "lean/Laplacian/Hodge.lean": "ed94c51d4cce612f25ff1c8c2fa009fb9e4cdcbaf0c7fbfc0714cb27cc8c9df2",
     "lean/Laplacian/Projection.lean": "df80349eb6e228104532f42f5ddc6d220e7fbae71c565d89789853335d0c3f0f",
     "lean/Palomar/PaperOne/Challenge.lean": "aaab4583e89504cef862517c6f8243de8058ff2723c2575147cff2ccf358ce6c",
-    "lean/Palomar/PaperOne/README.md": "3a5154737363f87c582dbc7324312ac69c47b56fe5b1a1d1c49ace318eba9199",
+    "lean/Palomar/PaperOne/README.md": "59f9897f00dace25e759f1e32e7f082cd16a26c8f3b150e71e509ea5795ba0a5",
     "lean/Palomar/PaperOne/Solution.lean": "42dd5e3a521fb3062ac9263104ba6201876f6dfeede99a093c33ee820f4222ca",
     "lean/Palomar/PaperOne/comparator.json": "743a96f665580b90efa346629183970d023f3a8cbefda4f72fbe3bfea75f9034",
-    "lean/Palomar/PaperOne/formalization.yaml": "e96a5600694d8b4d58201a00e3481e071742b0637e57d7307b474c3aecbd914c",
+    "lean/Palomar/PaperOne/formalization.yaml": "a279edd0d6c9c5b047a38cb9d46d6f72788c9465a01b242deb51548569c0a48b",
     "lean/Sheaf/CellComplex.lean": "6279a4973a4c7bc6f5e89a92c4b08bbe5e4f656626bbc35b34df66f86a269967",
     "lean/Sheaf/Cellular.lean": "3f65e107b05b3d0635639d1eb87d627febc73d1c43649784c97d962abe984ca8",
     "lean/Sheaf/CoefficientRecovery.lean": "def0b2a1583932e79a64291072e7a23574091187b18d7ad918a925d0ad28b0e6",
@@ -145,7 +145,7 @@
       "file": "lean/Palomar/PaperOne/README.md",
       "navigation_rewrites": [
         {
-          "original": "https://github.com/what-social-construct/homotopical-encrypt/blob/b7f3d6e1184b3cd3d77e5204884036ece1545d2f/papers/paper1/main.tex",
+          "original": "https://github.com/what-social-construct/homotopical-encrypt-formalizations/blob/aabebed302d9e22da953983832346bde4648a922/papers/paper1/main.tex",
           "replacement": "../../../papers/paper1/main.tex",
           "reason": "Use bundled manuscript; metadata retains immutable upstream provenance"
         }
@@ -170,7 +170,7 @@
     ".github/workflows/palomar-preflight.yml": "67ca89d2a11b9b54163b107ab4c5ddc2b976d0018bd9e4a407ec5b55e4b2c35b",
     ".gitignore": "f9f942b86ead20061f84b037415bef6c127c2cb809a8523d35064aa22b626f1b",
     "LICENSE": "13ffbec1c04b8b063ab00cbf6b069715e859783dc5cb3741eec5f010955e22e5",
-    "README.md": "421c48e2e35621d1ee1447abc2b70eac0f4c1a7b9fe5b55146853c105decf02e",
+    "README.md": "3c11181d5b4900b9345f11198608ca46b8f74a17d71ca94c4d2d1cf754e09a33",
     "lean/Axioms/HelferFOL.lean": "bce5db703f489bed8c1e11688335662d7d4ecb0d5b013fdb92e53a2255b1b22f",
     "lean/CVP.lean": "d5854dbbf339c65c824c20c3398ad35c3bde545639b596810b37390cd3087465",
     "lean/HCP.lean": "1622b434eb90de20bc604446ddd6b7adc641df740c5ffddf77be349a39485b1f",
@@ -187,7 +187,7 @@
     "lean/Palomar/PaperOne/README.md": "cacc3e2d04bc3094e7927a2304b86f70b21a14848f5dcccba46fa98ffbbd842f",
     "lean/Palomar/PaperOne/Solution.lean": "42dd5e3a521fb3062ac9263104ba6201876f6dfeede99a093c33ee820f4222ca",
     "lean/Palomar/PaperOne/comparator.json": "743a96f665580b90efa346629183970d023f3a8cbefda4f72fbe3bfea75f9034",
-    "lean/Palomar/PaperOne/formalization.yaml": "e96a5600694d8b4d58201a00e3481e071742b0637e57d7307b474c3aecbd914c",
+    "lean/Palomar/PaperOne/formalization.yaml": "a279edd0d6c9c5b047a38cb9d46d6f72788c9465a01b242deb51548569c0a48b",
     "lean/Sheaf/CellComplex.lean": "6279a4973a4c7bc6f5e89a92c4b08bbe5e4f656626bbc35b34df66f86a269967",
     "lean/Sheaf/Cellular.lean": "3f65e107b05b3d0635639d1eb87d627febc73d1c43649784c97d962abe984ca8",
     "lean/Sheaf/CoefficientRecovery.lean": "def0b2a1583932e79a64291072e7a23574091187b18d7ad918a925d0ad28b0e6",
