@@ -1,794 +1,274 @@
 \appendix
 
-\section{Paper--Lean Cross-Reference}
+\section{Statement--Lean Parity Tables}\label{app:selected-crosswalk}\label{app:formal-boundaries}
 
-The shared manuscript ownership, notation, and issue register is maintained
-in \lean{SEMANTIC-PARITY.md}. The companion coding paper's detailed object
-and theorem ledger is \lean{papers/proximity-prize/SEMANTIC_PARITY.md}.
-The appendices below record the HCP paper's own declaration and file coverage.
+\Cref{tab:paper1-parity,tab:paper1-support,tab:paper1-definitions} record the correspondence for this paper's six
+Hodge/CVP groups. The independent entry's
+configuration, \lean{lean/Palomar/PaperOne/comparator.json}, selects 16
+manuscript-facing and 20 supporting theorem declarations. Every declaration
+appears once below. These are coverage counts, not a count of independent
+research contributions. Definition rows name canonical implementation
+objects, not additional selected theorem targets. Canonical consequences
+identify derived implementation lemmas outside that configured selection.
+The main and supporting statements are proved under their stated premises.
+The final table records definitions, background, assumptions and application
+contracts separately.
 
-\begin{leanledger}
+\lean{Palomar.PaperOne.Challenge} states the comparison objects independently
+using Mathlib-only imports. \lean{Palomar.PaperOne.Solution} identifies them
+with the canonical development without importing Challenge. Challenge's 18
+deliberate theorem placeholders are comparison targets; the proved Solution
+has no holes.
 
-\subsection{Definitions and Interfaces}
+Write \lean{HE} for \lean{HomotopicalEncryption} and
+\lean{E} for \lean{HE.Palomar.PaperOne},
+\lean{CS} for \lean{E.CellularSheaf},
+\lean{HB} for \lean{E.HCPBridge},
+and \lean{AF} for \lean{E.AxisFamily}. The abbreviated anchors expand to the
+exact configured declaration names.
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[Matrix-level public projection and fibers.]
-    Sections 2--3; \lean{PublicProjection},
-    \lean{HiddenOperatorFiber}, and
-    \lean{HiddenOperatorClass} in \lean{HCP.lean}.
-  \item[Matrix harmonicity and Hodge instances.]
-    Section 2; \lean{Hodge_Instance} and
-    \lean{MatrixIsHarmonic} in \lean{HCP.lean}.
-  \item[Kernel ambiguity and lossy public data.]
-    Sections 2--3; \lean{SameKernel},
-    \lean{KernelAmbiguous},
-    \lean{PublicCompatibleHodgeAmbiguity}, and
-    \lean{LossyPublicProjection} in \lean{HCP.lean}.
-  \item[Hodge cipher and operative witness.]
-    Section 2; \lean{Hcrypt.HCP.hodgeDecompositionEquiv},
-    \lean{Hcrypt.HCP.encrypt}, \lean{Hcrypt.HCP.decrypt},
-    \lean{Hcrypt.HCPBridge.Observation},
-    \lean{Hcrypt.HCPBridge.HiddenHodgeWitness},
-    \lean{Hcrypt.HCPBridge.operativeTarget}, and
-    \lean{Hcrypt.HCPBridge.IsOperativeSolution}.
-  \item[Representative-indexed public HCP solvers.]
-    Section 3; \lean{Hcrypt.HCPBridge.Observation},
-    \lean{Hcrypt.HCPBridge.Solver},
-    \lean{Hcrypt.HCPBridge.SolverSoundOn}, and
-    \lean{Hcrypt.HCPBridge.SolverExactOnHarmonic}. The direct target contract
-    is \lean{Hcrypt.HCPBridge.SolverExactOnOperativeTarget}.
-  \item[Explicit-lattice CVP comparison.]
-    Section 3; \lean{CVP.Instance}, \lean{CVP.Solution}, and
-    \lean{CVP.OracleCorrect}.
-  \item[Harmonic-lattice bridge.]
-    Section 3; \lean{HarmonicCVPBridge} and
-    \lean{HarmonicCVPBridge.projectedTarget}.
-  \item[Closest-harmonic solution predicates.]
-    Section 3; \lean{ClosestHarmonicSolution} and
-    \lean{ProjectionClosestHarmonicSolution}.
-  \item[Hodge projection model.]
-    Sections 2--3; \lean{Laplacian.harmonicProjection},
-    \lean{Laplacian.residual}, and \lean{Laplacian.IsHarmonic}.
-  \item[Categorical fibration copy surface.]
-    Section 4; \lean{IsCartesianMorphism},
-    \lean{GrothendieckFibration},
-    \lean{CategoricallyEquivalentFibrations}, and
-    \lean{FibrationCopy}.
-  \item[Typed Helfer/HCP bridge.]
-    Sections 2 and 4; \lean{Hcrypt.Helfer.Signature},
-    \lean{Hcrypt.Helfer.Interpretation},
-    \lean{Hcrypt.Helfer.HomotopyHomomorphism},
-    \lean{Hcrypt.Helfer.HomotopyEquivalent},
-    \lean{Hcrypt.Helfer.ClosedFormulaInvariance}, and
-    \lean{Hcrypt.HCPBridge.Realization}.
-  \item[Semantic/public equality surface.]
-    Section 4; \lean{Axioms.HelferFOL},
-    \lean{Axioms.PublicClassifierFactorization},
-    \lean{Axioms.PublicClassifierFactorization.publicFiber_eq_iUnion_baseFibers},
-    \lean{Axioms.HomotopyClass}, and \lean{Axioms.Fibration}.
-  \item[Heyting/oracle public judgment.]
-    Section 4; \lean{Axioms.Heyting3}, \lean{Axioms.OracleQuery},
-    \lean{Axioms.OracleAnswer}, and \lean{Axioms.OracleEta2}.
-  \item[Concrete finite cellular sheaf and degree-one Hodge operator.]
-    Sections 2 and 4; \lean{Sheaf.OrientedTwoComplex},
-    \lean{Sheaf.CellularSheaf},
-    \lean{Sheaf.CellularSheaf.delta0},
-    \lean{Sheaf.CellularSheaf.delta1}, and
-    \lean{Sheaf.CellularSheaf.degreeOneLaplacian}.
-  \item[Isometric cellular-cochain transport.]
-    Section 2; \lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv},
-    \lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv.degreeOneLaplacian_naturality},
-    and
-    \lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv.map_ker_degreeOneLaplacian}.
-  \item[Snapshot-bound exact one-cochain.]
-    Sections 4--5; \lean{Sheaf.CellularSheaf.SheafStateSnapshot},
-    \lean{Sheaf.CellularSheaf.CochainPayloadInterpretation}, and
-    \lean{Sheaf.CellularSheaf.AcceptedCommittedOneCochain}.
-  \item[Integral sheaf and harmonic message lattice.]
-    Sections 2--3; \lean{Sheaf.CellularSheaf.StalkLattice},
-    \lean{Sheaf.CellularSheaf.IntegralStructure}, and
-    \lean{Sheaf.CellularSheaf.IntegralStructure.harmonicOneLattice}.
-    The restriction-preserving integral structure is supplied explicitly.
-  \item[Structured Hodge sample and presented harmonic sublattice.]
-    Sections 2--3; \lean{Sheaf.CellularSheaf.HodgeNoise},
-    \lean{Sheaf.CellularSheaf.HodgeEncryptedCochain}, and
-    \lean{Sheaf.CellularSheaf.HarmonicLatticePresentation}.
-    A presented full-span sublattice is additional data, not an automatic
-    identification of a real harmonic subspace with a discrete lattice.
-  \item[Cochain commitment payload.]
-    Section 5; \lean{Axioms.CochainCommitmentData},
-    \lean{CochainCommitmentData.WellFormed}, and
-    \lean{CochainCommitmentData.AddCompatible}.
-  \item[Commitment security interface.]
-    Section 5; \lean{Axioms.CochainCommitmentAxioms}.
-  \item[Proof-carrying public artifact.]
-    Section 5; \lean{TCB.HashedCommittedCochain} and
-    \lean{TCB.ProofCarryingCommittedCochain}.
-  \item[Bound full-sample/exact-payload observation.]
-    Sections 2 and 5; \lean{TCB.HCPStackBinding},
-    \lean{TCB.BoundHCPObservation}, and
-    \lean{TCB.BoundHCPObservation.toObservation}.
-    This witness-side record retains the message/opening and a supplied
-    context-indexed binding relation; it is not itself a public wire format.
-  \item[Projection chain.]
-    Section 6; \lean{ProjectionChain.Chain} and
-    \lean{ProjectionChain.Chain.toEvaluationProjection}.
-  \item[Proximity-stage certificates.]
-    Section 6; \lean{Proximity.Gates.SourceMetricGate},
-    \lean{Proximity.Gates.HardGateCertificate},
-    \lean{Proximity.Gates.ProjectionNaturalityGate}, and
-    \lean{Proximity.Gates.NaturalityGateCertificate}. The separately defined
-    \lean{Proximity.Gates.SyndromeAdequacyGate} is optional and is not a hard
-    gate of the accepted-commitment projection chain.
-  \item[Canonical RS/MCA endpoint.]
-    Section 6; \lean{CanonicalRS.BridgeData}, \lean{CanonicalRS.MCA.Line},
-    and \lean{CanonicalRS.MCA.badChallengeFraction}.
-\end{description}
+\begingroup
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\lean}[1]{\begingroup\footnotesize\Urlmuskip=0mu plus 1mu\path{#1}\endgroup}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.55\linewidth}@{}}
+\caption{Main statement groups}\label{tab:paper1-parity}\\
+\toprule
+\textbf{Statement and scope} & \textbf{Formal declarations or boundary}\\
+\midrule
+\endfirsthead
+\caption[]{Main statement groups (continued).}\\
+\toprule
+\textbf{Statement and scope} & \textbf{Formal declarations or boundary}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r@{}}{\emph{Continued on the next page.}}\\
+\endfoot
+\bottomrule
+\endlastfoot
 
-\subsection{Theorems and Status}
+\textbf{P1-S01.}\newline
+\Cref{prop:hodge-decomposition}; private recovery in Sections~1--3.
+The complex equation and actual adjoint Hodge operator give componentwise
+unique harmonic, exact and coexact parts. Integer coefficient recovery
+is classical and noncomputable in the supplied integral harmonic lattice.
+&
+\lean{E.Hodge_Decomposition_Theorem}\par
+\lean{E.Hodge_Decomposition_unique}\par
+\lean{CS.HodgeEncryptedCochain.harmonicOneProjection_observed}\par
+\lean{CS.HarmonicLatticePresentation.decodeCoefficients_encrypt}
+\\\midrule
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[Kernel ambiguity implies lossy public projection.]
-    \lean{kernelAmbiguous_implies_lossy};
-    Lean-proved.
-  \item[Public-compatible Hodge ambiguity gives kernel ambiguity.]
-    \lean{kernelAmbiguous_of_publicCompatibleHodgeAmbiguity};
-    Lean-proved.
-  \item[Helfer equivalence reaches the HCP public classifier.]
-    \lean{Hcrypt.HCPBridge.samePublicClass_of_homotopyEquivalent} and
-    \lean{Hcrypt.HCPBridge.publiclyEquivalent_laplacians_of_homotopyEquivalent};
-    Lean-proved from the explicit closed-formula invariance and classifier
-    factorization hypotheses.
-  \item[Typed Hodge-extension separation gives kernel ambiguity.]
-    \lean{Hcrypt.HCPBridge.publicCompatibleHodgeAmbiguity_of_kernelSeparation},
-    \lean{Hcrypt.HCPBridge.kernelAmbiguous_of_kernelSeparation}, and
-    \lean{Hcrypt.HCPBridge.lossyPublicProjection_of_kernelSeparation};
-    Lean-proved from an explicit HCP extension-separation witness.
-  \item[Hodge encryption and operative target.]
-    \lean{Hcrypt.HCP.split_encrypt},
-    \lean{Hcrypt.HCP.encrypt_split},
-    \lean{Hcrypt.HCP.decrypt_encrypt},
-    \lean{Hcrypt.HCP.decrypt_coe_eq_harmonicProjection}, and
-    \lean{Hcrypt.HCPBridge.operativeTarget_is_harmonic};
-    Lean-proved. The bundled bijection is
-    \(\mathcal H\times\mathcal H^\perp\simeq C^1\); the paper separately
-    proves the exact/coexact refinement.
-  \item[Isometric transport and fixed-coordinate separation.]
-    \lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv.degreeOneLaplacian_naturality},
-    \lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv.isHarmonicOneCochain_iff},
-    \lean{Hcrypt.HCPBridge.IsometricPresentationEquivalence.harmonic_iff_transport},
-    \lean{Hcrypt.HCPBridge.IsometricPresentationEquivalence.map_matrixHarmonicSubspace},
-    \lean{Hcrypt.HCPBridge.IsometricPresentationEquivalence.operativeHarmonicComponent_naturality},
-    and
-    \lean{Hcrypt.HCPBridge.kernelSeparationWitness_of_isometricNonstabilization};
-    Lean-proved at the concrete sheaf and abstract HCP interfaces.
-  \item[Concrete Hodge ambiguity exists in nontrivial dimension.]
-    \lean{Hodge_Ambiguity},
-    \lean{constantPublicProjection_publicCompatibleHodgeAmbiguity},
-    \lean{constantPublicProjection_kernelAmbiguous}, and
-    \lean{constantPublicProjection_lossy};
-    Lean-proved.
-  \item[Every field-linear image can be a linear kernel.]
-    \lean{exists_matrix_ker_eq_range};
-    Lean-proved linear-algebra construction.
-  \item[Kernel realization for presented generated subspaces.]
-    \lean{Hodge_GeneratedSubspace_Reduction} and
-    \lean{Hodge_GeneratedSubspace_Reduction_Proof};
-    Lean-proved surface.
-  \item[Hodge decomposition into harmonic, exact, and coexact parts.]
-    \lean{Hodge_Decomposition_Theorem};
-    Lean-proved existence and pairwise orthogonality. The paper derives
-    uniqueness from those orthogonal summands.
-  \item[Ambiguous input contradicts public-data-only Hodge solving.]
-    \lean{public_solver_eq_input_of_harmonic} and
-    \lean{no_public_solver_on_ambiguous_input};
-    Lean-proved lemmas.
-  \item[Known-lattice CVP does not select the hidden HCP representative.]
-    \lean{Hcrypt.HCPBridge.operativeTargets_ne_of_kernelSeparation},
-    \lean{Hcrypt.HCPBridge.no_solver_exactOnOperativeTarget_of_kernelSeparation},
-    and \lean{Hcrypt.HCPBridge.cvpOracle_insufficient_for_operativeTarget};
-    Lean-proved for the direct operative-target contract. The soundness plus
-    harmonic-fixed-point formulation is
-    \lean{Hcrypt.HCPBridge.no_solver_on_kernelSeparation} and
-    \lean{Hcrypt.HCPBridge.cvpOracle_insufficient_of_kernelSeparation}.
-    The older matrix-wide theorems
-    \lean{no_uniform_public_hodge_solver} and
-    \lean{CVP_Oracle_Insufficient_For_Public_Hodge_Solving} remain
-    generic sanity results, not the concrete HCP bridge.
-  \item[Projection-model closest-harmonic surface.]
-    \lean{matrix_harmonic_iff_projection_isHarmonic},
-    \lean{Hodge_Projection_Is_ClosestHarmonic}, and
-    \lean{harmonicProjection_is_closestHarmonic};
-    Lean-proved.
-  \item[Discrete CVP minimizers are preserved by harmonic projection.]
-    \lean{HarmonicCVPBridge.squaredDistance_projection_decomposition},
-    \lean{HarmonicCVPBridge.isClosestLatticeVector_iff_projectedTarget},
-    and \lean{HarmonicCVPBridge.solution_iff_projectedTarget};
-    Lean-proved.
-  \item[Fibration copies preserve the categorical fibration surface.]
-    \lean{copy_categoricallyEquivalent_thm} and
-    \lean{FibrationCopy_is_Grothendieck};
-    Lean-proved categorical interface.
-  \item[Exact sheaf gates supply \(d^{k+1}d^k=0\) and Laplacian-from-coboundary.]
-    \lean{Gates.structural_preconditions_of_sheaf_exact_gates};
-    Lean-proved alias/interface.
-  \item[Concrete cellular coboundaries form a complex.]
-    \lean{Sheaf.CellularSheaf.delta1_comp_delta0} and
-    \lean{Sheaf.CellularSheaf.isOneCocycle_of_isExactOneCochain};
-    Lean-proved from the oriented cell incidences and restriction-composition
-    law.
-  \item[Concrete degree-one Hodge characterization and orthogonality.]
-    \lean{Sheaf.CellularSheaf.degreeOneLaplacian_energy},
-    \lean{Sheaf.CellularSheaf.ker_degreeOneLaplacian},
-    \lean{Sheaf.CellularSheaf.exactOneSubspace_isOrtho_harmonicOneSubspace},
-    \lean{Sheaf.CellularSheaf.harmonicOneSubspace_isOrtho_coexactOneSubspace},
-    and \lean{Sheaf.CellularSheaf.exactOneSubspace_isOrtho_coexactOneSubspace};
-    Lean-proved.  The separately defined
-    \lean{Sheaf.CellularSheaf.kernelNormalizedDegreeOneLaplacian} is proved to
-    have the same kernel, not asserted to equal the true Hodge operator or to
-    have its spectrum.
-  \item[Exact payloads determine openings modulo \(\ker\delta_0\).]
-    \lean{Sheaf.CellularSheaf.openingEquivalent_iff_sub_mem_ker},
-    \lean{Sheaf.CellularSheaf.decoded_isExactOneCochain}, and
-    \lean{Sheaf.CellularSheaf.decoded_isOneCocycle};
-    Lean-proved for the concrete cellular-sheaf commitment object.
-  \item[Cellular coboundaries preserve the supplied integral structure.]
-    \lean{Sheaf.CellularSheaf.IntegralStructure.delta0_mem_integralOneCochains}
-    and
-    \lean{Sheaf.CellularSheaf.IntegralStructure.delta1_mem_integralTwoCochains};
-    Lean-proved from the stalk-lattice restriction-preservation fields.
-  \item[Structured samples recover their integral harmonic message.]
-    \lean{Sheaf.CellularSheaf.HodgeNoise.value_mem_harmonic_orthogonal} and
-    \lean{Sheaf.CellularSheaf.HodgeEncryptedCochain.harmonicOneProjection_observed};
-    Lean-proved for the supplied integral sheaf and exact/coexact opening.
-    The ambient observed sample is not asserted to be integral or exact.
-  \item[Presented harmonic-lattice samples have the encoded point as unique CVP solution.]
-    \lean{Sheaf.CellularSheaf.HarmonicLatticePresentation.squaredDistance_observed_decomposition},
-    \lean{Sheaf.CellularSheaf.HarmonicLatticePresentation.solution_cvpInstance_iff_eq_point},
-    and
-    \lean{Sheaf.CellularSheaf.HarmonicLatticePresentation.existsUnique_solution_cvpInstance};
-    conditional on an explicit harmonic-lattice presentation and a sample
-    constructed from one of its lattice points. This does not supply a
-    general CVP algorithm or derive the presentation from public data.
-  \item[An actual integral family instantiates the semantic HCP ambiguity.]
-    \lean{HCP.AxisFamily.shared_observation_distinct_nonzero_targets},
-    \lean{HCP.AxisFamily.no_exact_public_solver},
-    \lean{HCP.AxisFamily.cvp_oracle_insufficient}, and
-    \lean{HCP.AxisFamily.cvp_solution_iff_message};
-    the two cellular sheaves, integral structures, actual Hodge matrices,
-    common structured-noise observation and harmonic lattices are constructed.
-    Homological-test invariance is proved in the actual bounded-below real
-    cochain model. The semantics is a stated fragment, and the oracle
-    corollary retains its oracle-existence premise. The observation is
-    \((p,b)\), without a full storage-view or security-game claim.
-    \lean{weighted_public_observations_eq} and
-    \lean{no_exact_encoded_message_decoder} in the same namespace additionally
-    separate the explicit integer coefficients \(2\) and \(1\) at one
-    shared observation, rather than only separate ambient coordinates.
-  \item[The actual bound observation agrees with the semantic operative target.]
-    \lean{TCB.HCPRealization.BoundObservationAlignment.operativeTarget_eq_message}
-    and \lean{cvp_solution_iff_operativeTarget} in the same namespace;
-    derived from actual-operator action and classifier alignment, retaining
-    the original sample, payload, snapshot and artifact. A selected richer
-    public view requires its own observation-factorization proof.
-  \item[The bound observation retains payload/snapshot identity and harmonic recovery.]
-    \lean{TCB.BoundHCPObservation.artifact_wellFormed},
-    \lean{TCB.BoundHCPObservation.payload_boundToSnapshot}, and
-    \lean{TCB.BoundHCPObservation.harmonicProjection_cochainObject};
-    Lean-proved from the record's accepted exact component, artifact binding,
-    decoded-component equality, and supplied observation-binding relation.
-    No modular serializer or concrete public semantic realization follows
-    from constructing this conditional record.
-  \item[Well-formed payloads have nonempty edge data and supported modulus.]
-    \lean{CochainCommitmentData.edge_values_nonempty_of_wellFormed} and
-    \lean{CochainCommitmentData.modulus_gt_one_of_wellFormed};
-    Lean-proved.
-  \item[Proof-carrying artifacts expose the committed payload.]
-    \lean{TCB.proofCarrying_cochain_wellFormed};
-    TCB boundary theorem.
-  \item[Projection chain composes to one evaluation projection.]
-    \lean{ProjectionChain.Chain.toEvaluationProjection};
-    Lean-proved plumbing.
-  \item[Syndrome adequacy turns zero local syndrome into codeword/global candidate.]
-    \lean{Proximity.Gates.SyndromeAdequacyGate.codeword_of_wellFormed_zeroSyndrome};
-    stage-local interface.
-  \item[Stage naturality composes without rechecking.]
-    \lean{Proximity.Gates.ProjectionNaturalityGate.of_stageCertificate};
-    Lean-proved composition of the cochain/plane and plane/RS restriction and
-    syndrome squares.
-  \item[Final proximity evidence yields calibrated end-to-end readiness.]
-    \lean{Proximity.Gates.CalibratedFinalCertificate.toCalibratedEndToEndReady};
-    Lean-proved plumbing.
-  \item[Canonical RS list/MCA bounds enter at a cited boundary.]
-    \lean{CanonicalRS.CitedBounds.bounds};
-    cited external theorem package.
-  \item[Canonical MCA bad-challenge fraction is bounded after projection.]
-    \lean{CanonicalRS.MCA.projectionBadChallengeFraction_le};
-    Lean-proved from cited bounds.
-\end{description}
+\textbf{P1-S02.}\newline
+\Cref{prop:hcp-to-cvp}.
+A field-linear image of the displayed generator is realized as a kernel.
+The consequence concerns that image, not integer-lattice membership.
+&
+\lean{E.exists_matrix_ker_eq_range}\par
+\lean{E.Hodge_GeneratedSubspace_Reduction_Proof}
+\\\midrule
 
-\end{leanledger}
+\textbf{P1-S03.}\newline
+\Cref{prop:hodge-projection-is-cvp}.
+The discrete lattice is explicitly supplied and lies in the projected
+subspace. The Pythagorean identity preserves exactly its closest-vector answers.
+&
+\lean{E.squaredDistance_projection_decomposition}\par
+\lean{E.solution_iff_projectedTarget}
+\\\midrule
 
-\section{Lean Source Coverage by File}
+\textbf{P1-S04.}\newline
+Cellular specialization of
+\cref{prop:hodge-projection-is-cvp}.
+For the actual Hodge sample and supplied harmonic message lattice, the
+operative message is the unique closest lattice point.
+&
+\lean{E.concreteSheafHCP_CVP_solution_iff_message}\par
+\lean{E.concreteSheafHCP_CVP_existsUnique}
+\\\midrule
 
-This appendix is the file-by-file coverage audit for the translation. The body
-of the paper gives the mathematical definitions and proofs; this appendix
-records where each Lean declaration family enters the written account.
-Import-only aggregate files are listed with the files they collect.
+\textbf{P1-S05.}\newline
+\Cref{prop:cvp-insufficient,prop:cellular-axis-ambiguity,cor:lattice-member-separation}.
+Generic separation retains closed-test invariance and kernel separation;
+oracle corollaries also retain existence of a correct explicit-lattice
+CVP oracle. The constructed integral family has one public observation
+and distinct nonzero targets. Its supplied rank-one lattice is solvable by
+that same correct oracle; shared-class recovery is impossible, as is exact
+recovery in every compatible family retaining the separated pair.
+&
+\lean{HB.operativeTargets_ne_of_kernelSeparation}\par
+\lean{HB.cvpOracle_insufficient_of_kernelSeparation}\par
+\lean{HB.cvpOracle_insufficient_for_operativeTarget}\par
+\lean{AF.cellular_axis_ambiguity}\par
+\lean{AF.cvp_oracle_insufficient}\par
+Canonical consequences:\par
+\lean{HE.HCPBridge.no_solver_exactOnOperativeTarget_on_family}\par
+\lean{HE.HCP.AxisFamily.cvp_known_member_hidden_member_separation}
+\\\midrule
 
-\begin{leanledger}
+\textbf{P1-S06.}\newline
+Weighted example in Section~3.5.
+The common observation is \(b=(1,2)\), with private integer coefficients
+two and one. Each privately presented lattice has its own unique CVP answer.
+&
+\lean{AF.weighted_axis_recovery_obstruction}
+\\
+\end{longtable}
 
-\subsection{Build and Aggregate Files}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.55\linewidth}@{}}
+\caption{Supporting statements}\label{tab:paper1-support}\\
+\toprule
+\textbf{Statement and scope} & \textbf{Formal declarations or boundary}\\
+\midrule
+\endfirsthead
+\caption[]{Supporting statements (continued).}\\
+\toprule
+\textbf{Statement and scope} & \textbf{Formal declarations or boundary}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r@{}}{\emph{Continued on the next page.}}\\
+\endfoot
+\bottomrule
+\endlastfoot
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{lakefile.lean}.]
-    Build configuration; no mathematical declaration is translated as a
-    theorem.
-  \item[\lean{Sheaf.lean}, \lean{Axioms.lean}, \lean{Gates.lean}, \lean{TCB.lean},
-    \lean{Consensus.lean}, \lean{Proximity.lean}, and
-    \lean{Proximity/CanonicalRS.lean}.]
-    Aggregate import surfaces. Their mathematical content is exactly the
-    union of the component files listed below.
-\end{description}
+\textbf{Complexes and semantics.}\newline
+Sections~1--3.
+Actual coboundary composition, the constructed complex isomorphism and
+the corresponding three-term differential.
+&
+\lean{CS.delta1_comp_delta0}\par
+\lean{AF.cellular_complex_iso}\par
+\lean{E.ThreeTermData.differential_comp}\par
+\lean{AF.boundarySqZero}
+\\\midrule
 
-\subsection{HCP, CVP, and Fibrational Algebra}
+\textbf{Axis coordinates.}\newline
+Section~3.5.
+Coordinate vectors and the distinct complementary-axis choices in the examples.
+&
+\lean{AF.unitCochain_apply}\par
+\lean{AF.other_zero}\par
+\lean{AF.other_one}\par
+\lean{AF.other_ne}
+\\\midrule
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{HCP.lean}.]
-    Section 2 contains the matrix-level HCP vocabulary, public fibers,
-    ambiguity hierarchy, typed Helfer realization, representative-bound
-    observations and witnesses, the Hodge-coordinate cipher, and the unique
-    operative recovery target. It also records isometric presentation
-    transport, harmonic-projection naturality, fixed-coordinate
-    nonstabilization, classifier nonfaithfulness, and the resulting
-    no-exact-representative-decoder theorem. The direct public recovery
-    contract is
-    \lean{Hcrypt.HCPBridge.SolverExactOnOperativeTarget}.
-  \item[\lean{Hardness.lean}.]
-    Sections 2--4 contain consequences and comparisons for the HCP interface
-    imported from \lean{HCP.lean}. The concrete ambiguity theorems
-    \lean{Hodge_Ambiguity}, \lean{Hodge_Ambiguity_Proof},
-    \lean{constantPublicProjection_publicCompatibleHodgeAmbiguity},
-    \lean{constantPublicProjection_kernelAmbiguous}, and
-    \lean{constantPublicProjection_lossy} supply the matrix sanity example
-    discussed after \cref{prop:cvp-insufficient}, rather than a concrete typed
-    HCP separation witness. The presented-linear-image comparison
-    declarations \lean{Hodge_Solver_Correct},
-    \lean{exists_matrix_ker_eq_range},
-    \lean{Hodge_GeneratedSubspace_Reduction}, and
-    \lean{Hodge_GeneratedSubspace_Reduction_Proof} are
-    \cref{prop:hcp-to-cvp}. The decomposition theorem
-    \lean{Hodge_Decomposition_Theorem} is
-    \cref{prop:hodge-decomposition}. The public-solver predicates
-    \lean{PublicHodgeInstance}, \lean{PublicHodgeSolver},
-    \lean{Hcrypt.HCPBridge.operativeTargets_ne_of_kernelSeparation},
-    \lean{Hcrypt.HCPBridge.no_solver_exactOnOperativeTarget_of_kernelSeparation},
-    \lean{Hcrypt.HCPBridge.cvpOracle_insufficient_for_operativeTarget},
-    \lean{Hcrypt.HCPBridge.no_solver_on_kernelSeparation}, and
-    \lean{Hcrypt.HCPBridge.cvpOracle_insufficient_of_kernelSeparation} are
-    \cref{prop:cvp-insufficient}. The closest-harmonic predicates
-    \lean{ClosestHarmonicSolution}, \lean{ProjectionClosestHarmonicSolution},
-    \lean{matrix_harmonic_iff_projection_isHarmonic},
-    \lean{Hodge_Projection_Is_ClosestHarmonic}, and
-    \lean{harmonicProjection_is_closestHarmonic} record the continuous
-    projection surface. The discrete bridge declarations
-    \lean{HarmonicCVPBridge},
-    \lean{HarmonicCVPBridge.squaredDistance_projection_decomposition},
-    \lean{HarmonicCVPBridge.isClosestLatticeVector_iff_projectedTarget}, and
-    \lean{HarmonicCVPBridge.solution_iff_projectedTarget} are
-    \cref{prop:hodge-projection-is-cvp}. The categorical declarations
-    \lean{IsCartesianMorphism}, \lean{GrothendieckFibration},
-    \lean{CategoricallyEquivalentFibrations}, \lean{Wrapper}, \lean{Fibration},
-    \lean{FibrationCopy}, \lean{ToWrapper}, \lean{FromWrapper},
-    \lean{copy_categoricallyEquivalent_thm}, and \lean{FibrationCopy_is_Grothendieck}
-    are \cref{prop:fibration-copy-equivalence}.
-  \item[\lean{CVP.lean}.]
-    Section 3 translates \lean{AmbientVector}, \lean{ExplicitLattice},
-    \lean{latticeVector},
-    \lean{InExplicitLattice}, \lean{IsClosestLatticeVector},
-    \lean{squaredEuclideanDistance}, \lean{Instance}, \lean{Solution},
-    \lean{Oracle}, \lean{LatticeOracleCorrect}, \lean{OracleCorrect},
-    \lean{SolverCorrect}, \lean{solverCorrect_iff_oracleCorrect},
-    \lean{HardnessAssumption}, and
-    \lean{zero_lattice_oracle_correct} as the known-lattice comparison
-    surface.
-  \item[\lean{Helfer/Signature.lean},
-    \lean{Helfer/HomotopyEquivalence.lean},
-    \lean{Helfer/Invariance.lean}, \lean{Axioms/HelferFOL.lean},
-    \lean{Axioms/Fibration.lean}, and
-    \lean{Axioms/HomotopyClass.lean}.]
-    Section 4 formalizes multi-sorted signatures, finite-product
-    interpretations, coherent homotopy homomorphisms, and componentwise
-    homotopy equivalence for cofibrant-fibrant interpretations. It also
-    extracts the Helfer-derived path/diagonal and fibrational interface, then
-    adds the project-specific public classifiers and public fibers, classifier
-    factorization through a base projection, class-membership witnesses,
-    transport, semantic well-formedness clauses, fiber systems, ephemeral
-    fiber specifications, and nonfaithful classifiers. This is not a complete
-    formalization of Helfer's model-categorical construction or
-    formula-in-context invariance proof; the closed-formula consequence of
-    Theorem~12.3 is an explicit Lean hypothesis. The local equivalence, symmetry, transitivity,
-    membership, and nonfaithfulness lemmas justify the public fiber language
-    used in HCP.
-\end{description}
+\textbf{Axis Hodge operators.}\newline
+Section~3.5.
+Both coboundaries, the adjoint, the degree-one Laplacian and its harmonicity criterion.
+&
+\lean{AF.delta0_eq_zero}\par
+\lean{AF.delta1_apply}\par
+\lean{AF.delta1_adjoint_eq}\par
+\lean{AF.degreeOneLaplacian_apply}\par
+\lean{AF.harmonic_iff}
+\\\midrule
 
-\subsection{Foundational, Sheaf, Spectral, and Judgment Axioms}
+\textbf{Integral lattice.}\newline
+Section~3.5.
+Restriction-compatible stalk integrality, harmonic basis vectors,
+encoding injectivity and membership in the chosen lattice.
+&
+\lean{AF.standardStalkLattice_contains_iff}\par
+\lean{AF.restriction_preserves}\par
+\lean{AF.unitCochain_integral}\par
+\lean{AF.other_unit_harmonic}\par
+\lean{AF.harmonicBasis_injective}\par
+\lean{AF.harmonicLatticeVector_eq}\par
+\lean{AF.latticeVector_mem}
+\\
+\end{longtable}
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{Sheaf/CellComplex.lean}, \lean{Sheaf/Cellular.lean},
-    \lean{Sheaf/Hodge.lean}, \lean{Sheaf/Equivalence.lean}, and
-    \lean{Sheaf/Commitment.lean}.]
-    Sections 2, 4, and 5 translate the concrete finite oriented two-complex;
-    finite real coordinate stalks and face-to-coface maps; the typed spaces
-    \(C^0,C^1,C^2\); concrete \(\delta_0\) and \(\delta_1\); the proof that
-    \(\delta_1\delta_0=0\); degree-zero global sections, degree-one cocycles,
-    and exact degree-one cochains; the true degree-one Hodge operator
-    \(\delta_0\delta_0^*+\delta_1^*\delta_1\); its energy, kernel, and
-    orthogonality theorems; the distinct kernel-normalized operator;
-    degreewise isometric cochain equivalences and their adjoint, Laplacian,
-    harmonic-subspace, and kernel transport theorems; immutable
-    sheaf-state snapshots; snapshot-bound payload interpretation; accepted
-    exact one-cochains; and the quotient of openings by \(\ker\delta_0\).
-  \item[\lean{Sheaf/Integral.lean}.]
-    Sections 2--3 and 5 use \lean{StalkLattice}, its additive carrier and
-    \lean{Preserves} predicate, and \lean{IntegralStructure}. The latter
-    selects integral stalk lattices preserved by the cellular restrictions.
-    The induced \lean{integralZeroCochains}, \lean{integralOneCochains}, and
-    \lean{integralTwoCochains} are additive subgroups;
-    \lean{harmonicOneLattice} is the integral degree-one subgroup intersected
-    with the harmonic subspace. The two integral-coboundary preservation
-    theorems are proved for this supplied structure. No canonical modular
-    encoding/decoding is constructed here.
-  \item[\lean{Sheaf/Distance.lean} and \lean{Sheaf/CochainSemantics.lean}.]
-    Distance to the actual exact subspace is nonnegative, vanishes exactly
-    on exact cochains, and is stable under Euclidean perturbations. The
-    semantics adapter intertwines the actual cochain operators and decoder,
-    identifies snapshot binding, and derives exactness, cocycle and acceptance
-    transport. Other legacy ambient gates remain explicit. The carrier
-    equivalence is not asserted to preserve norms.
-  \item[\lean{Sheaf/HarmonicLattice.lean}.]
-    Sections 2--3 use \lean{HodgeNoise}, \lean{HodgeEncryptedCochain},
-    \lean{observed}, and harmonic projection recovery for
-    \(b=h+\delta_0a+\delta_1^*c\).
-    \lean{HarmonicLatticePresentation} additionally supplies an explicit
-    full-span harmonic sublattice, membership proofs and its real-span
-    equality. Its \lean{point}, \lean{encrypt}, and \lean{cvpInstance}
-    constructions lead to the squared-distance decomposition and unique
-    closest-point result for those encoded samples. The presentation need
-    not contain every integral harmonic cochain. Noise sampling, a secrecy
-    game and modular wire realization remain separate obligations.
-  \item[\lean{Sheaf/ObservationQuotient.lean}.]
-    The full kernel-normalized residual equals the Hodge-noise value.
-    \Cref{prop:exact-component-obstruction} is formalized by the coexact-ray,
-    residual-nonfactorization and far-preservation obstruction theorems.
-    Their source carrier is unrestricted Hodge noise, and the extraction
-    must factor through its decoded exact component; no raw-byte
-    factorization or unrestricted production-profile claim is inferred.
-  \item[\lean{Axioms/Foundation.lean} and \lean{Gates/Exact.lean}.]
-    Section 4 translates \lean{Foundation} and
-    \lean{FoundationWellFormed}: the cochain-complex premise, coboundary
-    linearity, Hodge--Laplacian formation, Hodge decomposition, and Hodge
-    orthogonality.  Commitment authentication/hiding, topology connectivity,
-    spectral policy, and key-image/freshness conditions are separate
-    interfaces rather than fields of \lean{Foundation}. The exact-gate
-    aliases \lean{ExactGateBundle}, \lean{SheafExactGateBundle},
-    \lean{FoundationWithSheafExactGates}, and
-    \lean{structural_preconditions_of_sheaf_exact_gates} are
-    \cref{prop:exact-structural-preconditions}.
-  \item[\lean{Axioms/SheafCoherence.lean}.]
-    Section 4 translates restriction-shape compatibility, edge naturality,
-    triangle-face commutativity, sheaf cochain complexes, Hodge coherence,
-    finite simplicial nerves, \lean{SheafCoherence},
-    \lean{SheafCoherenceWellFormed},
-    typed degree-zero through degree-two coboundaries,
-    \lean{CommittedCochainWellFormed},
-    \lean{RepresentsExactOneCochain}, \lean{IsOneCocycle},
-    \lean{oneCocycle_of_committedCochainWellFormed},
-    \lean{FoundationWithSheafCoherence}, and
-    \lean{coherence_implies_structural_preconditions}.
-  \item[\lean{Axioms/Grassmannian.lean}.]
-    Sections 4 and 6 translate the Grassmannian metric and geometry objects:
-    \lean{GrassmannianDistance}, \lean{chordal_leq_geodesic},
-    \lean{KarcherMean}, \lean{SheafLaplacian}, \lean{CechNerve},
-    \lean{PluckerEligibility}, \lean{ConsensusGeometry}, and
-    \lean{ConsensusGeometryWellFormed}.
-  \item[\lean{Axioms/SpectralBounds.lean} and \lean{Gates/Spectral.lean}.]
-    Section 4 translates the constants
-    \(\sqrt2/2\) and \(2\sqrt2\), the predicates
-    \lean{SpectralGapInPoVBounds}, \lean{NearPoVSpectralBoundary},
-    \lean{TsirelsonPredicate}, \lean{NearTsirelsonBoundary}, the aliases
-    \lean{SpectralGapGate} and \lean{NearSpectralBoundary}, the geometry
-    witness \lean{ByConstructionPoVGeometry}, and the theorems
-    \lean{byConstruction_gap_in_bounds} and
-    \lean{byConstruction_passes_spectral_gate}.
-  \item[\lean{Tsirelson.lean}.]
-    Section 4 translates the Grassmannian/Laplacian family
-    \lean{Grassmannian_Laplacians}, \leanOmega{_G},
-    \lean{LaplacianSpace}, \lean{SpectralGap}, \leanOmega{_1},
-    \lean{projector_map}, \lean{Classical_Strategy},
-    \lean{Quantum_Strategy}, and \lean{MaxEigenvalue}; the infinitude and
-    injectivity results \lean{R_infinite}, \lean{infinite_lines},
-    \lean{Grassmannian_Laplacian_injective},
-    \lean{projector_injective}, \lean{laplacian_injective},
-    \leanOmega{_1_infinite}, \lean{R_uncountable},
-    \leanOmega{_1_infinite_v2}, and \leanOmega{_1_Nonempty}; the Laplacian-space
-    inclusions \lean{laplacian_properties},
-    \lean{laplacian_is_hermitian},
-    \leanOmega{_1_subset_LaplacianSpace},
-    \leanOmega{_1_subset_LaplacianSpace_v3},
-    \leanOmega{_1_subset_LaplacianSpace_v5},
-    \leanOmega{_1_subset_LaplacianSpace_explicit_v2}, and
-    \leanOmega{_1_subset_LaplacianSpace_explicit}; the classical/quantum
-    statement forms \lean{Classical_Bound_Statement} and
-    \lean{Quantum_Bound_Statement}; and the empty-family sanity checks
-    \lean{Classical_Bound_empty_family} and
-    \lean{Quantum_Bound_empty_family}.
-  \item[\lean{Axioms/Heyting.lean} and
-    \lean{Axioms/OracleModality.lean}.]
-    Section 4 translates the three-valued Heyting algebra, meet, join,
-    implication, negation, failure of double-negation elimination, abstract
-    Heyting collapse, nonfaithful public truth, spectral judgments, consensus
-    actions, oracle queries and answers, \(\Omega_{\mathrm{nv}}\), witness
-    collapses, quotient equivalence, sheafification, oracle forcing,
-    \(\eta_1/\eta_2\) oracle modalities, Lawvere--Tierney idempotence,
-    boundary judgment behavior, canonical consensus admissibility, oracle
-    pipelines, and the oracle/consensus bridge theorems.
-  \Needspace{6\baselineskip}
-  \item[\lean{Axioms/StageAdmissibility.lean},
-    \lean{Gates/Stage.lean}, and \lean{Gates/Oracle.lean}.]
-    This appendix records the stage and oracle aliases: pipeline stages, stage
-    admissibility, transaction-critical invariant bundles, Python-stage
-    snapshots, refinement predicates, and the theorem that a refined
-    transaction-critical pass is admissible.
-\end{description}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.55\linewidth}@{}}
+\caption{Definitions and proof boundaries}\label{tab:paper1-definitions}\\
+\toprule
+\textbf{Statement and scope} & \textbf{Formal declarations or boundary}\\
+\midrule
+\endfirsthead
+\caption[]{Definitions and proof boundaries (continued).}\\
+\toprule
+\textbf{Statement and scope} & \textbf{Formal declarations or boundary}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r@{}}{\emph{Continued on the next page.}}\\
+\endfoot
+\bottomrule
+\endlastfoot
 
-\subsection{Laplacian Geometry and Search Spaces}
+\textbf{HCP input and target.}\newline
+Section~2. The public pair contains a classifier value and observed cochain.
+A private representative selects the operative kernel and hence the
+orthogonal-projection target.
+&
+Canonical definitions:\par
+\lean{HE.HCPBridge.Observation}\par
+\lean{HE.HCPBridge.HiddenHodgeWitness}\par
+\lean{HE.HCP.operativeHarmonicComponent}\par
+\lean{HE.HCPBridge.operativeTarget}
+\\\midrule
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{Laplacian/Hodge.lean} and \lean{Laplacian.lean}.]
-    Sections 2--3 translate harmonic projection, residual vector, residual
-    norm, harmonicity, projection membership, nonnegativity, and all
-    equivalences between zero residual, membership in the harmonic subspace,
-    and harmonicity.
-  \item[\lean{Laplacian/Projection.lean}.]
-    Section 3 translates the projection Laplacian
-    \(\Delta_W=I-P_W\) and its pointwise application formula.
-  \item[\lean{Laplacian/Spectral.lean}.]
-    Section 4 translates sheaf Laplacians, spectral fingerprints, spectral
-    equivalence, scalar Laplacians, kernel and eigenvalue lemmas, scalar
-    fingerprints, the legacy relation defined by equal kernel dimension, and
-    the theorem that spectrum is not determined by nullity. That relation
-    does not assert Helfer homotopy equivalence.
-  \item[\lean{Laplacian/Likelihood.lean}.]
-    Section 4 records classical selector and density-based likelihood
-    interfaces, Gaussian likelihoods, minimum spectral gaps, integrated
-    likelihood scores and Gaussian factorization lemmas. Legacy names such
-    as ``quantum adversary'' and \lean{success_prob_*} supply neither a
-    quantum computation model nor HCP recovery probabilities. The corrected
-    Euclidean integrated scores are not identified with the legacy
-    supremum-norm integrals. These interfaces are outside the selected entry.
-  \item[\lean{Laplacian/Grassmannian.lean},
-    \lean{Laplacian/Grassmannian/Injectivity.lean},
-    \lean{Laplacian/Grassmannian/SearchSpace.lean}, and
-    \lean{Laplacian/Grassmannian/ParametricFamily.lean}.]
-    Sections 4 and 6 translate harmonic subspaces, the map to projection
-    Laplacians, the families \(\Omega_r\) and \(\Omega_1\), membership in
-    Laplacian space, nonemptiness of \(\Omega_k\), injectivity of the
-    Grassmannian Laplacian map, and the parametric construction of families of
-    \(k\)-planes.
-\end{description}
+\textbf{Explicit-lattice CVP.}\newline
+Section~3.1. An injective real basis presents the lattice through integer
+coefficients. An instance adds a target; a solution is a closest discrete
+lattice point.
+&
+Canonical definitions:\par
+\lean{CVP.ExplicitLattice}\par
+\lean{CVP.Instance}\par
+\lean{CVP.Solution}
+\\\midrule
 
-\subsection{Commitments, Public Artifacts, and TCB Boundary}
+\textbf{Semantic realization.}\newline
+Sections~1--2. The public classifier factors through the specified closed
+theory. The operative Hodge operator is separate presentation-level data;
+equal classifier values need not identify it. Completeness adds reflection
+of the declared homotopy equivalence; with invariance, public fibers are
+exactly its classes. The constructed family proves this condition.
+&
+Canonical definitions and classifier theorems:\par
+\lean{HE.Axioms.PublicClassifier}\par
+\lean{HE.Helfer.ClosedTheory}\par
+\lean{HE.HCPBridge.Realization}\par
+\lean{HE.HCPBridge.ReflectsHomotopyEquivalence}\par
+\lean{HE.HCPBridge.samePublicClass_iff_homotopyEquivalent}\par
+\lean{HE.HCPBridge.publicClassOf_eq_setOf_homotopyEquivalent}\par
+\lean{HE.HCP.AxisFamily.theory_eq_iff_homotopyEquivalent}
+\\\midrule
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{Axioms/CochainCommitment/Payload.lean},
-    \lean{Axioms/CochainCommitment/Blinded.lean},
-    \lean{Axioms/CochainCommitment/Security.lean}, and
-    \lean{Axioms/CochainCommitment.lean}.]
-    Section 5 translates the canonical modulus, byte lengths, wire length,
-    \lean{CochainCommitmentData}, edge-count matching, nonempty edge data,
-    supported modulus, well-formedness, commitment sums, common-topology and
-    additive compatibility, zero and addition operations, payload lemmas,
-    exact-payload authentication, wrapper hiding, context binding,
-    additivity/security interfaces, the typed exact-payload to
-    Hodge-blinded-value bridge, exact--harmonic orthogonality and decomposition
-    theorems, blinded and vector commitment axioms, cohomological MAC axioms,
-    and the canonical commitment construction from foundational geometry plus
-    separately supplied commitment-specific hypotheses.
-  \item[\lean{TCB/ProofCarrying.lean}, \lean{TCB/Runtime.lean},
-    \lean{TCB/SNARK.lean}, \lean{TCB/CompressionBoundary.lean},
-    \lean{TCB/ObservationBoundary.lean}, and
-    \lean{TCB/WitnessVerifier.lean}.]
-    Section 5 and this appendix record hash words, hashed committed cochains,
-    proof-carrying cochains, runtime specification boundaries, runtime
-    acceptance predicates, SNARK-carrying cochains, compression contracts,
-    compressed public data, observation boundaries, gap-decision certificates,
-    witness-compression envelopes, public state updates, and theorems stating
-    that accepted artifacts expose well-formed cochain and oracle predicates.
-  \item[\lean{Helfer/CochainModel.lean}, \lean{Sheaf/HCPAxisFamily.lean},
-    \lean{HCP/AxisFamily.lean}.]
-    Section 3's concrete family. The first module constructs the real cochain
-    Quillen model, retains the actual cellular differentials and proves
-    homological-test invariance for all typed interpretations. The second
-    constructs integral sheaves, samples, operator matrices, chain isometry,
-    spectrum and harmonic lattices. The third derives the semantic realization,
-    common observation, distinct nonzero targets and both positive and negative
-    CVP comparisons from those same objects. No full first-order semantics,
-    cryptographic sampling experiment or runtime profile is constructed.
-  \item[\lean{TCB/HCPRealization.lean}, \lean{TCB/HCPAxisFamily.lean}.]
-    Sections 3 and 5's application join. Actual matrix action gives the
-    cellular kernel/projector equality; snapshot-classifier agreement gives
-    the original observation's hidden witness and operative message. The
-    existing CVP comparison is transported to that target. The concrete family
-    instantiates the operator alignment and can retain an original artifact
-    under supplied acceptance, decoding and envelope bindings. The actual
-    computed positive gap also satisfies the spectral gate. Complete public
-    storage-view equality is not inferred from the class equality.
-  \item[\lean{TCB/HCPObservation.lean}.]
-    Sections 2 and 5 use \lean{HCPStackBinding} and
-    \lean{BoundHCPObservation} to join the full Hodge sample to its accepted
-    exact committed component, artifact leaf digest, immutable snapshot root
-    and lifecycle context. The \lean{latticeObject}, \lean{cochainObject},
-    \lean{hashObject}, \lean{snapshotRoot}, and \lean{toObservation} accessors
-    retain those same objects. Artifact well-formedness, snapshot binding and
-    harmonic recovery are proved from the explicit record fields. The
-    classifier, decoder and observation-binding relation are supplied;
-    constructing the record does not instantiate their public realization.
-    The record contains private witness data and is not a serialization or
-    public disclosure prescription.
-  \item[\lean{Axioms/ZKP.lean}.]
-    Section 5 records the zero-knowledge proof object and its well-formedness
-    predicate as an assumed proof-carrying artifact interface.
-\end{description}
+\textbf{Hodge sample and lattice.}\newline
+Sections~1--3. The sample combines an integral harmonic message with
+exact/coexact noise. A supplied harmonic-lattice presentation has full real
+span; it need not contain every intrinsic integral harmonic cochain.
+&
+Canonical definitions:\par
+\lean{HE.Sheaf.CellularSheaf.HodgeEncryptedCochain}\par
+\lean{HE.Sheaf.CellularSheaf.HarmonicLatticePresentation}
+\\\midrule
 
-\subsection{Projection Chain, Proximity Gates, and RS/MCA Endpoint}
+\textbf{External theorem and semantic premise.}\newline
+Sections~2.1 and~3.5; distinct from the proved homological fragment.
+&
+Helfer's general fibrational/path-invariance theorem is cited background.
+The generic bridge uses the declared closed-test invariance; the concrete
+family proves it for its homological tests. Full first-order invariance is
+not a theorem of this entry.
+\\\midrule
 
-The universal standalone coding results are owned by the companion Paper 3
-and its detailed source ledger. Its completed generic distance, real-shell,
-phase-split and all-parameter family constructions reside in
-\lean{Proximity/Core/Distance.lean},
-\lean{Proximity/Core/RadiusShell.lean},
-\lean{Proximity/Capacity/Realization.lean},
-\lean{Proximity/Capacity/ListPhase.lean},
-\lean{Proximity/ListDecoding/PhaseSplit.lean},
-\lean{Proximity/MCA/RealThreshold.lean}, and
-\lean{Proximity/Application/DistanceCalibration.lean}.
-This appendix records their HCP-specific consumers without repeating the
-standalone coding proofs.
+\textbf{Assumption: computational hardness.}\newline
+Section~3.1; distinct from the proved exact comparisons.
+&
+Known-lattice CVP hardness is an external computational interface.
+The selected algebraic comparisons and non-identifiability examples do
+not establish an asymptotic encoded-instance hardness reduction or a
+sampled encryption-security theorem.
+\\
+\end{longtable}
 
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{Proximity/Problem.lean}, \lean{Proximity/Public.lean},
-    \lean{Proximity/Projection.lean}, \lean{Proximity/PluckerShadow.lean},
-    \lean{Proximity/GrassmannianPlucker.lean}, and
-    \lean{Proximity/PluckerCochain/PublicBinding.lean}.]
-    Section 6 records the problem-facing public projection vocabulary, the
-    abstract Pl\"ucker coordinate-system and public-shadow contracts, and the
-    interfaces that prepare the concrete Pl\"ucker coordinate and finite-code
-    datum.
-  \item[\lean{Proximity/Application/GapBoundary.lean}.]
-    Section 6.1 formalizes disjointness of the closed promises under a strict
-    gap, the equal-radius boundary obstruction, and strict-gap views retaining
-    the existing carrier, score and radii. The classical specification solver
-    characterizes logical consistency; it supplies neither an executable or
-    efficient solver nor a concrete application profile.
-  \item[\lean{Proximity/Grassmannian.lean},
-    \lean{Proximity/GrassmannianPlucker.lean}, and
-    \lean{Proximity/GrassmannianPlucker/Concrete.lean}.]
-    Section 6 translates harmonic Grassmannian points, exterior coordinates,
-    frame witnesses, decomposability, framed systems, raw and normalized
-    Pl\"ucker coordinates, soundness, projective equivalence, projective
-    normalization, projective framed systems, and projective sound inputs.
-  \item[\lean{Proximity/Concrete/GrassmannianPlucker/Reconstruction.lean}
-    and \lean{TCB/PluckerObservation.lean}.]
-    Section 6 proves both concrete exterior-algebra soundness inputs,
-    reconstructs the operative subspace and harmonic projector from a genuine
-    full projective point, and proves full-shadow equality exactly when the
-    ranked points agree. Identification with \(\ker\Delta_x\) gives the
-    operative harmonic target; digest inversion and efficient real-coordinate
-    algorithms are outside these results.
-  \item[\lean{Proximity/CochainBridge.lean},
-    \lean{Proximity/PluckerCochain.lean},
-    \lean{Proximity/PluckerCochain/Concrete.lean}, and
-    \lean{Proximity/PluckerCochain/PublicBinding.lean}.]
-    Section 6 translates valid frames, Pl\"ucker-to-cochain instances, local
-    syndrome targets, codeword predicates, evaluation projections, invariant
-    checklists, payload encoders, commitment-sum residuals, payload
-    realizations, hashed Pl\"ucker coordinates, observed frame bindings, and the
-    theorems that valid Pl\"ucker coordinates bind to sheaf-coherent exact
-    one-cochains, hence to accepted committed cocycles and local codewords.
-  \item[\lean{Proximity/CochainPlane.lean},
-    \lean{Proximity/CochainPlane/Core.lean},
-    \lean{Proximity/CochainPlane/Concrete.lean},
-    \lean{Proximity/CochainPlane/ReedSolomon.lean}, and
-    \lean{Proximity/CochainReedSolomon.lean}.]
-    Section 6 translates plane projections, plane extraction contexts,
-    local nondegeneracy, alignment, projected planes, plane targets,
-    plane-to-evaluation projections, typed restriction and syndrome naturality
-    at the cochain/plane and plane/RS transitions,
-    local-codeword-to-target-codeword theorems, separate plane and RS metric
-    handoffs, faithful-on-region plane encodings, interpretations, and RS
-    received words.
-  \item[\lean{Proximity/ProjectionChain.lean} and
-    \lean{Proximity/ProjectionChain/Core.lean}.]
-    Section 6 translates the complete projection chain, including accessors
-    for committed cochain, plane projection, received word, and the composite
-    evaluation projection.
-  \item[\lean{Proximity/Gates.lean}, \lean{Proximity/Gates/Stage.lean},
-    \lean{Proximity/Gates/Final.lean}, and
-    \lean{Proximity/GateEvidence.lean}.]
-    Section 6 translates only proximity gates: source metric, Pl\"ucker metric,
-    semantic alignment, optional syndrome adequacy, projective-coordinate
-    respect, three-stage noncollapse through cochain and plane radii,
-    far-region separation, runtime binding, structural bundles, hard-gate and
-    derived naturality certificates, calibrated final certificates, nested
-    witness-local state buses, stage checklists, stage certificates, radius
-    calibrations, final readiness, evidence slots, evidence databases, and the
-    binding/completeness lemmas for proximity evidence.
-  \item[\lean{Proximity/RS/ListDecoding.lean},
-    \lean{Proximity/RS/ReedSolomon.lean},
-    \lean{Proximity/RS/CorrelatedAgreement.lean},
-    \lean{Proximity/RS/Target.lean}, and \lean{Proximity/RS.lean}.]
-    Section 6 translates words, block codes, Hamming and relative Hamming
-    balls, list-size bounds, interleaved and additive codes, RS parameters,
-    vector codewords, correlated-agreement and mutual-correlated-agreement
-    predicates, bad-parameter sets, bridge conditions, calibrated
-    \(\HE\)-to-RS bridges, and pullback-correctness theorems.
-  \item[\lean{Proximity/CanonicalRS/Parameters.lean},
-    \lean{Proximity/CanonicalRS/PowerDomain.lean},
-    \lean{Proximity/CanonicalRS/Encoding.lean},
-    \lean{Proximity/CanonicalRS/Metric.lean},
-    \lean{Proximity/CanonicalRS/Target.lean},
-    \lean{Proximity/CanonicalRS/FarSeparation.lean},
-    \lean{Proximity/CanonicalRS/BridgeData.lean},
-    \lean{Proximity/CanonicalRS/BridgeWitness.lean},
-    \lean{Proximity/CanonicalRS/BridgeCertificate.lean},
-    \lean{Proximity/CanonicalRS/CitedBounds.lean},
-    \lean{Proximity/CanonicalRS/MCA.lean},
-    \lean{Proximity/CanonicalRS/MCA/Line.lean}, and
-    \lean{Proximity/CanonicalRS/MCA/Concrete.lean}.]
-    Section 6 translates the canonical finite field, length, degree bound,
-    rate, Johnson and capacity radii, smooth domains, power-root domain,
-    canonical encoding, the proof that the unbounded integer encoding is not
-    globally injective, Hamming-to-code metrics, target bounds, far-separation
-    witnesses, bridge data and theorem slots, bridge certificates, cited
-    BCHKS-style bounds, MCA block code, challenge and bad-challenge fractions,
-    and the bound on the projected bad-challenge fraction.
-\end{description}
+\endgroup
 
-\newpage
-\subsection{Subsequent Protocol and Implementation Boundary}
-
-The bounded state/transition, candidate-indexed evidence and typed storage
-modules under \lean{Protocol/Ledger/}, \lean{Protocol/Evidence/}, and
-\lean{Protocol/Storage/} belong to Paper 2;
-their completion status is recorded in \lean{papers/paper2/SCOPE.md}.
-They are downstream consumers of the mathematical objects above.
-
-\begin{description}[leftmargin=2.4em,style=nextline]
-  \item[\lean{Axioms/Consensus.lean}, \lean{Axioms/Ledger.lean},
-    \lean{Axioms/Coregulator.lean}, and
-    \lean{Axioms/PythonHomotopyRefinement.lean}.]
-    This appendix records consensus, ledger, coregulator, and Python homotopy
-    refinement as boundary objects. Their full protocol semantics belong to
-    the subsequent protocol paper, but their predicates are named here so the
-    Paper 1 mathematical objects have explicit downstream interfaces.
-  \item[\lean{Consensus/Geometry.lean},
-    \lean{Consensus/Reliability.lean}, and
-    \lean{Consensus/ProofOfValue.lean}.]
-    This appendix records Pl\"ucker eligibility and consensus geometry aliases,
-    reliability evidence and bounded reliability scores, proximity quality,
-    Proof-of-Value gates, Proof-of-Value inputs, scores with and without
-    reliability/proximity, and the score bounds. These are protocol-facing
-    uses of the Section 4 and Section 6 mathematical predicates.
-  \item[\lean{Chain.lean}.]
-    This appendix records validators, transactions, blocks, protocol states, spectral
-    bounds, topology and freshness predicates, block validity, tips, heights,
-    extension, transaction and block acceptance, ledger-state updates,
-    key-image preservation theorems, validator eligibility, cumulative gap,
-    preference, transaction composition and identities, quadratic weight,
-    Sybil-resistance weighting, chain-growth monotonicity, fork-resolution
-    transitivity, and connectedness of eligible validators. The detailed
-    protocol architecture remains in the subsequent protocol paper.
-\end{description}
-
-\end{leanledger}
+The checked declarations use only \lean{propext}, \lean{Quot.sound} and
+\lean{Classical.choice}, or subsets. Verification applies to the exact
+source and configuration checked.

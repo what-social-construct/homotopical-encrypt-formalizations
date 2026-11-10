@@ -9,8 +9,10 @@ public import Mathlib.Tactic
   Projection-model Laplacian.
 
   Paper correspondence:
-  - Paper 1 Section 2: hidden Hodge operator model.
-  - Paper 1 Section 3: explicit projection model used for CVP comparison.
+  - Paper 1 Sections 2--3: the kernel-normalized projection model used for the
+    HCP/CVP comparison.
+  - This operator is distinct from the true cellular Hodge Laplacian unless
+    the stated normalization conditions identify them.
 
   This file defines the concrete Grassmannian projection model
   `Δ_W = I - P_W` and the identity `Δ_W b = P_{Wᗮ} b`.

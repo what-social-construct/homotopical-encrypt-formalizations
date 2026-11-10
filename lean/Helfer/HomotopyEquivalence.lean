@@ -15,7 +15,7 @@ in a model category this is precisely the homotopy-equivalence condition used
 by Helfer.
 -/
 
-namespace Hcrypt.Helfer
+namespace HomotopicalEncryption.Helfer
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra
 
@@ -74,4 +74,4 @@ theorem component_hasHomotopyInverse
 
 end HomotopyEquivalence
 
-end Hcrypt.Helfer
+end HomotopicalEncryption.Helfer

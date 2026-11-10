@@ -2,7 +2,6 @@ module
 
 public import Mathlib.Analysis.Matrix.Spectrum
 public import Mathlib.Analysis.InnerProductSpace.Positive
-public import Mathlib.Analysis.InnerProductSpace.ExteriorPower
 public import Mathlib.CategoryTheory.Limits.Shapes.FiniteProducts
 public import Mathlib.AlgebraicTopology.ModelCategory.Homotopy
 public import Mathlib.Algebra.Category.ModuleCat.Abelian
@@ -11,8 +10,6 @@ public import Mathlib.Tactic
 public import Hardness
 public import HCP.AxisFamily
 public import Sheaf.CoefficientRecovery
-public import Sheaf.ObservationQuotient
-public import TCB.PluckerObservation
 
 @[expose] public section
 set_option autoImplicit false
@@ -29,7 +26,7 @@ existing incidences, lattice bases, operators, samples and public theories.
 Proofs reuse the canonical development; no statement imports Challenge.
 -/
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 noncomputable section
 open scoped BigOperators
 
@@ -81,9 +78,9 @@ def projectedTarget {m : Type} [Fintype m]
   fun i => W.starProjection (WithLp.toLp 2 t) i
 end CVP
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 
 open scoped BigOperators RealInnerProductSpace
 noncomputable section
@@ -314,9 +311,9 @@ end HarmonicLatticePresentation
 
 end CellularSheaf
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 noncomputable section
 namespace CVP.ExplicitLattice
 /-- Identity on the original full-rank basis, with the same injectivity proof. -/
@@ -405,9 +402,9 @@ theorem solution_iff_projectedTarget
   let H : _root_.HarmonicCVPBridge m n := ⟨L.toOwner, W, hL⟩
   exact H.solution_iff_projectedTarget t v
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 
 noncomputable section
 
@@ -415,7 +412,7 @@ namespace OrientedTwoComplex
 variable {Vertex Edge Face : Type*}
   [Fintype Vertex] [Fintype Edge] [Fintype Face]
 def toOwner (X : OrientedTwoComplex Vertex Edge Face) :
-    _root_.Hcrypt.Sheaf.OrientedTwoComplex Vertex Edge Face where
+    _root_.HomotopicalEncryption.Sheaf.OrientedTwoComplex Vertex Edge Face where
   incidence01 := X.incidence01
   incidence12 := X.incidence12
   boundarySqZero := X.boundarySqZero
@@ -426,7 +423,7 @@ variable {Vertex Edge Face : Type*}
   [Fintype Vertex] [Fintype Edge] [Fintype Face]
   {X : OrientedTwoComplex Vertex Edge Face}
 
-def toOwner (F : CellularSheaf X) : _root_.Hcrypt.Sheaf.CellularSheaf X.toOwner where
+def toOwner (F : CellularSheaf X) : _root_.HomotopicalEncryption.Sheaf.CellularSheaf X.toOwner where
   vertexDim := F.vertexDim
   edgeDim := F.edgeDim
   faceDim := F.faceDim
@@ -450,7 +447,7 @@ theorem delta1_comp_delta0 (F : CellularSheaf X) : F.delta1.comp F.delta0 = 0 :=
 
 namespace StalkLattice
 def toOwner {n : ℕ} (L : StalkLattice n) :
-    _root_.Hcrypt.Sheaf.CellularSheaf.StalkLattice n where
+    _root_.HomotopicalEncryption.Sheaf.CellularSheaf.StalkLattice n where
   presentation := L.presentation.toOwner
 theorem carrier_toOwner {n : ℕ} (L : StalkLattice n) :
     L.toOwner.carrier = L.carrier := rfl
@@ -459,7 +456,7 @@ end StalkLattice
 namespace IntegralStructure
 variable {F : CellularSheaf X}
 def toOwner (I : IntegralStructure F) :
-    _root_.Hcrypt.Sheaf.CellularSheaf.IntegralStructure F.toOwner where
+    _root_.HomotopicalEncryption.Sheaf.CellularSheaf.IntegralStructure F.toOwner where
   vertexStalk v := (I.vertexStalk v).toOwner
   edgeStalk e := (I.edgeStalk e).toOwner
   faceStalk f := (I.faceStalk f).toOwner
@@ -474,7 +471,7 @@ end IntegralStructure
 
 namespace HodgeNoise
 variable {F : CellularSheaf X}
-def toOwner (e : HodgeNoise F) : _root_.Hcrypt.Sheaf.CellularSheaf.HodgeNoise F.toOwner where
+def toOwner (e : HodgeNoise F) : _root_.HomotopicalEncryption.Sheaf.CellularSheaf.HodgeNoise F.toOwner where
   exactOpening := e.exactOpening
   coexactOpening := e.coexactOpening
 theorem value_toOwner (e : HodgeNoise F) : e.toOwner.value = e.value := rfl
@@ -487,7 +484,7 @@ end HodgeNoise
 namespace HodgeEncryptedCochain
 variable {F : CellularSheaf X} {I : IntegralStructure F}
 def toOwner (E : HodgeEncryptedCochain I) :
-    _root_.Hcrypt.Sheaf.CellularSheaf.HodgeEncryptedCochain I.toOwner where
+    _root_.HomotopicalEncryption.Sheaf.CellularSheaf.HodgeEncryptedCochain I.toOwner where
   message := ⟨E.message.1, E.message.2⟩
   opening := E.opening.toOwner
 theorem observed_toOwner (E : HodgeEncryptedCochain I) :
@@ -502,7 +499,7 @@ end HodgeEncryptedCochain
 namespace HarmonicLatticePresentation
 variable {F : CellularSheaf X} {I : IntegralStructure F} {Rank : Type*} [Fintype Rank]
 def toOwner (H : HarmonicLatticePresentation I Rank) :
-    _root_.Hcrypt.Sheaf.CellularSheaf.HarmonicLatticePresentation I.toOwner Rank where
+    _root_.HomotopicalEncryption.Sheaf.CellularSheaf.HarmonicLatticePresentation I.toOwner Rank where
   lattice := H.lattice.toOwner
   latticeVector_mem := H.latticeVector_mem
   realSpan_eq_harmonic := H.realSpan_eq_harmonic
@@ -550,19 +547,10 @@ theorem concreteSheafHCP_CVP_existsUnique
   exact _root_.concreteSheafHCP_CVP_existsUnique H.toOwner z opening.toOwner
 
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne.CellularSheaf
-noncomputable section
-variable {Vertex Edge Face : Type*} [Fintype Vertex] [Fintype Edge] [Fintype Face]
-  {X : OrientedTwoComplex Vertex Edge Face}
-/-- The full orthogonal residual; it is separate from the true Hodge Laplacian. -/
-def kernelNormalizedDegreeOneLaplacian (F : CellularSheaf X) : F.C1 →ₗ[ℝ] F.C1 :=
-  F.harmonicOneSubspace.orthogonal.starProjection.toLinearMap
-end
-end Hcrypt.Palomar.PaperOne.CellularSheaf
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra ZeroObject
 noncomputable section
 namespace Helfer
@@ -576,14 +564,14 @@ variable (C : Type u₂) [Category.{v₂} C] [HasTerminal C] [HasBinaryProducts 
 structure Interpretation (S : Signature) where
   onSort : S.Sorts → C
   onFunction : ∀ {Γ : List S.Sorts} {B : S.Sorts},
-    S.FunctionSymbol Γ B → (_root_.Hcrypt.Helfer.contextObject C onSort Γ ⟶ onSort B)
+    S.FunctionSymbol Γ B → (_root_.HomotopicalEncryption.Helfer.contextObject C onSort Γ ⟶ onSort B)
 variable {C} [ModelCategory C] {S : Signature.{u₁, v₁}}
 /-- Sortwise morphisms preserving function symbols up to right homotopy. -/
 structure HomotopyHomomorphism (M N : Interpretation C S) where
   component : ∀ A, M.onSort A ⟶ N.onSort A
   preservesFunction : ∀ {Γ : List S.Sorts} {B : S.Sorts} (f : S.FunctionSymbol Γ B),
     RightHomotopyRel (M.onFunction f ≫ component B)
-      (_root_.Hcrypt.Helfer.contextMap C component Γ ≫ N.onFunction f)
+      (_root_.HomotopicalEncryption.Helfer.contextMap C component Γ ≫ N.onFunction f)
 /-- A sortwise weak equivalence whose source and target sort objects are cofibrant and fibrant. -/
 structure HomotopyEquivalence (M N : Interpretation C S) extends HomotopyHomomorphism M N where
   sourceFibrant : ∀ A, IsFibrant (M.onSort A)
@@ -871,9 +859,9 @@ def weightedObserved : C1 := unitCochain 0 + (2 : ℝ) • unitCochain 1
 
 end AxisFamily
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra ZeroObject
 open scoped CochainComplex.Plus.modelCategoryQuillen
 noncomputable section
@@ -891,12 +879,12 @@ theorem oracleOfOwner_correct {O : _root_.CVP.Oracle N N} (hO : _root_.CVP.Oracl
     CVP.OracleCorrect (oracleOfOwner O) := by intro L t; exact hO L.toOwner t
 theorem oracleToOwner_correct {O : CVP.Oracle N N} (hO : CVP.OracleCorrect O) :
     _root_.CVP.OracleCorrect (oracleToOwner O) := by intro L t; exact hO (latticeOfOwner L) t
-def signatureToOwner (S : Helfer.Signature.{u₁, v₁}) : _root_.Hcrypt.Helfer.Signature.{u₁, v₁} :=
+def signatureToOwner (S : Helfer.Signature.{u₁, v₁}) : _root_.HomotopicalEncryption.Helfer.Signature.{u₁, v₁} :=
   ⟨S.Sorts, S.FunctionSymbol⟩
 def interpretationToOwner (M : Helfer.Interpretation C S) :
-    _root_.Hcrypt.Helfer.Interpretation C (signatureToOwner S) :=
+    _root_.HomotopicalEncryption.Helfer.Interpretation C (signatureToOwner S) :=
   ⟨M.onSort, fun {Γ} {B} f => M.onFunction (Γ := Γ) (B := B) f⟩
-def interpretationOfOwner (M : _root_.Hcrypt.Helfer.Interpretation C (signatureToOwner S)) :
+def interpretationOfOwner (M : _root_.HomotopicalEncryption.Helfer.Interpretation C (signatureToOwner S)) :
     Helfer.Interpretation C S :=
   ⟨M.onSort, fun {Γ} {B} f => M.onFunction (Γ := Γ) (B := B) f⟩
 theorem interpretationOfToOwner (M : Helfer.Interpretation C S) :
@@ -904,7 +892,7 @@ theorem interpretationOfToOwner (M : Helfer.Interpretation C S) :
   cases M
   rfl
 def equivalenceToOwner {M M' : Helfer.Interpretation C S} (e : Helfer.HomotopyEquivalence M M') :
-    _root_.Hcrypt.Helfer.HomotopyEquivalence (interpretationToOwner M) (interpretationToOwner M') where
+    _root_.HomotopicalEncryption.Helfer.HomotopyEquivalence (interpretationToOwner M) (interpretationToOwner M') where
   component A := e.component A
   preservesFunction := fun {Γ} {B} f => e.preservesFunction (Γ := Γ) (B := B) f
   sourceFibrant := e.sourceFibrant
@@ -912,8 +900,8 @@ def equivalenceToOwner {M M' : Helfer.Interpretation C S} (e : Helfer.HomotopyEq
   sourceCofibrant := e.sourceCofibrant
   targetCofibrant := e.targetCofibrant
   componentWeakEquivalence := e.componentWeakEquivalence
-def equivalenceOfOwner {M M' : _root_.Hcrypt.Helfer.Interpretation C (signatureToOwner S)}
-    (e : _root_.Hcrypt.Helfer.HomotopyEquivalence M M') :
+def equivalenceOfOwner {M M' : _root_.HomotopicalEncryption.Helfer.Interpretation C (signatureToOwner S)}
+    (e : _root_.HomotopicalEncryption.Helfer.HomotopyEquivalence M M') :
     Helfer.HomotopyEquivalence (interpretationOfOwner M) (interpretationOfOwner M') where
   component A := e.component A
   preservesFunction := fun {Γ} {B} f => e.preservesFunction (Γ := Γ) (B := B) f
@@ -923,16 +911,16 @@ def equivalenceOfOwner {M M' : _root_.Hcrypt.Helfer.Interpretation C (signatureT
   targetCofibrant := e.targetCofibrant
   componentWeakEquivalence := e.componentWeakEquivalence
 def semanticsToOwner (sem : Helfer.ClosedSemantics (C := C) S) :
-    _root_.Hcrypt.Helfer.ClosedSemantics (C := C) (signatureToOwner S) where
+    _root_.HomotopicalEncryption.Helfer.ClosedSemantics (C := C) (signatureToOwner S) where
   ClosedFormula := sem.ClosedFormula
   Satisfies M φ := sem.Satisfies (interpretationOfOwner M) φ
 theorem invarianceToOwner (hInv : Helfer.ClosedFormulaInvariance sem) :
-    _root_.Hcrypt.Helfer.ClosedFormulaInvariance (semanticsToOwner sem) where
+    _root_.HomotopicalEncryption.Helfer.ClosedFormulaInvariance (semanticsToOwner sem) where
   theorem12_3_closed := by
     intro M M' h φ
     exact hInv.theorem12_3_closed ⟨equivalenceOfOwner h.some⟩ φ
 def realizationToOwner (X : Realization C S sem Rep N P) :
-    _root_.Hcrypt.HCPBridge.Realization C (signatureToOwner S) (semanticsToOwner sem) Rep N ℝ P where
+    _root_.HomotopicalEncryption.HCPBridge.Realization C (signatureToOwner S) (semanticsToOwner sem) Rep N ℝ P where
   interpretation r := interpretationToOwner (X.interpretation r)
   laplacian := X.laplacian
   classifier := ⟨X.classifier⟩
@@ -945,7 +933,7 @@ def realizationToOwner (X : Realization C S sem Rep N P) :
     exact X.classifier_factors r
   operator_classifier_factors := X.operator_classifier_factors
 def witnessToOwner {X : Realization C S sem Rep N P} (w : KernelSeparationWitness X) :
-    _root_.Hcrypt.HCPBridge.KernelSeparationWitness (realizationToOwner X) where
+    _root_.HomotopicalEncryption.HCPBridge.KernelSeparationWitness (realizationToOwner X) where
   left := w.left
   right := w.right
   input := w.input
@@ -959,7 +947,7 @@ theorem operativeTargets_ne_of_kernelSeparation (X : Realization C S sem Rep N P
     ∃ (p : P) (b : N → ℝ) (r s : Rep), X.classifier r = p ∧ X.classifier s = p ∧
       operativeHarmonicComponent (X.laplacian r) (WithLp.toLp 2 b) ≠
         operativeHarmonicComponent (X.laplacian s) (WithLp.toLp 2 b) := by
-  obtain ⟨obs, wl, wr, hne⟩ := _root_.Hcrypt.HCPBridge.operativeTargets_ne_of_kernelSeparation
+  obtain ⟨obs, wl, wr, hne⟩ := _root_.HomotopicalEncryption.HCPBridge.operativeTargets_ne_of_kernelSeparation
     (Implementation.realizationToOwner X) (Implementation.invarianceToOwner hInv)
     (Implementation.witnessToOwner witness)
   refine ⟨obs.1, obs.2, wl.representative, wr.representative, wl.class_eq, wr.class_eq, ?_⟩
@@ -972,7 +960,7 @@ theorem cvpOracle_insufficient_of_kernelSeparation (X : Realization C S sem Rep 
     ¬ ∃ solver : Solver (CVP.Oracle N N) P N, ∀ O, CVP.OracleCorrect O →
       SolverSoundOn X solver O ∧ SolverExactOnHarmonic X solver O := by
   rintro ⟨solver, hsolver⟩
-  apply _root_.Hcrypt.HCPBridge.cvpOracle_insufficient_of_kernelSeparation
+  apply _root_.HomotopicalEncryption.HCPBridge.cvpOracle_insufficient_of_kernelSeparation
     (Implementation.realizationToOwner X) (Implementation.invarianceToOwner hInv)
     (Implementation.witnessToOwner witness)
     (by obtain ⟨O, hO⟩ := hOracle
@@ -987,7 +975,7 @@ theorem cvpOracle_insufficient_for_operativeTarget (X : Realization C S sem Rep 
     ¬ ∃ solver : Solver (CVP.Oracle N N) P N, ∀ O, CVP.OracleCorrect O →
       SolverExactOnOperativeTarget X solver O := by
   rintro ⟨solver, hsolver⟩
-  apply _root_.Hcrypt.HCPBridge.cvpOracle_insufficient_for_operativeTarget
+  apply _root_.HomotopicalEncryption.HCPBridge.cvpOracle_insufficient_for_operativeTarget
     (Implementation.realizationToOwner X) (Implementation.invarianceToOwner hInv)
     (Implementation.witnessToOwner witness)
     (by obtain ⟨O, hO⟩ := hOracle
@@ -1005,23 +993,23 @@ end HCPBridge
 namespace AxisFamily
 open CellularSheaf
 namespace Implementation
-theorem theory_eq_owner (axis : Fin 2) : theory axis = _root_.Hcrypt.HCP.AxisFamily.theory axis := rfl
+theorem theory_eq_owner (axis : Fin 2) : theory axis = _root_.HomotopicalEncryption.HCP.AxisFamily.theory axis := rfl
 theorem laplacian_eq_owner (axis : Fin 2) :
-    laplacianMatrix axis = _root_.Hcrypt.Sheaf.HCPAxisFamily.laplacianMatrix axis := rfl
+    laplacianMatrix axis = _root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.laplacianMatrix axis := rfl
 theorem sample_observed_eq_owner (axis : Fin 2) :
-    (sample axis).observed = (_root_.Hcrypt.Sheaf.HCPAxisFamily.sample axis).observed := rfl
+    (sample axis).observed = (_root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.sample axis).observed := rfl
 theorem sample_message_eq_owner (axis : Fin 2) :
-    (sample axis).message.1 = (_root_.Hcrypt.Sheaf.HCPAxisFamily.sample axis).message.1 := rfl
+    (sample axis).message.1 = (_root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.sample axis).message.1 := rfl
 theorem weighted_observed_eq_owner (axis : Fin 2) :
-    (weightedSample axis).observed = (_root_.Hcrypt.HCP.AxisFamily.weightedSample axis).observed := rfl
+    (weightedSample axis).observed = (_root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample axis).observed := rfl
 theorem weighted_message_eq_owner (axis : Fin 2) :
-    (weightedSample axis).message.1 = (_root_.Hcrypt.HCP.AxisFamily.weightedSample axis).message.1 := rfl
+    (weightedSample axis).message.1 = (_root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample axis).message.1 := rfl
 end Implementation
 /-- The actual cellular complexes are isomorphic before taking cohomology. -/
 theorem cellular_complex_iso :
     Nonempty ((cochainData 0).complex ≅ (cochainData 1).complex) := by
-  exact ⟨(_root_.Hcrypt.Helfer.CochainModel.strictIso_of_isometricCochainEquiv
-    _root_.Hcrypt.Sheaf.HCPAxisFamily.axisSwap).complexIso⟩
+  exact ⟨(_root_.HomotopicalEncryption.Helfer.CochainModel.strictIso_of_isometricCochainEquiv
+    _root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.axisSwap).complexIso⟩
 
 /-- One actual cellular observation has two nonzero integral targets and private CVP answers. -/
 theorem cellular_axis_ambiguity :
@@ -1033,17 +1021,17 @@ theorem cellular_axis_ambiguity :
         v = (sample axis).message.1) ∧
       (∃! v, CVP.Solution ⟨harmonicLattice axis, (sample axis).observed⟩ v)) ∧
     (sample 0).message.1 ≠ (sample 1).message.1 := by
-  refine ⟨?_, ?_, _root_.Hcrypt.Sheaf.HCPAxisFamily.sample_messages_ne⟩
+  refine ⟨?_, ?_, _root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.sample_messages_ne⟩
   · rw [Implementation.theory_eq_owner, Implementation.theory_eq_owner]
-    exact _root_.Hcrypt.HCP.AxisFamily.theory_zero_eq_one
+    exact _root_.HomotopicalEncryption.HCP.AxisFamily.theory_zero_eq_one
   · intro axis
-    refine ⟨_root_.Hcrypt.Sheaf.HCPAxisFamily.sample_observed axis,
-      _root_.Hcrypt.Sheaf.HCPAxisFamily.sample_exactComponent axis,
-      _root_.Hcrypt.HCP.AxisFamily.message_ne_zero axis, ?_,
-      _root_.Hcrypt.HCP.AxisFamily.cvp_solution_iff_message axis,
-      _root_.Hcrypt.HCP.AxisFamily.cvp_existsUnique axis⟩
-    exact (_root_.Hcrypt.HCP.AxisFamily.operativeHarmonicComponent_eq axis observed).trans
-      (_root_.Hcrypt.Sheaf.HCPAxisFamily.sample_projection axis)
+    refine ⟨_root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.sample_observed axis,
+      _root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.sample_exactComponent axis,
+      _root_.HomotopicalEncryption.HCP.AxisFamily.message_ne_zero axis, ?_,
+      _root_.HomotopicalEncryption.HCP.AxisFamily.cvp_solution_iff_message axis,
+      _root_.HomotopicalEncryption.HCP.AxisFamily.cvp_existsUnique axis⟩
+    exact (_root_.HomotopicalEncryption.HCP.AxisFamily.operativeHarmonicComponent_eq axis observed).trans
+      (_root_.HomotopicalEncryption.Sheaf.HCPAxisFamily.sample_projection axis)
 /-- The actual family also defeats uniform public target recovery with a correct CVP oracle. -/
 theorem cvp_oracle_insufficient
     (hOracle : ∃ O : CVP.Oracle Index Index, CVP.OracleCorrect O) :
@@ -1052,7 +1040,7 @@ theorem cvp_oracle_insufficient
         solver O (theory axis, b) =
           (operativeHarmonicComponent (laplacianMatrix axis) (WithLp.toLp 2 b) : Index → ℝ) := by
   rintro ⟨solver, hsolver⟩
-  apply _root_.Hcrypt.HCP.AxisFamily.cvp_oracle_insufficient
+  apply _root_.HomotopicalEncryption.HCP.AxisFamily.cvp_oracle_insufficient
     (by obtain ⟨O, hO⟩ := hOracle
         exact ⟨HCPBridge.Implementation.oracleToOwner O,
           HCPBridge.Implementation.oracleToOwner_correct hO⟩)
@@ -1079,214 +1067,33 @@ theorem weighted_axis_recovery_obstruction :
       (∀ v, CVP.Solution ⟨harmonicLattice axis, (weightedSample axis).observed⟩ v ↔
         v = (operativeHarmonicComponent (laplacianMatrix axis) weightedObserved : Index → ℝ)) ∧
       (∃! v, CVP.Solution ⟨harmonicLattice axis, (weightedSample axis).observed⟩ v)) := by
-  refine ⟨?_, _root_.Hcrypt.HCP.AxisFamily.weighted_coefficients_values, ?_, ?_⟩
-  · have h := _root_.Hcrypt.HCP.AxisFamily.weighted_public_observations_eq
-    change (_root_.Hcrypt.HCP.AxisFamily.theory 0,
-        ((_root_.Hcrypt.HCP.AxisFamily.weightedSample 0).observed : Index → ℝ)) =
-      (_root_.Hcrypt.HCP.AxisFamily.theory 1,
-        ((_root_.Hcrypt.HCP.AxisFamily.weightedSample 1).observed : Index → ℝ)) at h
+  refine ⟨?_, _root_.HomotopicalEncryption.HCP.AxisFamily.weighted_coefficients_values, ?_, ?_⟩
+  · have h := _root_.HomotopicalEncryption.HCP.AxisFamily.weighted_public_observations_eq
+    change (_root_.HomotopicalEncryption.HCP.AxisFamily.theory 0,
+        ((_root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample 0).observed : Index → ℝ)) =
+      (_root_.HomotopicalEncryption.HCP.AxisFamily.theory 1,
+        ((_root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample 1).observed : Index → ℝ)) at h
     rw [Implementation.theory_eq_owner 0, Implementation.theory_eq_owner 1,
       Implementation.weighted_observed_eq_owner 0, Implementation.weighted_observed_eq_owner 1]
     exact h
   · rintro ⟨decoder, hdecoder⟩
-    apply _root_.Hcrypt.HCP.AxisFamily.no_exact_encoded_message_decoder
+    apply _root_.HomotopicalEncryption.HCP.AxisFamily.no_exact_encoded_message_decoder
     refine ⟨decoder, ?_⟩
     intro axis
     have h := hdecoder axis
     rw [Implementation.theory_eq_owner axis, Implementation.weighted_observed_eq_owner axis] at h
-    change decoder (_root_.Hcrypt.HCP.AxisFamily.theory axis,
-        ((_root_.Hcrypt.HCP.AxisFamily.weightedSample axis).observed : Index → ℝ)) =
-      _root_.Hcrypt.HCP.AxisFamily.weightedCoefficients axis 0
+    change decoder (_root_.HomotopicalEncryption.HCP.AxisFamily.theory axis,
+        ((_root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample axis).observed : Index → ℝ)) =
+      _root_.HomotopicalEncryption.HCP.AxisFamily.weightedCoefficients axis 0
     exact h
   · intro axis
-    refine ⟨_root_.Hcrypt.HCP.AxisFamily.weightedSample_observed axis,
-      _root_.Hcrypt.HCP.AxisFamily.weightedSample_exactComponent axis,
-      _root_.Hcrypt.HCP.AxisFamily.weightedSample_message_ne_zero axis, ?_,
-      _root_.Hcrypt.HCP.AxisFamily.weighted_cvp_existsUnique axis⟩
+    refine ⟨_root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample_observed axis,
+      _root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample_exactComponent axis,
+      _root_.HomotopicalEncryption.HCP.AxisFamily.weightedSample_message_ne_zero axis, ?_,
+      _root_.HomotopicalEncryption.HCP.AxisFamily.weighted_cvp_existsUnique axis⟩
     intro v
-    exact (_root_.Hcrypt.HCP.AxisFamily.weighted_cvp_solution_iff_operativeTarget axis v).trans
+    exact (_root_.HomotopicalEncryption.HCP.AxisFamily.weighted_cvp_solution_iff_operativeTarget axis v).trans
       (by rfl)
 end AxisFamily
 end
-end Hcrypt.Palomar.PaperOne
-
--- Insert this common definition text identically in Challenge and Solution.
--- Required Mathlib imports: Mathlib.Analysis.InnerProductSpace.ExteriorPower,
--- Mathlib.Analysis.InnerProductSpace.Projection.FiniteDimensional,
--- Mathlib.LinearAlgebra.Matrix.ToLin, and Mathlib.Tactic.
-namespace Hcrypt.Palomar.PaperOne.Plucker
-noncomputable section
-variable {n : Type} [Fintype n] [DecidableEq n] {r : ℕ}
-
-/-- Actual degree-r exterior coordinates in the fixed real Euclidean space. -/
-abbrev ExteriorCoordinate (n : Type) [Fintype n] (r : ℕ) :=
-  ⋀[ℝ]^r (EuclideanSpace ℝ n)
-
-/-- An independent frame spanning its declared rank-r subspace. -/
-structure FrameWitness (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) where
-  carrier : Submodule ℝ (EuclideanSpace ℝ n)
-  rank_eq : Module.finrank ℝ carrier = r
-  frame : Fin r → EuclideanSpace ℝ n
-  frame_mem : ∀ i, frame i ∈ carrier
-  independent : LinearIndependent ℝ frame
-  spans_submodule : Submodule.span ℝ (Set.range frame) = carrier
-
-/-- The frame's genuine exterior product. -/
-def FrameWitness.toExterior (W : FrameWitness n r) : ExteriorCoordinate n r :=
-  exteriorPower.ιMulti ℝ r W.frame
-
-/-- Nonzero real rescaling; zero coordinates are retained as a separate orbit. -/
-def ProjectivelyEquivalent (c d : ExteriorCoordinate n r) : Prop :=
-  ∃ u : ℝˣ, d = (u : ℝ) • c
-
-theorem ProjectivelyEquivalent.refl (c : ExteriorCoordinate n r) :
-    ProjectivelyEquivalent c c := ⟨1, (one_smul ℝ c).symm⟩
-theorem ProjectivelyEquivalent.symm {c d : ExteriorCoordinate n r}
-    (h : ProjectivelyEquivalent c d) : ProjectivelyEquivalent d c := by
-  rcases h with ⟨u, rfl⟩
-  refine ⟨u⁻¹, ?_⟩
-  simp only [Units.val_inv_eq_inv_val, smul_smul,
-    inv_mul_cancel₀ (Units.ne_zero u), one_smul]
-theorem ProjectivelyEquivalent.trans {a b c : ExteriorCoordinate n r}
-    (hab : ProjectivelyEquivalent a b) (hbc : ProjectivelyEquivalent b c) :
-    ProjectivelyEquivalent a c := by
-  rcases hab with ⟨u, rfl⟩
-  rcases hbc with ⟨v, rfl⟩
-  exact ⟨v * u, by simp only [Units.val_mul, smul_smul]⟩
-
-/-- The orbit relation on the full exterior-power carrier, including zero. -/
-def projectiveSetoid (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) :
-    Setoid (ExteriorCoordinate n r) where
-  r := ProjectivelyEquivalent
-  iseqv := ⟨ProjectivelyEquivalent.refl,
-    fun {_ _} h => ProjectivelyEquivalent.symm h,
-    fun {_ _ _} hab hbc => ProjectivelyEquivalent.trans hab hbc⟩
-
-/-- The full exact-real projective shadow, not a hash or a finite encoding. -/
-abbrev ProjectiveShadow (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) :=
-  Quotient (projectiveSetoid n r)
-/-- Pass an actual exterior coordinate to its nonzero-scaling orbit. -/
-def normalizeProjective (c : ExteriorCoordinate n r) : ProjectiveShadow n r :=
-  Quot.mk _ c
-
-/-- Kernel of left exterior multiplication by a coordinate. -/
-def wedgeAnnihilator (c : ExteriorCoordinate n r) :
-    Submodule ℝ (EuclideanSpace ℝ n) :=
-  LinearMap.ker ((LinearMap.mulRight ℝ
-    (c : ExteriorAlgebra ℝ (EuclideanSpace ℝ n))).comp (ExteriorAlgebra.ι ℝ))
-
-theorem mem_wedgeAnnihilator_iff (c : ExteriorCoordinate n r)
-    (x : EuclideanSpace ℝ n) : x ∈ wedgeAnnihilator c ↔
-      ExteriorAlgebra.ι ℝ x * (c : ExteriorAlgebra ℝ (EuclideanSpace ℝ n)) = 0 :=
-  Iff.rfl
-theorem wedgeAnnihilator_eq_of_projectivelyEquivalent
-    {c d : ExteriorCoordinate n r} (h : ProjectivelyEquivalent c d) :
-    wedgeAnnihilator c = wedgeAnnihilator d := by
-  rcases h with ⟨u, rfl⟩
-  ext x
-  simp only [mem_wedgeAnnihilator_iff, Submodule.coe_smul, mul_smul_comm,
-    smul_eq_zero, Units.ne_zero, false_or]
-
-/-- Recover the wedge annihilator from the full orbit; the zero orbit gives top. -/
-def recoverSubspace (shadow : ProjectiveShadow n r) :
-    Submodule ℝ (EuclideanSpace ℝ n) :=
-  Quotient.lift wedgeAnnihilator
-    (fun _ _ h => wedgeAnnihilator_eq_of_projectivelyEquivalent h) shadow
-/-- Recover its orthogonal projector at the fixed ambient Euclidean metric. -/
-def recoverHarmonicProjector (shadow : ProjectiveShadow n r) :
-    EuclideanSpace ℝ n →L[ℝ] EuclideanSpace ℝ n :=
-  (recoverSubspace shadow).starProjection
-/-- Apply the recovered projector to the observed cochain. -/
-def recover (shadow : ProjectiveShadow n r) (b : EuclideanSpace ℝ n) :=
-  recoverHarmonicProjector shadow b
-/-- The actual kernel of the matrix operator on Euclidean coordinates. -/
-def matrixHarmonicSubspace (Δ : Matrix n n ℝ) :
-    Submodule ℝ (EuclideanSpace ℝ n) :=
-  LinearMap.ker ((Matrix.mulVecLin Δ).comp
-    (WithLp.linearEquiv 2 ℝ (n → ℝ)).toLinearMap)
-/-- The target is orthogonal projection onto that actual matrix kernel. -/
-def operativeHarmonicComponent (Δ : Matrix n n ℝ) (b : EuclideanSpace ℝ n) :=
-  (matrixHarmonicSubspace Δ).starProjection b
-end
-end Hcrypt.Palomar.PaperOne.Plucker
-
-
--- Insert after the identical common definitions, only in Solution.
--- Solution imports TCB.PluckerObservation and its canonical reconstruction owner.
-namespace Hcrypt.Palomar.PaperOne.Plucker
-noncomputable section
-variable {n : Type} [Fintype n] [DecidableEq n] {r : ℕ}
-
-/-- Proof-only adapter into the existing independent-frame object. -/
-def FrameWitness.toCanonical (W : FrameWitness n r) :
-    Hcrypt.Proximity.GrassmannianPlucker.FrameWitness n r where
-  point := { carrier := W.carrier, rank_eq := W.rank_eq }
-  frame := W.frame
-  frame_mem := W.frame_mem
-  independent := W.independent
-  spans_submodule := W.spans_submodule
-
-theorem recoverSubspace_frame (W : FrameWitness n r) :
-    recoverSubspace (normalizeProjective W.toExterior) = W.carrier := by
-  change Hcrypt.Proximity.GrassmannianPlucker.Concrete.recoverSubspace
-    (Hcrypt.Proximity.GrassmannianPlucker.Concrete.normalizeProjective
-      W.toCanonical.toExterior) = W.toCanonical.point.carrier
-  exact Hcrypt.Proximity.GrassmannianPlucker.Concrete.recoverSubspace_frame W.toCanonical
-
-theorem recoverHarmonicProjector_frame (W : FrameWitness n r) :
-    recoverHarmonicProjector (normalizeProjective W.toExterior) =
-      W.carrier.starProjection := by
-  change Hcrypt.Proximity.GrassmannianPlucker.Concrete.recoverHarmonicProjector
-    (Hcrypt.Proximity.GrassmannianPlucker.Concrete.normalizeProjective
-      W.toCanonical.toExterior) = W.toCanonical.point.carrier.starProjection
-  exact Hcrypt.Proximity.GrassmannianPlucker.Concrete.recoverHarmonicProjector_frame
-    W.toCanonical
-
-theorem recover_eq_operativeHarmonicComponent (W : FrameWitness n r)
-    (Δ : Matrix n n ℝ) (hkernel : W.carrier = matrixHarmonicSubspace Δ)
-    (b : EuclideanSpace ℝ n) :
-    recover (normalizeProjective W.toExterior) b = operativeHarmonicComponent Δ b := by
-  change Hcrypt.TCB.PluckerObservation.recover
-    ((Hcrypt.Proximity.GrassmannianPlucker.Concrete.projectiveFramedSystem n r).publicShadow
-      W.toCanonical) b = Hcrypt.HCP.operativeHarmonicComponent Δ b
-  exact Hcrypt.TCB.PluckerObservation.recover_eq_operativeHarmonicComponent
-    W.toCanonical Δ hkernel b
-end
-end Hcrypt.Palomar.PaperOne.Plucker
-
-namespace Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain
-noncomputable section
-variable {Vertex Edge Face : Type*} [Fintype Vertex] [Fintype Edge] [Fintype Face]
-  {X : OrientedTwoComplex Vertex Edge Face} {F : CellularSheaf X}
-
-/-- A nonzero allowed coexact direction prevents residual factorization through exact data. -/
-theorem not_residual_norm_factors_exactComponent
-    (I : IntegralStructure F) (v : F.C2) (hv : F.delta1.adjoint v ≠ 0) :
-    ¬ ∃ score : F.C1 → ℝ, ∀ E : HodgeEncryptedCochain I,
-      score E.opening.exactComponent =
-        ‖F.kernelNormalizedDegreeOneLaplacian E.observed‖ := by
-  rintro ⟨score, hs⟩
-  apply _root_.Hcrypt.Sheaf.CellularSheaf.HodgeEncryptedCochain.not_residual_norm_factors_exactComponent
-    I.toOwner v hv
-  refine ⟨score, ?_⟩
-  intro E
-  exact hs ⟨⟨E.message.1, E.message.2⟩,
-    ⟨E.opening.exactOpening, E.opening.coexactOpening⟩⟩
-
-/-- The unrestricted exact view cannot preserve a positive full-HCP far region. -/
-theorem not_far_preserving_exactComponent
-    (I : IntegralStructure F) (v : F.C2) (hv : F.delta1.adjoint v ≠ 0)
-    {Target : Type*} (extract : F.C1 → Target) (targetDistance : Target → ℝ)
-    (hzero : targetDistance (extract 0) = 0)
-    (sourceRadius targetRadius : ℝ) (hTarget : 0 < targetRadius) :
-    ¬ (∀ E : HodgeEncryptedCochain I,
-      sourceRadius ≤ ‖F.kernelNormalizedDegreeOneLaplacian E.observed‖ →
-      targetRadius ≤ targetDistance (extract E.opening.exactComponent)) := by
-  intro hs
-  apply _root_.Hcrypt.Sheaf.CellularSheaf.HodgeEncryptedCochain.not_far_preserving_exactComponent
-    I.toOwner v hv extract targetDistance hzero sourceRadius targetRadius hTarget
-  intro E hE
-  exact hs ⟨⟨E.message.1, E.message.2⟩,
-    ⟨E.opening.exactOpening, E.opening.coexactOpening⟩⟩ hE
-end
-end Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain
+end HomotopicalEncryption.Palomar.PaperOne

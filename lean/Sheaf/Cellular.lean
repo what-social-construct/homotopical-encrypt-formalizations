@@ -28,7 +28,7 @@ open scoped BigOperators RealInnerProductSpace
 
 noncomputable section
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Sheaf
 
 /-- Concrete coordinate model for a finite-dimensional real stalk. -/
@@ -209,4 +209,4 @@ theorem isOneCocycle_of_isExactOneCochain
 end CellularSheaf
 
 end Sheaf
-end Hcrypt
+end HomotopicalEncryption

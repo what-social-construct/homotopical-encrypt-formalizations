@@ -24,13 +24,17 @@ At the shared observation with both coordinates one, the two operative targets
 are distinct nonzero integral messages.  A separate coordinate unit witnesses
 fixed-coordinate nonstabilization and instantiates the existing HCP solver and
 explicit-CVP-oracle impossibility theorems.
+
+For the actual rank-one lattice oracle, supplying the operative lattice recovers
+its harmonic target. Withholding that member prevents exact recovery at the
+shared observation, even with the same fixed correct oracle.
 -/
 
 set_option autoImplicit false
 
 noncomputable section
 
-namespace Hcrypt.HCP.AxisFamily
+namespace HomotopicalEncryption.HCP.AxisFamily
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra
 open Sheaf.HCPAxisFamily HCPBridge
@@ -46,6 +50,18 @@ def semanticInterpretation (axis : Fin 2) :
 theorem semanticEquivalence :
     Helfer.HomotopyEquivalent (semanticInterpretation 0) (semanticInterpretation 1) :=
   Helfer.CochainModel.equivalent_of_isometricCochainEquiv axisSwap
+
+/-- Every ordered pair in the admitted two-member family has an actual typed
+homotopy equivalence, obtained from identity or coordinate-exchange isomorphisms. -/
+theorem semanticEquivalence_all (axis otherAxis : Fin 2) :
+    Helfer.HomotopyEquivalent (semanticInterpretation axis)
+      (semanticInterpretation otherAxis) := by
+  fin_cases axis <;> fin_cases otherAxis
+  · exact Helfer.CochainModel.equivalent_refl _
+  · exact semanticEquivalence
+  · exact Helfer.CochainModel.equivalent_of_iso
+      (Helfer.CochainModel.strictIso_of_isometricCochainEquiv axisSwap).modelIso.symm
+  · exact Helfer.CochainModel.equivalent_refl _
 
 /-- The public class is a full theory in the selected homological closed fragment. -/
 def theory (axis : Fin 2) : Set ℤ :=
@@ -85,6 +101,24 @@ def realization :
   classifyTheory := id
   classifier_factors _ := rfl
   operator_classifier_factors := publicProjection_laplacian
+
+/-- The public classifier reflects actual typed homotopy equivalence on the
+admitted two-member family. -/
+theorem reflectsHomotopyEquivalence :
+    HCPBridge.ReflectsHomotopyEquivalence realization := by
+  intro axis otherAxis _hClass
+  exact semanticEquivalence_all axis otherAxis
+
+/-- On this admitted family, public theory equality is equivalent to actual
+typed homotopy equivalence. This does not assert generic classifier completeness
+or identify the operative harmonic kernel in the fixed comparison coordinates. -/
+theorem theory_eq_iff_homotopyEquivalent (axis otherAxis : Fin 2) :
+    theory axis = theory otherAxis ↔
+      Helfer.HomotopyEquivalent (semanticInterpretation axis)
+        (semanticInterpretation otherAxis) := by
+  exact HCPBridge.samePublicClass_iff_homotopyEquivalent realization
+    Helfer.CochainModel.closedTestInvariance reflectsHomotopyEquivalence
+    (r := axis) (s := otherAxis)
 
 /-- The realized matrix acts by the actual cellular Hodge Laplacian. -/
 theorem operatorAction (axis : Fin 2) (b : C1) :
@@ -277,6 +311,27 @@ theorem cvp_solution_iff_right_operativeTarget (v : CVP.AmbientVector Index) :
   rw [right_target_eq_message]
   exact cvp_solution_iff_message 1 v
 
+/-- A correct oracle for the actual rank-one lattices recovers each operative
+component when that member's lattice is supplied. The target is the existing
+valid cellular sample, with its integral harmonic message and Hodge noise. -/
+theorem cvp_oracle_recovers_operative_component
+    (O : CVP.Oracle Index (Fin 1)) (hO : CVP.OracleCorrect O) (axis : Fin 2) :
+    O (harmonicLatticePresentation axis).lattice observed =
+      (HCP.operativeHarmonicComponent (realization.laplacian axis) observed :
+        Index → ℝ) := by
+  have hmessage :
+      O (harmonicLatticePresentation axis).lattice observed =
+        (sample axis).message.1 := by
+    apply (cvp_solution_iff_message axis _).mp
+    change CVP.IsClosestLatticeVector (harmonicLatticePresentation axis).lattice
+      (sample axis).observed _
+    rw [sample_observed]
+    exact hO _ _
+  exact hmessage.trans
+    (congrArg WithLp.ofLp
+      ((operativeHarmonicComponent_eq axis observed).trans
+        (sample_projection axis))).symm
+
 theorem no_exact_public_solver {Aux : Type*}
     (solver : Solver Aux (Set ℤ) Index ℝ) (aux : Aux) :
     ¬ SolverExactOnOperativeTarget realization solver aux :=
@@ -299,6 +354,26 @@ theorem cvp_oracle_insufficient
         SolverExactOnOperativeTarget realization solver O :=
   cvpOracle_insufficient_for_operativeTarget realization
     Helfer.CochainModel.closedTestInvariance kernelSeparation hOracle
+
+/-- Supplying the private lattice makes its target recoverable by a correct
+rank-one CVP oracle. The same fixed oracle cannot make the shared public input
+select every compatible operative target. This compares information supplied
+to the solver and does not assert a computational CVP-hardness reduction. -/
+theorem cvp_known_member_hidden_member_separation
+    (O : CVP.Oracle Index (Fin 1)) (hO : CVP.OracleCorrect O) :
+    (∀ axis : Fin 2,
+      O (harmonicLatticePresentation axis).lattice observed =
+        (HCP.operativeHarmonicComponent (realization.laplacian axis) observed :
+          Index → ℝ)) ∧
+      ¬ ∃ solver : Solver (CVP.Oracle Index (Fin 1)) (Set ℤ) Index ℝ,
+        ∀ witness : HiddenHodgeWitness realization observation,
+          solver O observation = operativeTarget realization observation witness := by
+  refine ⟨cvp_oracle_recovers_operative_component O hO, ?_⟩
+  rintro ⟨solver, hsolver⟩
+  exact no_solver_exactOnOperativeTarget_on_family realization observation Set.univ
+    (Set.mem_univ leftWitness) (Set.mem_univ rightWitness)
+    same_observation_distinct_targets (solver := solver) (aux := O)
+    (fun witness _ => hsolver witness)
 
 /-! The following variant also separates the explicitly chosen integer
 encodings. In the unweighted example both transported lattice coefficients
@@ -456,4 +531,4 @@ theorem no_exact_encoded_message_decoder :
       _ = 1 := by simpa [weightedCoefficients] using h1
   norm_num at h
 
-end Hcrypt.HCP.AxisFamily
+end HomotopicalEncryption.HCP.AxisFamily

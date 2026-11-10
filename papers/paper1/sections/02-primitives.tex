@@ -1,0 +1,215 @@
+\section{Primitives}\label{sec:primitives}
+
+Let \(A\) be the type of hidden presentations, with semantic interpretation
+\(M_x\) for each \(x\in A\). Write \(x\simeq y\) for homotopy equivalence
+of \(M_x\) and \(M_y\) in Helfer's sense \cite[Definition~7.1]{helfer2019fol}.
+Assume that this equivalence preserves the chosen closed tests. Let \(P\) be
+the type of public class data and choose a classifier \(\pi:A\to P\) that factors through their
+closed theory. Then
+\[
+  x\simeq y\quad\Longrightarrow\quad\pi(x)=\pi(y).
+\]
+The typed data and the invariance premise are made precise in
+\cref{def:typed-hcp-realization,prop:helfer-hcp-bridge}.
+For a realized public value \(\alpha\), write
+\[
+  \alpha\in\image(\pi),\qquad
+  A_\alpha=\pi^{-1}(\alpha)=\{x\in A:\pi(x)=\alpha\}.
+\]
+For \(x\in A\), we also write
+\([x]_\pi:=A_{\pi(x)}\). Thus, whenever \(\alpha=\pi(x)\), the two
+descriptions agree: \(A_\alpha=[x]_\pi\). We call the classifier
+\emph{complete for the declared homotopy equivalence} when
+\(\pi(x)=\pi(y)\) implies \(x\simeq y\) for all \(x,y\in A\).
+
+We attach Hodge data to each presentation using finite graded cell carriers,
+integer incidence numbers and face-to-coface linear stalk maps.
+
+Fix a finite coordinate set \(N\) and let \(V=\mathbb R^N\) have its Euclidean
+inner product. Each presentation has finite-dimensional real inner-product
+cochain spaces \(C_x^0,C_x^1,C_x^2\). To compare presentations using one public
+cochain vector, fix isometric coordinate charts
+\(\iota_x:C_x^1\overset{\sim}{\longrightarrow}V\).
+We identify degree-one vectors and maps with their transported versions in
+\(V\); the charts are part of the comparison data.
+
+The restriction maps \(R^x_{\sigma\to\tau}\) for \(\sigma\prec\tau\),
+including vertex-to-edge and edge-to-face maps, determine adjacent
+coboundaries
+\[
+  \delta_{0,x}:C_x^0\to V,
+  \qquad
+  \delta_{1,x}:V\to C_x^2,
+  \qquad
+  \delta_{1,x}\delta_{0,x}=0.
+\]
+In these coordinates, define the degree-one Hodge--Laplacian, its harmonic
+subspace and its orthogonal projector by
+\[
+\begin{aligned}
+  \Delta_x&=\delta_{0,x}\delta_{0,x}^\ast+
+    \delta_{1,x}^\ast\delta_{1,x},\\
+  \mathcal H_x&=\ker(\Delta_x),\qquad
+    P_{\mathcal H_x}:V\to\mathcal H_x\subseteq V.
+\end{aligned}
+\]
+The stars denote adjoints. When the operative representative is fixed, we
+suppress \(x\) and also write \(\Delta_1\) or \(\Delta\) for its degree-one
+Laplacian, and \(P_H\) for its harmonic projector.
+
+The algebraic cellular model above adapts the finite Hodge setup of
+\cite{hansenGhrist2018sheaves} without assuming a regular CW or simplicial
+realization for every admitted incidence structure. Such a realization and
+the separate simplicial-coherence conditions require additional data.
+
+\begin{definition}[Matrix harmonicity]\label{def:matrix-harmonicity}
+  For a hidden linear Hodge operator \(\Delta\), a cochain
+  \(h\in\mathbb R^N\)
+  is \(\Delta\)-harmonic when
+  \[
+    \Delta h=0.
+  \]
+  Thus the harmonic kernel is \(\ker(\Delta)\). In the projection model this
+  agrees with the condition \(h\in W\) for the kernel-normalized operator
+  \(\Delta_W=I-P_W\).
+\end{definition}
+
+\begin{definition}[Harmonic projection]\label{def:projection-laplacian}
+  For a subspace \(W\le V\), let \(P_W:V\to W\subset V\) denote the
+  orthogonal projection. Its associated kernel-normalized operator is
+  \(\Delta_W=I-P_W\), with \(\ker\Delta_W=W\).
+\end{definition}
+
+\begin{proposition}[Hodge decomposition surface]\label{prop:hodge-decomposition}
+  Let the three consecutive cochain spaces be finite-dimensional real inner
+  product spaces, and let the displayed stars denote adjoints. Suppose
+  \[
+    d_{\mathrm{next}}d_{\mathrm{prev}}=0,
+    \qquad
+    \Delta=d_{\mathrm{prev}}d_{\mathrm{prev}}^\ast
+      +d_{\mathrm{next}}^\ast d_{\mathrm{next}} .
+  \]
+  Then every cochain \(b\) admits a decomposition
+  \[
+    b=h+e_1+e_2
+  \]
+  with
+  \[
+    \Delta h=0,\qquad
+    e_1\in\image(d_{\mathrm{prev}}),\qquad
+    e_2\in\image(d_{\mathrm{next}}^\ast),
+  \]
+  and
+  \[
+    \langle h,e_1\rangle=\langle h,e_2\rangle=\langle e_1,e_2\rangle=0.
+  \]
+  The decomposition is unique.
+\end{proposition}
+
+\begin{proof}
+  Each summand defining \(\Delta\) is self-adjoint, so \(\Delta\) is
+  self-adjoint. In finite dimension,
+  \(\image(\Delta)=(\ker\Delta)^\perp\), and hence the ambient cochain
+  space decomposes as
+  \[
+    \ker(\Delta)\oplus\image(\Delta).
+  \]
+  Since
+  \[
+    \image(\Delta)
+    \subseteq
+    \image(d_{\mathrm{prev}})+\image(d_{\mathrm{next}}^\ast),
+  \]
+  every cochain \(b\) can be written as \(h+e_1+e_2\) with \(h\in\ker\Delta\),
+  \(e_1\in\image(d_{\mathrm{prev}})\), and
+  \(e_2\in\image(d_{\mathrm{next}}^\ast)\). From \(\Delta h=0\), one obtains
+  \[
+    \|d_{\mathrm{prev}}^\ast h\|^2+\|d_{\mathrm{next}}h\|^2=0,
+  \]
+  hence \(d_{\mathrm{prev}}^\ast h=0\) and \(d_{\mathrm{next}}h=0\). These
+  identities give \(\langle h,e_1\rangle=0\) and
+  \(\langle h,e_2\rangle=0\), while \(d_{\mathrm{next}}d_{\mathrm{prev}}=0\)
+  gives \(\langle e_1,e_2\rangle=0\). Hence the harmonic, exact, and
+  coexact subspaces are pairwise orthogonal. Their sum is therefore direct,
+  which makes the three components unique.
+\end{proof}
+
+\subsection{Hodge Encryption and Correctness}
+
+For a hidden representative \(x\), define its noise space by
+\[
+  \mathcal E_x=\mathcal H_x^\perp.
+\]
+The Hodge decomposition identifies the noise space as the orthogonal direct
+sum
+\[
+  \mathcal E_x
+  =
+  \image(\delta_{0,x})
+  \oplus^\perp
+  \image(\delta_{1,x}^{\ast}),
+\]
+and gives the orthogonal decomposition
+\[
+  C_x^1=\mathcal H_x\oplus^\perp\mathcal E_x.
+\]
+Consequently,
+\[
+\begin{aligned}
+  \operatorname{combine}_x:
+    \mathcal H_x\times\mathcal E_x&\longrightarrow C_x^1,
+  &(h,e)&\longmapsto h+e,\\
+  \operatorname{split}_x:C_x^1&\longrightarrow
+    \mathcal H_x\times\mathcal E_x,
+  &b&\longmapsto
+    \bigl(P_{\mathcal H_x}b,P_{\mathcal E_x}b\bigr)
+\end{aligned}
+\]
+are inverse linear bijections. Orthogonality also gives
+\[
+  \|h+e\|^2=\|h\|^2+\|e\|^2.
+\]
+
+This bijection is the algebraic encryption/decryption construction. Given a
+harmonic message \(h\in\mathcal H_x\), randomized Hodge encryption samples, or
+otherwise chooses, admissible noise \(e\in\mathcal E_x\) and sets
+\[
+  \mathsf{Enc}_x(h;e)=
+  \operatorname{combine}_x(h,e)=h+e.
+\]
+Full coordinate recovery is \(\operatorname{split}_x\); message decryption
+retains its harmonic coordinate:
+\[
+  \mathsf{Dec}_x(b)
+  =
+  \operatorname{pr}_{\mathcal H_x}
+    \bigl(\operatorname{split}_x(b)\bigr)
+  =
+  P_{\mathcal H_x}b.
+\]
+For every admissible noise value,
+\[
+  \mathsf{Dec}_x\bigl(\mathsf{Enc}_x(h;e)\bigr)=h,
+  \qquad
+  \operatorname{split}_x\bigl(\operatorname{combine}_x(h,e)\bigr)=(h,e).
+\]
+The bijection concerns the full message--noise pair \((h,e)\). Choosing a
+noise distribution makes \(\mathsf{Enc}_x\) randomized, while
+\(\mathsf{Dec}_x\) recovers the message for every admissible noise value.
+Both maps depend on the operative representative \(x\).
+
+In the \HE{} public-sample model, a presentation \(x\) produces a cochain
+\[
+  b=h+e,
+  \qquad
+  h\in\mathcal H_x,
+  \qquad
+  e\in\image(\delta_{0,x})\oplus\image(\delta_{1,x}^\ast).
+\]
+The message \(h\) is a harmonic representative of its degree-one cohomology
+class, and \(e\) is Hodge-structured noise. When \(x\) is also equipped with
+an explicit harmonic-lattice presentation, write
+\(\Lambda_x\subseteq\mathcal H_x\) for its discrete lattice and choose
+\(h\in\Lambda_x\). In this integral profile, the public fiber indexes a
+family of possible embedded harmonic lattices; the operative hidden member
+selects one of them.

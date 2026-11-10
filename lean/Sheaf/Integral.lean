@@ -26,7 +26,7 @@ open scoped BigOperators RealInnerProductSpace
 
 noncomputable section
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Sheaf
 namespace CellularSheaf
 
@@ -217,4 +217,4 @@ end IntegralStructure
 
 end CellularSheaf
 end Sheaf
-end Hcrypt
+end HomotopicalEncryption

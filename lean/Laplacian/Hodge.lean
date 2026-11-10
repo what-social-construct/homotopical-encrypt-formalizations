@@ -5,14 +5,10 @@ public import Laplacian.Projection
 @[expose] public section
 
 /-
-  Hodge-facing Laplacian interface.
-
-  Paper correspondence:
-  - Paper 1 Section 2: HCP harmonic projection and residual model.
-  - Paper 1 Section 3: Hodge projection as CVP comparison surface.
+  Harmonic projection and orthogonal residual for the projection Laplacian.
 
   `Laplacian.Projection` defines the concrete Grassmannian model
-  `Δ_W = I - P_W`. This file names the Hodge/proximity-facing operations
+  `Δ_W = I - P_W`. This file names the projection and residual operations
   derived from that model:
 
     harmonic projection     P_W b
@@ -23,7 +19,7 @@ public import Laplacian.Projection
   over the existing ambient cochain vector.
 -/
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Laplacian
 
 open scoped BigOperators Real Nat Classical Pointwise
@@ -188,4 +184,4 @@ theorem residual_eq_zero_iff_mem
 end
 
 end Laplacian
-end Hcrypt
+end HomotopicalEncryption

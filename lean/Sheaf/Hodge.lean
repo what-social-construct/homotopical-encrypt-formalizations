@@ -20,7 +20,7 @@ open scoped RealInnerProductSpace
 
 noncomputable section
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Sheaf
 namespace CellularSheaf
 
@@ -209,4 +209,4 @@ theorem ker_kernelNormalizedDegreeOneLaplacian
 
 end CellularSheaf
 end Sheaf
-end Hcrypt
+end HomotopicalEncryption

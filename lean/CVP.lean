@@ -10,9 +10,10 @@ public import Mathlib.Tactic
   Discrete Euclidean Closest Vector Problem (CVP) vocabulary.
 
   Paper correspondence:
-  - Paper 1 Section 3: the external known-lattice CVP comparison.
-  - Paper 1 appendix ledger: CVP instance, solution, oracle, and hardness
-    assumption surfaces.
+  - Paper 1 Section 3: the explicit-lattice CVP comparison and the external
+    complexity-assumption boundary.
+  - Paper 1's selected crosswalk identifies the recovery/comparison
+    declarations; the shared parity register records the wider CVP interface.
 
   A lattice basis consists of real ambient vectors with integer coefficients.
   This deliberately differs from the field-linear image `B R^n`: the latter is

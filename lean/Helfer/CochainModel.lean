@@ -31,7 +31,7 @@ set_option autoImplicit false
 
 noncomputable section
 
-namespace Hcrypt.Helfer.CochainModel
+namespace HomotopicalEncryption.Helfer.CochainModel
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra ZeroObject
 open scoped CochainComplex.Plus.modelCategoryQuillen
@@ -284,4 +284,4 @@ theorem equivalent_of_isometricCochainEquiv {F G : CellularSheaf X}
 
 end Cellular
 
-end Hcrypt.Helfer.CochainModel
+end HomotopicalEncryption.Helfer.CochainModel

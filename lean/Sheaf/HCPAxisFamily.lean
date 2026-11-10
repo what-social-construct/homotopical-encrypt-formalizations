@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 noncomputable section
 
-namespace Hcrypt.Sheaf.HCPAxisFamily
+namespace HomotopicalEncryption.Sheaf.HCPAxisFamily
 
 open CellularSheaf
 open scoped BigOperators RealInnerProductSpace
@@ -428,4 +428,4 @@ theorem sample_eq_encrypt_one (axis : Fin 2) :
         opening := opening axis }
   rw [hm]
 
-end Hcrypt.Sheaf.HCPAxisFamily
+end HomotopicalEncryption.Sheaf.HCPAxisFamily

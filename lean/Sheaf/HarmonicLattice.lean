@@ -25,7 +25,7 @@ open scoped RealInnerProductSpace
 
 noncomputable section
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Sheaf
 namespace CellularSheaf
 
@@ -339,4 +339,4 @@ end HarmonicLatticePresentation
 
 end CellularSheaf
 end Sheaf
-end Hcrypt
+end HomotopicalEncryption

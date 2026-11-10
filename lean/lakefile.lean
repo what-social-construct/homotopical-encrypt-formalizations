@@ -34,18 +34,8 @@ lean_lib Helfer where
 
 lean_lib Laplacian where
   srcDir := "."
-  roots := #[`Laplacian.Grassmannian.SearchSpace,
-    `Laplacian.Hodge,
+  roots := #[`Laplacian.Hodge,
     `Laplacian.Projection]
-
-lean_lib Proximity where
-  srcDir := "."
-  roots := #[`Proximity.Application.Problem,
-    `Proximity.Application.Projection,
-    `Proximity.Concrete.Grassmannian,
-    `Proximity.Concrete.GrassmannianPlucker,
-    `Proximity.Concrete.GrassmannianPlucker.Concrete,
-    `Proximity.Concrete.GrassmannianPlucker.Reconstruction]
 
 lean_lib Sheaf where
   srcDir := "."
@@ -56,12 +46,7 @@ lean_lib Sheaf where
     `Sheaf.HCPAxisFamily,
     `Sheaf.HarmonicLattice,
     `Sheaf.Hodge,
-    `Sheaf.Integral,
-    `Sheaf.ObservationQuotient]
-
-lean_lib TCB where
-  srcDir := "."
-  roots := #[`TCB.PluckerObservation]
+    `Sheaf.Integral]
 
 @[default_target]
 lean_lib Palomar where

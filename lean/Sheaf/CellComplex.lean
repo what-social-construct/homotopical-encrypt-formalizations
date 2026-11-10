@@ -24,7 +24,7 @@ open scoped BigOperators
 
 noncomputable section
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Sheaf
 
 /--
@@ -93,4 +93,4 @@ theorem boundarySqZero_real (v : Vertex) (f : Face) :
 end OrientedTwoComplex
 
 end Sheaf
-end Hcrypt
+end HomotopicalEncryption

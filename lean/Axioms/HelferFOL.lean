@@ -6,57 +6,27 @@ public import Helfer
 @[expose] public section
 
 /-
-  Helfer-oriented first-order homotopical logic interface.
+  Path semantics and public classifiers for hidden Hodge presentations.
 
-  Paper correspondence:
-  - Paper 1 Section 4: fibrational semantics and public equality semantics.
-  - Paper 1 appendix ledger: Lean theorem-surface correspondence.
+  This module re-exports the typed `HomotopicalEncryption.Helfer` signature,
+  interpretations and homotopy equivalences. It adds abstract path equality,
+  dependent transport, public fibers and path-witnessed class membership.
 
-  Provenance/scope label:
-  this module is a Lean interface inspired by Helfer-style first-order
-  homotopical logic, especially path/diagonal semantics and fibration-style
-  lifting principles. It is a formalization/specification boundary for external
-  paper semantics, not a claim that the repo reproves the source paper.
-
-  External provenance split (Joseph Helfer, "First-order homotopical logic"):
+  The interfaces are inspired by Joseph Helfer's "First-order homotopical
+  logic":
   - equality via a path-space replacement of the diagonal: Section 2;
   - h=-fibration structure and its dependent logical operations: Definition 4.3;
   - homotopy invariance of formula interpretations, and of satisfaction for
-    closed formulas: Theorem 12.3 (cited by Paper 1, not proved here).
+    closed formulas: Theorem 12.3.
 
-  The public-classifier/class-witness layer below is an HCP specialization; it
-  is not presented as a theorem of Helfer's paper.
-
-  This module is Lean-first specification glue for the core paper semantics:
-  - equality interpreted by path space / diagonal semantics,
-  - Grothendieck-fibration style lifting assumptions,
-  - Σ/Π behavior at the level of proof obligations,
-  - homotopy-invariance of first-order statements.
-
-  Role in the hcrypt stack:
-  - importing this file also re-exports the typed `Hcrypt.Helfer` signature,
-    interpretation, homotopy-equivalence, and explicit invariance boundary;
-  - this file owns the hidden semantic layer: equality is witnessed by paths,
-    not by strict syntactic identity;
-  - `Axioms.Heyting` owns the runtime/public truth collapse consumed by the
-    protocol;
-  - `Axioms.OracleModality` owns the public oracle/sheafification boundary;
-  - `HCP.lean` factors the HCP classifier through the invariant closed theory
-    and requires a separate presentation-level kernel-separation witness;
-    `Hardness.lean` derives the solver and CVP-oracle impossibility results.
-
-  It is intentionally axiomatic (interface-level) so implementation contracts
-  in Python/Rust can be tied to explicit logical obligations while deeper
-  constructive proofs are incrementally developed.
-
-  Primitive split:
-  - path equality is theorem/interface-owned here;
-  - public class/fingerprint equality is a lossy classifier over hidden objects;
-  - a class-membership witness is hidden path data whose public shadow is only
-    equality of classifier values.
+  General lifting, dependent-logical coherence and first-order invariance are
+  recorded as explicit interface obligations, rather than proved here. The
+  public classifiers and class witnesses below specialize the path setup to
+  HCP: a path respecting the classifier yields equal public labels, while
+  classifier equality alone need not supply a path witness.
 -/
 
-namespace Hcrypt
+namespace HomotopicalEncryption
 namespace Axioms
 
 universe u v w
@@ -305,4 +275,4 @@ abbrev HelferFOLWellFormed (H : HelferFOL) : Prop :=
   ∧ H.ClassWitnessSound
 
 end Axioms
-end Hcrypt
+end HomotopicalEncryption

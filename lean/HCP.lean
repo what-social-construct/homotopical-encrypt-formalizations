@@ -39,7 +39,7 @@ def Hodge_Instance (N : Type) [Fintype N] (R : Type) [CommRing R] :=
 Matrix-level harmonicity for an abstract hidden operator.
 
 This is the generic predicate used by hidden-operator hardness theorems. The
-structured projection-model predicate is `Hcrypt.Laplacian.IsHarmonic`; the two
+structured projection-model predicate is `HomotopicalEncryption.Laplacian.IsHarmonic`; the two
 are connected below by `matrix_harmonic_iff_projection_isHarmonic` when
 `Δ = Δ_W`.
 -/
@@ -166,7 +166,7 @@ theorem kernelAmbiguous_of_publicCompatibleHodgeAmbiguity
 -- Typed Helfer semantics / HCP hidden-operator bridge
 -- ═════════════════════════════════════════════════════════════════════
 
-namespace Hcrypt.HCPBridge
+namespace HomotopicalEncryption.HCPBridge
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra
 
@@ -213,6 +213,20 @@ variable
     {Rep : Type uRep} {N : Type} [Fintype N]
     {R : Type} [CommRing R] {P : Type}
 
+/--
+Optional reflection requirement for a realization whose public classes are
+exactly its declared semantic homotopy classes, once closed-test invariance
+supplies the forward implication.
+
+This concerns the semantic interpretations. Distinct equivalent representatives
+and different operative kernels can share a class; an equivalence transport is
+not made part of the public observation.
+-/
+def ReflectsHomotopyEquivalence
+    (X : Realization C S sem Rep N R P) : Prop :=
+  ∀ {r s : Rep}, Axioms.SamePublicClass X.classifier r s →
+    Helfer.HomotopyEquivalent (X.interpretation r) (X.interpretation s)
+
 /-- Homotopy equivalence of semantic cores gives equality of the factored classifier. -/
 theorem samePublicClass_of_homotopyEquivalent
     (X : Realization C S sem Rep N R P)
@@ -227,6 +241,32 @@ theorem samePublicClass_of_homotopyEquivalent
     _ = X.classifyTheory (Helfer.ClosedTheory sem (X.interpretation s)) := by
       rw [Helfer.closedTheory_eq sem hInv hrs]
     _ = X.classifier.π s := (X.classifier_factors s).symm
+
+/-- Closed-test invariance and optional reflection make public class equality exact. -/
+theorem samePublicClass_iff_homotopyEquivalent
+    (X : Realization C S sem Rep N R P)
+    (hInv : Helfer.ClosedFormulaInvariance sem)
+    (hReflect : ReflectsHomotopyEquivalence X)
+    {r s : Rep} :
+    Axioms.SamePublicClass X.classifier r s ↔
+      Helfer.HomotopyEquivalent (X.interpretation r) (X.interpretation s) := by
+  constructor
+  · intro hclass
+    exact hReflect hclass
+  · intro hequiv
+    exact samePublicClass_of_homotopyEquivalent X hInv hequiv
+
+/-- The existing public class is the semantic homotopy class under optional reflection. -/
+theorem publicClassOf_eq_setOf_homotopyEquivalent
+    (X : Realization C S sem Rep N R P)
+    (hInv : Helfer.ClosedFormulaInvariance sem)
+    (hReflect : ReflectsHomotopyEquivalence X)
+    (r : Rep) :
+    Axioms.PublicClassOf X.classifier r =
+      {s | Helfer.HomotopyEquivalent (X.interpretation s) (X.interpretation r)} := by
+  ext s
+  change Axioms.SamePublicClass X.classifier s r ↔ _
+  exact samePublicClass_iff_homotopyEquivalent X hInv hReflect
 
 /-- The representative and matrix classifiers agree on realized hidden operators. -/
 theorem publiclyEquivalent_laplacians_of_homotopyEquivalent
@@ -313,13 +353,13 @@ def SolverExactOnHarmonic
     _root_.MatrixIsHarmonic (X.laplacian r) b →
       solver aux (X.classifier.π r, b) = b
 
-end Hcrypt.HCPBridge
+end HomotopicalEncryption.HCPBridge
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- Hodge encryption/decryption and the operative HCP recovery target
 -- ═══════════════════════════════════════════════════════════════════════
 
-namespace Hcrypt.HCP
+namespace HomotopicalEncryption.HCP
 
 open scoped RealInnerProductSpace
 
@@ -452,9 +492,9 @@ theorem operativeHarmonicComponent_eq_self_of_harmonic
   operativeHarmonicComponent_eq_self_of_harmonic Δ _
     (operativeHarmonicComponent_is_harmonic Δ b)
 
-end Hcrypt.HCP
+end HomotopicalEncryption.HCP
 
-namespace Hcrypt.HCPBridge
+namespace HomotopicalEncryption.HCPBridge
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra
 
@@ -726,4 +766,4 @@ theorem noExactRepresentativeDecoder_of_kernelSeparation
         witness.semanticEquivalence]
     _ = witness.right := hdecoder witness.right
 
-end Hcrypt.HCPBridge
+end HomotopicalEncryption.HCPBridge

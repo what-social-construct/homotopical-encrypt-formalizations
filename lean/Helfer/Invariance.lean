@@ -13,7 +13,7 @@ closed-formula consequence as an explicit hypothesis that downstream HCP
 theorems must receive.
 -/
 
-namespace Hcrypt.Helfer
+namespace HomotopicalEncryption.Helfer
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra
 
@@ -49,4 +49,4 @@ theorem closedTheory_eq [ModelCategory C]
   ext φ
   exact hInv.theorem12_3_closed hMN φ
 
-end Hcrypt.Helfer
+end HomotopicalEncryption.Helfer

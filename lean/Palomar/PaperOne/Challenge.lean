@@ -2,7 +2,6 @@ module
 
 public import Mathlib.Analysis.Matrix.Spectrum
 public import Mathlib.Analysis.InnerProductSpace.Positive
-public import Mathlib.Analysis.InnerProductSpace.ExteriorPower
 public import Mathlib.CategoryTheory.Limits.Shapes.FiniteProducts
 public import Mathlib.AlgebraicTopology.ModelCategory.Homotopy
 public import Mathlib.Algebra.Category.ModuleCat.Abelian
@@ -26,7 +25,7 @@ public theory and exact public-recovery contracts. Deliberate theorem
 placeholders are compared against the separate proved Solution module.
 -/
 
-namespace Hcrypt.Helfer
+namespace HomotopicalEncryption.Helfer
 open CategoryTheory CategoryTheory.Limits
 universe u₁ u₂ v₁ v₂
 variable (C : Type u₂) [Category.{v₂} C] [HasTerminal C] [HasBinaryProducts C]
@@ -44,9 +43,9 @@ noncomputable def contextMap {S : Type u₁} {X Y : S → C}
   | A :: Γ => prod.map (α A) (contextMap α Γ)
 
 
-end Hcrypt.Helfer
+end HomotopicalEncryption.Helfer
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 noncomputable section
 open scoped BigOperators
 
@@ -98,9 +97,9 @@ def projectedTarget {m : Type} [Fintype m]
   fun i => W.starProjection (WithLp.toLp 2 t) i
 end CVP
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 
 open scoped BigOperators RealInnerProductSpace
 noncomputable section
@@ -331,9 +330,9 @@ end HarmonicLatticePresentation
 
 end CellularSheaf
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 noncomputable section
 namespace CVP.ExplicitLattice
 end CVP.ExplicitLattice
@@ -403,9 +402,9 @@ theorem solution_iff_projectedTarget
     CVP.IsClosestLatticeVector L t v ↔
       CVP.IsClosestLatticeVector L (CVP.projectedTarget W t) v := by sorry
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 noncomputable section
 namespace OrientedTwoComplex
 variable {Vertex Edge Face : Type*}
@@ -454,19 +453,10 @@ theorem concreteSheafHCP_CVP_existsUnique
     (z : Rank → ℤ) (opening : CellularSheaf.HodgeNoise F) :
     ∃! v, CVP.Solution (H.cvpInstance (H.encrypt z opening)) v := by sorry
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne.CellularSheaf
-noncomputable section
-variable {Vertex Edge Face : Type*} [Fintype Vertex] [Fintype Edge] [Fintype Face]
-  {X : OrientedTwoComplex Vertex Edge Face}
-/-- The full orthogonal residual; it is separate from the true Hodge Laplacian. -/
-def kernelNormalizedDegreeOneLaplacian (F : CellularSheaf X) : F.C1 →ₗ[ℝ] F.C1 :=
-  F.harmonicOneSubspace.orthogonal.starProjection.toLinearMap
-end
-end Hcrypt.Palomar.PaperOne.CellularSheaf
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra ZeroObject
 noncomputable section
 namespace Helfer
@@ -480,14 +470,14 @@ variable (C : Type u₂) [Category.{v₂} C] [HasTerminal C] [HasBinaryProducts 
 structure Interpretation (S : Signature) where
   onSort : S.Sorts → C
   onFunction : ∀ {Γ : List S.Sorts} {B : S.Sorts},
-    S.FunctionSymbol Γ B → (_root_.Hcrypt.Helfer.contextObject C onSort Γ ⟶ onSort B)
+    S.FunctionSymbol Γ B → (_root_.HomotopicalEncryption.Helfer.contextObject C onSort Γ ⟶ onSort B)
 variable {C} [ModelCategory C] {S : Signature.{u₁, v₁}}
 /-- Sortwise morphisms preserving function symbols up to right homotopy. -/
 structure HomotopyHomomorphism (M N : Interpretation C S) where
   component : ∀ A, M.onSort A ⟶ N.onSort A
   preservesFunction : ∀ {Γ : List S.Sorts} {B : S.Sorts} (f : S.FunctionSymbol Γ B),
     RightHomotopyRel (M.onFunction f ≫ component B)
-      (_root_.Hcrypt.Helfer.contextMap C component Γ ≫ N.onFunction f)
+      (_root_.HomotopicalEncryption.Helfer.contextMap C component Γ ≫ N.onFunction f)
 /-- A sortwise weak equivalence whose source and target sort objects are cofibrant and fibrant. -/
 structure HomotopyEquivalence (M N : Interpretation C S) extends HomotopyHomomorphism M N where
   sourceFibrant : ∀ A, IsFibrant (M.onSort A)
@@ -775,9 +765,9 @@ def weightedObserved : C1 := unitCochain 0 + (2 : ℝ) • unitCochain 1
 
 end AxisFamily
 end
-end Hcrypt.Palomar.PaperOne
+end HomotopicalEncryption.Palomar.PaperOne
 
-namespace Hcrypt.Palomar.PaperOne
+namespace HomotopicalEncryption.Palomar.PaperOne
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra ZeroObject
 noncomputable section
 namespace HCPBridge
@@ -838,140 +828,4 @@ theorem weighted_axis_recovery_obstruction :
       (∃! v, CVP.Solution ⟨harmonicLattice axis, (weightedSample axis).observed⟩ v)) := by sorry
 end AxisFamily
 end
-end Hcrypt.Palomar.PaperOne
-
--- Insert this common definition text identically in Challenge and Solution.
--- Required Mathlib imports: Mathlib.Analysis.InnerProductSpace.ExteriorPower,
--- Mathlib.Analysis.InnerProductSpace.Projection.FiniteDimensional,
--- Mathlib.LinearAlgebra.Matrix.ToLin, and Mathlib.Tactic.
-namespace Hcrypt.Palomar.PaperOne.Plucker
-noncomputable section
-variable {n : Type} [Fintype n] [DecidableEq n] {r : ℕ}
-
-/-- Actual degree-r exterior coordinates in the fixed real Euclidean space. -/
-abbrev ExteriorCoordinate (n : Type) [Fintype n] (r : ℕ) :=
-  ⋀[ℝ]^r (EuclideanSpace ℝ n)
-
-/-- An independent frame spanning its declared rank-r subspace. -/
-structure FrameWitness (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) where
-  carrier : Submodule ℝ (EuclideanSpace ℝ n)
-  rank_eq : Module.finrank ℝ carrier = r
-  frame : Fin r → EuclideanSpace ℝ n
-  frame_mem : ∀ i, frame i ∈ carrier
-  independent : LinearIndependent ℝ frame
-  spans_submodule : Submodule.span ℝ (Set.range frame) = carrier
-
-/-- The frame's genuine exterior product. -/
-def FrameWitness.toExterior (W : FrameWitness n r) : ExteriorCoordinate n r :=
-  exteriorPower.ιMulti ℝ r W.frame
-
-/-- Nonzero real rescaling; zero coordinates are retained as a separate orbit. -/
-def ProjectivelyEquivalent (c d : ExteriorCoordinate n r) : Prop :=
-  ∃ u : ℝˣ, d = (u : ℝ) • c
-
-theorem ProjectivelyEquivalent.refl (c : ExteriorCoordinate n r) :
-    ProjectivelyEquivalent c c := ⟨1, (one_smul ℝ c).symm⟩
-theorem ProjectivelyEquivalent.symm {c d : ExteriorCoordinate n r}
-    (h : ProjectivelyEquivalent c d) : ProjectivelyEquivalent d c := by
-  rcases h with ⟨u, rfl⟩
-  refine ⟨u⁻¹, ?_⟩
-  simp only [Units.val_inv_eq_inv_val, smul_smul,
-    inv_mul_cancel₀ (Units.ne_zero u), one_smul]
-theorem ProjectivelyEquivalent.trans {a b c : ExteriorCoordinate n r}
-    (hab : ProjectivelyEquivalent a b) (hbc : ProjectivelyEquivalent b c) :
-    ProjectivelyEquivalent a c := by
-  rcases hab with ⟨u, rfl⟩
-  rcases hbc with ⟨v, rfl⟩
-  exact ⟨v * u, by simp only [Units.val_mul, smul_smul]⟩
-
-/-- The orbit relation on the full exterior-power carrier, including zero. -/
-def projectiveSetoid (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) :
-    Setoid (ExteriorCoordinate n r) where
-  r := ProjectivelyEquivalent
-  iseqv := ⟨ProjectivelyEquivalent.refl,
-    fun {_ _} h => ProjectivelyEquivalent.symm h,
-    fun {_ _ _} hab hbc => ProjectivelyEquivalent.trans hab hbc⟩
-
-/-- The full exact-real projective shadow, not a hash or a finite encoding. -/
-abbrev ProjectiveShadow (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) :=
-  Quotient (projectiveSetoid n r)
-/-- Pass an actual exterior coordinate to its nonzero-scaling orbit. -/
-def normalizeProjective (c : ExteriorCoordinate n r) : ProjectiveShadow n r :=
-  Quot.mk _ c
-
-/-- Kernel of left exterior multiplication by a coordinate. -/
-def wedgeAnnihilator (c : ExteriorCoordinate n r) :
-    Submodule ℝ (EuclideanSpace ℝ n) :=
-  LinearMap.ker ((LinearMap.mulRight ℝ
-    (c : ExteriorAlgebra ℝ (EuclideanSpace ℝ n))).comp (ExteriorAlgebra.ι ℝ))
-
-theorem mem_wedgeAnnihilator_iff (c : ExteriorCoordinate n r)
-    (x : EuclideanSpace ℝ n) : x ∈ wedgeAnnihilator c ↔
-      ExteriorAlgebra.ι ℝ x * (c : ExteriorAlgebra ℝ (EuclideanSpace ℝ n)) = 0 :=
-  Iff.rfl
-theorem wedgeAnnihilator_eq_of_projectivelyEquivalent
-    {c d : ExteriorCoordinate n r} (h : ProjectivelyEquivalent c d) :
-    wedgeAnnihilator c = wedgeAnnihilator d := by
-  rcases h with ⟨u, rfl⟩
-  ext x
-  simp only [mem_wedgeAnnihilator_iff, Submodule.coe_smul, mul_smul_comm,
-    smul_eq_zero, Units.ne_zero, false_or]
-
-/-- Recover the wedge annihilator from the full orbit; the zero orbit gives top. -/
-def recoverSubspace (shadow : ProjectiveShadow n r) :
-    Submodule ℝ (EuclideanSpace ℝ n) :=
-  Quotient.lift wedgeAnnihilator
-    (fun _ _ h => wedgeAnnihilator_eq_of_projectivelyEquivalent h) shadow
-/-- Recover its orthogonal projector at the fixed ambient Euclidean metric. -/
-def recoverHarmonicProjector (shadow : ProjectiveShadow n r) :
-    EuclideanSpace ℝ n →L[ℝ] EuclideanSpace ℝ n :=
-  (recoverSubspace shadow).starProjection
-/-- Apply the recovered projector to the observed cochain. -/
-def recover (shadow : ProjectiveShadow n r) (b : EuclideanSpace ℝ n) :=
-  recoverHarmonicProjector shadow b
-/-- The actual kernel of the matrix operator on Euclidean coordinates. -/
-def matrixHarmonicSubspace (Δ : Matrix n n ℝ) :
-    Submodule ℝ (EuclideanSpace ℝ n) :=
-  LinearMap.ker ((Matrix.mulVecLin Δ).comp
-    (WithLp.linearEquiv 2 ℝ (n → ℝ)).toLinearMap)
-/-- The target is orthogonal projection onto that actual matrix kernel. -/
-def operativeHarmonicComponent (Δ : Matrix n n ℝ) (b : EuclideanSpace ℝ n) :=
-  (matrixHarmonicSubspace Δ).starProjection b
-end
-end Hcrypt.Palomar.PaperOne.Plucker
-
-
-namespace Hcrypt.Palomar.PaperOne.Plucker
-noncomputable section
-variable {n : Type} [Fintype n] [DecidableEq n] {r : ℕ}
-theorem recoverSubspace_frame (W : FrameWitness n r) :
-    recoverSubspace (normalizeProjective W.toExterior) = W.carrier := by sorry
-theorem recoverHarmonicProjector_frame (W : FrameWitness n r) :
-    recoverHarmonicProjector (normalizeProjective W.toExterior) =
-      W.carrier.starProjection := by sorry
-theorem recover_eq_operativeHarmonicComponent (W : FrameWitness n r)
-    (Δ : Matrix n n ℝ) (hkernel : W.carrier = matrixHarmonicSubspace Δ)
-    (b : EuclideanSpace ℝ n) :
-    recover (normalizeProjective W.toExterior) b = operativeHarmonicComponent Δ b := by sorry
-end
-end Hcrypt.Palomar.PaperOne.Plucker
-
-namespace Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain
-noncomputable section
-variable {Vertex Edge Face : Type*} [Fintype Vertex] [Fintype Edge] [Fintype Face]
-  {X : OrientedTwoComplex Vertex Edge Face} {F : CellularSheaf X}
-theorem not_residual_norm_factors_exactComponent
-    (I : IntegralStructure F) (v : F.C2) (hv : F.delta1.adjoint v ≠ 0) :
-    ¬ ∃ score : F.C1 → ℝ, ∀ E : HodgeEncryptedCochain I,
-      score E.opening.exactComponent =
-        ‖F.kernelNormalizedDegreeOneLaplacian E.observed‖ := by sorry
-theorem not_far_preserving_exactComponent
-    (I : IntegralStructure F) (v : F.C2) (hv : F.delta1.adjoint v ≠ 0)
-    {Target : Type*} (extract : F.C1 → Target) (targetDistance : Target → ℝ)
-    (hzero : targetDistance (extract 0) = 0)
-    (sourceRadius targetRadius : ℝ) (hTarget : 0 < targetRadius) :
-    ¬ (∀ E : HodgeEncryptedCochain I,
-      sourceRadius ≤ ‖F.kernelNormalizedDegreeOneLaplacian E.observed‖ →
-      targetRadius ≤ targetDistance (extract E.opening.exactComponent)) := by sorry
-end
-end Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain
+end HomotopicalEncryption.Palomar.PaperOne

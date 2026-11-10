@@ -21,7 +21,7 @@ set_option autoImplicit false
 
 noncomputable section
 
-namespace Hcrypt.Sheaf.CellularSheaf
+namespace HomotopicalEncryption.Sheaf.CellularSheaf
 
 variable
   {Vertex Edge Face : Type*}
@@ -95,4 +95,4 @@ theorem decodeCoefficients_encrypt
 
 end HarmonicLatticePresentation
 
-end Hcrypt.Sheaf.CellularSheaf
+end HomotopicalEncryption.Sheaf.CellularSheaf

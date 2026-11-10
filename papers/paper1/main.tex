@@ -31,33 +31,20 @@ orthogonal projection onto the harmonic subspace \(W\) preserves the closest
 lattice vectors. We then prove a hidden-operator separation: if publicly
 equivalent hidden operators disagree on harmonicity, a correct known-lattice
 CVP oracle cannot supply a uniformly exact public-data HCP solver.
-
-We instantiate this non-identifiability with integral examples in a finite
-signed-incidence cellular model. Two presentations have the same public
-observation in a proved homological-test fragment of Helfer semantics but
-distinct nonzero harmonic targets. A weighted pair has the shared observation
-\(b=(1,2)\) with integer coefficients two and one, while each privately
-presented lattice has its own unique CVP answer. Further results separate
-full-sample recovery from an exact-component observation and reconstruct a
-subspace and its fixed-metric projector from full projective Pl\"ucker data.
-These are exact recovery and observation results, rather than asymptotic
-hardness or sampled encryption-security theorems. The wider semantic and
-Reed--Solomon interfaces are recorded with their explicit hypotheses;
-the independent Lean entry selects the eight Hodge/CVP and observation groups
-identified in the manuscript crosswalk.
 \end{abstract}
 
+\setcounter{tocdepth}{1}
 \tableofcontents
+\clearpage
 
 \input{sections/01-introduction}
+\input{sections/02-primitives}
 \input{sections/02-harmonic-cochain-problem}
 \input{sections/03-cvp-comparison}
-\input{sections/04-axioms-and-semantics}
-\input{sections/05-public-artifacts-and-commitments}
-\input{sections/06-rs-mca-projection}
-\input{sections/08-future-directions}
+\input{sections/04-conclusion}
 \input{sections/appendices}
 
+\clearpage
 \bibliographystyle{alpha}
 \bibliography{references}
 

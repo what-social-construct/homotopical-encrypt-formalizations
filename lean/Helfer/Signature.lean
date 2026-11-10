@@ -13,7 +13,7 @@ hardness bridge only needs a typed interpretation and the homotopy-invariance
 boundary supplied in `Helfer.Invariance`.
 -/
 
-namespace Hcrypt.Helfer
+namespace HomotopicalEncryption.Helfer
 
 open CategoryTheory CategoryTheory.Limits
 
@@ -49,4 +49,4 @@ structure Interpretation (S : Signature) where
   onFunction : ∀ {Γ : List S.Sorts} {B : S.Sorts},
     S.FunctionSymbol Γ B → (contextObject C onSort Γ ⟶ onSort B)
 
-end Hcrypt.Helfer
+end HomotopicalEncryption.Helfer

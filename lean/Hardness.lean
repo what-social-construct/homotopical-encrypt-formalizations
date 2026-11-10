@@ -4,10 +4,11 @@ module
 Formal verification of the HCP impossibility and CVP-comparison layer.
 
 Paper correspondence:
-- Paper 1 Sections 2--3: consequences of hidden-kernel ambiguity, the
-  presented-linear-subspace comparison, and the separate discrete-CVP oracle
-  insufficiency corollary. Core HCP definitions live in `HCP.lean`.
-- Paper 1 appendix ledger: Lean theorem-surface correspondence.
+- Paper 1 Sections 2--3: hidden-kernel ambiguity, linear-image comparison and
+  the discrete-CVP oracle-insufficiency corollaries. Core definitions live in
+  HCP.lean.
+- Paper 1's selected statement crosswalk records the corresponding Hodge/CVP
+  groups and their explicit hypotheses.
 
 Terminology:
 - `CVP` := the discrete closest-vector problem from `CVP.lean`, with integer
@@ -35,7 +36,8 @@ This module verifies the formal comparison used by the paper:
 4. **Typed Helfer/HCP consequence**: Consumes the realization, classifier, and
    kernel-separation interfaces from `HCP.lean`. A separation witness yields
    incompatible operative targets and rules out a public solver, even with a
-   correct explicit-CVP oracle as auxiliary data.
+   correct explicit-CVP oracle as auxiliary data. The obstruction persists
+   in every compatible family containing the same separated pair.
 
 The formal proofs separate the presented-subspace projection problem, the
 discrete known-lattice CVP problem, and the hidden-operator recovery problem.
@@ -85,7 +87,7 @@ set_option autoImplicit false
 
 noncomputable section
 
-namespace Hcrypt.HCPBridge
+namespace HomotopicalEncryption.HCPBridge
 
 open CategoryTheory CategoryTheory.Limits HomotopicalAlgebra
 
@@ -153,6 +155,29 @@ theorem operativeTargets_ne_of_kernelSeparation
   rw [hrightTarget] at hrightHarmonic
   exact witness.not_harmonic_right hrightHarmonic
 
+/--
+A compatible family containing two distinct operative targets admits no
+public solver exact on every member at their common observation.
+
+The auxiliary input, including any oracle, is held fixed across members.
+There is no running-time restriction on the solver or cardinality assumption
+on the family. Every larger compatible family retaining the two witnesses
+inherits the same exact-recovery obstruction.
+-/
+theorem no_solver_exactOnOperativeTarget_on_family
+    (X : Realization C S sem Rep N ℝ P)
+    (observation : Observation P N ℝ)
+    (family : Set (HiddenHodgeWitness X observation))
+    {leftWitness rightWitness : HiddenHodgeWitness X observation}
+    (hleft : leftWitness ∈ family)
+    (hright : rightWitness ∈ family)
+    (htargets : operativeTarget X observation leftWitness ≠
+      operativeTarget X observation rightWitness)
+    {Aux : Type uAux} {solver : Solver Aux P N ℝ} {aux : Aux}
+    (hexact : ∀ witness ∈ family,
+      solver aux observation = operativeTarget X observation witness) : False := by
+  exact htargets ((hexact leftWitness hleft).symm.trans (hexact rightWitness hright))
+
 /-- No public solver can be exact on every operative target in an ambiguous fiber. -/
 theorem no_solver_exactOnOperativeTarget_of_kernelSeparation
     (X : Realization C S sem Rep N ℝ P)
@@ -162,9 +187,9 @@ theorem no_solver_exactOnOperativeTarget_of_kernelSeparation
     (hexact : SolverExactOnOperativeTarget X solver aux) : False := by
   obtain ⟨observation, leftWitness, rightWitness, htargets⟩ :=
     operativeTargets_ne_of_kernelSeparation X hInv witness
-  exact htargets
-    ((hexact observation leftWitness).symm.trans
-      (hexact observation rightWitness))
+  exact no_solver_exactOnOperativeTarget_on_family X observation Set.univ
+    (Set.mem_univ leftWitness) (Set.mem_univ rightWitness) htargets
+    (solver := solver) (aux := aux) (fun compatible _ => hexact observation compatible)
 
 /--
 Even a correct explicit-lattice CVP oracle cannot resolve a supplied HCP
@@ -204,14 +229,14 @@ theorem cvpOracle_insufficient_for_operativeTarget
   exact no_solver_exactOnOperativeTarget_of_kernelSeparation X hInv witness
     (hsolver O hO)
 
-end Hcrypt.HCPBridge
+end HomotopicalEncryption.HCPBridge
 
 -- Legacy matrix-wide sanity model.
 --
 -- The solver below receives only a cochain and is required to work for every
 -- matrix of the ambient size. It is retained as a generic contradiction test,
 -- not as the concrete HCP public interface. The representative-indexed solver
--- consuming `(publicClass, cochain)` is `Hcrypt.HCPBridge.Solver` above.
+-- consuming `(publicClass, cochain)` is `HomotopicalEncryption.HCPBridge.Solver` above.
 
 /-- Correctness surface for a solver that is explicitly given the operator. -/
 def Hodge_Solver_Correct {N : Type} [Fintype N] {R : Type} [CommRing R]
@@ -709,7 +734,7 @@ Generic matrix-wide oracle-insufficiency sanity theorem.
 
 This quantifies over every matrix and lets the solver see only the cochain. The
 HCP-faithful theorem, indexed by admitted representatives and the actual public
-class value, is `Hcrypt.HCPBridge.cvpOracle_insufficient_of_kernelSeparation`.
+class value, is `HomotopicalEncryption.HCPBridge.cvpOracle_insufficient_of_kernelSeparation`.
 -/
 theorem CVP_Oracle_Insufficient_For_Public_Hodge_Solving
   {n : Type} [Fintype n] [DecidableEq n]
@@ -760,9 +785,9 @@ private theorem matrix_harmonic_iff_projection_isHarmonic_coordinates
     {n : Type} [Fintype n] [DecidableEq n]
     (W : Submodule ℝ (EuclideanSpace ℝ n)) [W.HasOrthogonalProjection]
     (h : EuclideanSpace ℝ n) :
-    MatrixIsHarmonic (_root_.laplacian W) h ↔ Hcrypt.Laplacian.IsHarmonic W h := by
-  simp only [MatrixIsHarmonic, Hcrypt.Laplacian.IsHarmonic,
-    Hcrypt.Laplacian.residualVector, WithLp.toLp_eq_zero]
+    MatrixIsHarmonic (_root_.laplacian W) h ↔ HomotopicalEncryption.Laplacian.IsHarmonic W h := by
+  simp only [MatrixIsHarmonic, HomotopicalEncryption.Laplacian.IsHarmonic,
+    HomotopicalEncryption.Laplacian.residualVector, WithLp.toLp_eq_zero]
 
 /--
 The data needed to compare Hodge projection with genuine discrete CVP.
@@ -809,7 +834,7 @@ theorem latticeVector_isHarmonic
       (_root_.CVP.latticeVector H.lattice z) := by
   exact (matrix_harmonic_iff_projection_isHarmonic_coordinates H.harmonicSubspace
     (cvpVectorAsEuclidean (_root_.CVP.latticeVector H.lattice z))).2
-    (Hcrypt.Laplacian.isHarmonic_of_mem H.harmonicSubspace (H.latticeVector_mem z))
+    (HomotopicalEncryption.Laplacian.isHarmonic_of_mem H.harmonicSubspace (H.latticeVector_mem z))
 
 /-- The projected CVP target is the harmonic projection for `Δ_W`. -/
 theorem projectedTarget_isHarmonic
@@ -821,7 +846,7 @@ theorem projectedTarget_isHarmonic
       (H.projectedTarget t) := by
   exact (matrix_harmonic_iff_projection_isHarmonic_coordinates H.harmonicSubspace
     (H.harmonicSubspace.starProjection (cvpVectorAsEuclidean t))).2
-    (Hcrypt.Laplacian.harmonicProjection_isHarmonic H.harmonicSubspace
+    (HomotopicalEncryption.Laplacian.harmonicProjection_isHarmonic H.harmonicSubspace
       (cvpVectorAsEuclidean t))
 
 /--
@@ -917,14 +942,14 @@ degree-one sheaf Hodge Laplacian and its integral stalk structure.
 theorem concreteSheafHCP_CVP_solution_iff_message
     {Vertex Edge Face Rank : Type*}
     [Fintype Vertex] [Fintype Edge] [Fintype Face] [Fintype Rank]
-    {X : Hcrypt.Sheaf.OrientedTwoComplex Vertex Edge Face}
-    {F : Hcrypt.Sheaf.CellularSheaf X}
-    {I : Hcrypt.Sheaf.CellularSheaf.IntegralStructure F}
-    (H : Hcrypt.Sheaf.CellularSheaf.HarmonicLatticePresentation I Rank)
+    {X : HomotopicalEncryption.Sheaf.OrientedTwoComplex Vertex Edge Face}
+    {F : HomotopicalEncryption.Sheaf.CellularSheaf X}
+    {I : HomotopicalEncryption.Sheaf.CellularSheaf.IntegralStructure F}
+    (H : HomotopicalEncryption.Sheaf.CellularSheaf.HarmonicLatticePresentation I Rank)
     (z : Rank → ℤ)
-    (opening : Hcrypt.Sheaf.CellularSheaf.HodgeNoise F)
+    (opening : HomotopicalEncryption.Sheaf.CellularSheaf.HodgeNoise F)
     (v : _root_.CVP.AmbientVector
-      (Hcrypt.Sheaf.CellularSheaf.TotalCoord Edge F.edgeDim)) :
+      (HomotopicalEncryption.Sheaf.CellularSheaf.TotalCoord Edge F.edgeDim)) :
     _root_.CVP.Solution (H.cvpInstance (H.encrypt z opening)) v ↔
       v = (H.point z).1 :=
   H.solution_cvpInstance_iff_eq_point z opening v
@@ -933,12 +958,12 @@ theorem concreteSheafHCP_CVP_solution_iff_message
 theorem concreteSheafHCP_CVP_existsUnique
     {Vertex Edge Face Rank : Type*}
     [Fintype Vertex] [Fintype Edge] [Fintype Face] [Fintype Rank]
-    {X : Hcrypt.Sheaf.OrientedTwoComplex Vertex Edge Face}
-    {F : Hcrypt.Sheaf.CellularSheaf X}
-    {I : Hcrypt.Sheaf.CellularSheaf.IntegralStructure F}
-    (H : Hcrypt.Sheaf.CellularSheaf.HarmonicLatticePresentation I Rank)
+    {X : HomotopicalEncryption.Sheaf.OrientedTwoComplex Vertex Edge Face}
+    {F : HomotopicalEncryption.Sheaf.CellularSheaf X}
+    {I : HomotopicalEncryption.Sheaf.CellularSheaf.IntegralStructure F}
+    (H : HomotopicalEncryption.Sheaf.CellularSheaf.HarmonicLatticePresentation I Rank)
     (z : Rank → ℤ)
-    (opening : Hcrypt.Sheaf.CellularSheaf.HodgeNoise F) :
+    (opening : HomotopicalEncryption.Sheaf.CellularSheaf.HodgeNoise F) :
     ∃! v, _root_.CVP.Solution (H.cvpInstance (H.encrypt z opening)) v :=
   H.existsUnique_solution_cvpInstance z opening
 
@@ -957,8 +982,8 @@ def ProjectionClosestHarmonicSolution
   (W : Submodule ℝ (EuclideanSpace ℝ n))
   [W.HasOrthogonalProjection]
   (b h : EuclideanSpace ℝ n) : Prop :=
-  Hcrypt.Laplacian.IsHarmonic W h ∧
-    ∀ v, Hcrypt.Laplacian.IsHarmonic W v → dist b h ≤ dist b v
+  HomotopicalEncryption.Laplacian.IsHarmonic W h ∧
+    ∀ v, HomotopicalEncryption.Laplacian.IsHarmonic W v → dist b h ≤ dist b v
 
 /--
 The matrix-level harmonic predicate agrees with the canonical projection-model
@@ -970,7 +995,7 @@ theorem matrix_harmonic_iff_projection_isHarmonic
   [W.HasOrthogonalProjection]
   (h : EuclideanSpace ℝ n) :
   MatrixIsHarmonic (_root_.laplacian W) h ↔
-    Hcrypt.Laplacian.IsHarmonic W h := by
+    HomotopicalEncryption.Laplacian.IsHarmonic W h := by
   exact matrix_harmonic_iff_projection_isHarmonic_coordinates W h
 
 theorem Hodge_Projection_Is_ClosestHarmonic
@@ -994,11 +1019,11 @@ theorem harmonicProjection_is_closestHarmonic
   (b : EuclideanSpace ℝ n)
   (h_closest :
     ∀ v,
-      Hcrypt.Laplacian.IsHarmonic W v →
-        dist b (Hcrypt.Laplacian.harmonicProjection W b) ≤ dist b v) :
+      HomotopicalEncryption.Laplacian.IsHarmonic W v →
+        dist b (HomotopicalEncryption.Laplacian.harmonicProjection W b) ≤ dist b v) :
   ProjectionClosestHarmonicSolution W b
-    (Hcrypt.Laplacian.harmonicProjection W b) := by
-  exact ⟨Hcrypt.Laplacian.harmonicProjection_isHarmonic W b, h_closest⟩
+    (HomotopicalEncryption.Laplacian.harmonicProjection W b) := by
+  exact ⟨HomotopicalEncryption.Laplacian.harmonicProjection_isHarmonic W b, h_closest⟩
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- Fibration & Homotopy Equivalence
@@ -1030,7 +1055,7 @@ The total categories of two fibrations are categorically equivalent through
 functors that commute strictly with the projections to the common base.
 
 This is not Helfer's model-categorical homotopy equivalence of algebraic
-interpretations; that notion is `Hcrypt.Helfer.HomotopyEquivalent`.
+interpretations; that notion is `HomotopicalEncryption.Helfer.HomotopyEquivalent`.
 -/
 def CategoricallyEquivalentFibrations
     {D : Type u} [Category.{v} D] (p : E ⥤ B) (q : D ⥤ B) : Prop :=

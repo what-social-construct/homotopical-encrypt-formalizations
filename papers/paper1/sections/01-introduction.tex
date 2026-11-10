@@ -1,19 +1,26 @@
-\section{Introduction}
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
 
-\subsection{Motivation and Contributions}
 
-\HE{} studies recovery from public homotopy-class data when the Hodge operator
-whose kernel is the message space is not part of the public input.  In a
-known-lattice closest-vector problem, the lattice is presented before the
-search begins.  In HCP, the recovery target is
+Helfer's first-order homotopical logic \cite{helfer2019fol} provides the
+original semantic motivation for this framework: equality is interpreted
+through path objects and, under the stated hypotheses, closed-formula truth
+is invariant under homotopy equivalence of interpretations. This motivates
+distinguishing a hidden presentation from the semantic information retained
+by a public classifier. HCP asks how that distinction interacts with the
+harmonic target determined by a hidden Hodge operator.
+
+\HE{} studies the recovery of an operative harmonic component when the
+Hodge operator is hidden. The public input specifies an observed cochain and
+a class of possible private presentations. In a known-lattice closest-vector
+problem, the lattice is presented before the search begins. In HCP, the
+recovery target is
 \[
   h=P_H(b)\in\ker(\Delta_1),
 \]
 but the public class does not include the degree-one Hodge--Laplacian
 \(\Delta_1\), its kernel, or the restriction maps from which \(\Delta_1\) is
-built.  The private
-recovery object is therefore not a scalar secret or a vector in a published
-lattice; it is the harmonic cochain in the kernel of a hidden Hodge operator.
+built.
 
 The operator dependence can be summarized as follows. A hidden representative
 determines the restriction data, which determine the adjacent
@@ -29,39 +36,15 @@ coboundaries and hence the degree-one Hodge operator:
   \longmapsto
   \bigl(\ker\Delta_{1,x},P_{H_x}\bigr).
 \]
-The recovery operation is Hodge-theoretic; ``homotopical'' describes the
-framework in which multiple hidden representatives may occupy the same public
-class while inducing different operators. The distinction is important: it is
-hidden-operator ambiguity, not whether a displayed matrix happens to have
-binary entries, that drives HCP.
+Homotopy-equivalent hidden representatives share a public label even when
+their Hodge operators differ in the fixed public coordinates.
 
-This changes the comparison problem. A real linear span can be realized as the
-kernel of a suitable linear operator, but a discrete lattice cannot equal a
+The CVP comparison makes this dependence on the input precise. A real linear
+span can be realized as the kernel of a suitable linear operator, but a discrete lattice cannot equal a
 nonzero real kernel. If an explicit lattice \(\Lambda\) is supplied inside a
 harmonic subspace \(W=\ker(\Delta_W)\), orthogonal projection of the target
-onto \(W\) preserves the closest vectors of \(\Lambda\). That bridge does not
-make public-data HCP a known-lattice problem: public homotopy-class data
-may be compatible with distinct hidden operators, distinct kernels, and
-different harmonicity judgments.  The paper isolates this boundary and then
-separates it from the finite verifier-facing projection artifacts used later.
-The public classifier supplies the realized class value \(\alpha\).
-The full cochain \(b=h+e\) is separate from the accepted exact commitment
-payload: its decoded exact cochain has zero harmonic projection in its
-specified Hodge system. A bound-observation relation ties the full sample to that payload,
-its digest, snapshot and lifecycle context. Releasing \((\alpha,b)\)
-requires an explicit disclosure or a specified extraction of that full
-sample; a proof about the exact payload alone does not expose it.
-The selected observation need not present \(\Delta_1\) or
-\(\ker(\Delta_1)\). If full Pl\"ucker coordinates of the operative kernel
-are additionally disclosed, however, they determine its fixed-metric
-projector and hence the HCP target from \(b\).
-The fibration ID is the spectral fingerprint
-\(\operatorname{Spec}_{\mathrm{multi}}(\Delta_1)\), obtained only after the
-relevant Hodge data have been recovered or certified; it is not part of the
-public classifier value.
+onto \(W\) preserves the closest vectors of \(\Lambda\).
 
-The principal notation is fixed globally as follows. Symbols used only inside
-a single proposition or construction are defined locally.
 \begin{table}[ht]
   \centering
   \small
@@ -69,72 +52,33 @@ a single proposition or construction are defined locally.
     \hline
     Symbol & Meaning \\
     \hline
-    \(p:E\to B\) & Helfer-style fibration projection \\
-    \(\mathcal P_X(x,y)\) & path object from \(x\) to \(y\) in \(X\) \\
-    \(\pi:A\to P\) & path-respecting public classifier \\
+    \(\pi:A\to P\) & homotopy-invariant public classifier \\
     \(\alpha=\pi(x)\in P\) & realized public classifier value \\
     \(A_\alpha=[x]_\pi\) & fiber of hidden representatives with public label \(\alpha\) \\
     \((\alpha,b)\) & public HCP observation \\
-    \(\Delta_A:A\to A\times A\) & diagonal map in the fibrational semantics \\
-    \(P_X\), \(F:P_X\to\mathsf{Vect}_{\R}\) & finite cell poset and its face-to-coface cellular sheaf \\
-    \(a\in C^0,\ c=\delta_0a\in C^1\) & degree-zero opening and committed exact one-cochain \\
     \(\delta_0,\delta_1,\Delta_1\) & adjacent coboundaries and degree-one Hodge--Laplacian \\
     \(\ker(\Delta_1),\ P_H\) & harmonic subspace and harmonic projection \\
     \(\Delta_W=I-P_W\) & kernel-normalized projection operator associated with \(W\) \\
-    \(\mathcal L,\ \ell\) & local syndrome target and affine MCA line, respectively \\
     \hline
   \end{tabular}
-  \caption{Core notation used across the semantic and HCP layers.}
+  \caption{Core notation for the semantic interpretation and HCP.}
   \label{tab:core-notation}
 \end{table}
 
+\Needspace{18\baselineskip}
 This paper develops this boundary through the following statements.
 \begin{enumerate}[label=(\roman*)]
-  \item The Harmonic Cochain Problem (HCP): recovery of the operative
-    component \(h=P_Hb\) for a hidden degree-one Hodge operator \(\Delta_1\).
-  \item A Hodge-structured noise model with cochain decomposition
+  \item The Harmonic Cochain Problem (HCP) asks to recover the operative
+    component \(h=P_Hb\) for a hidden Hodge operator \(\Delta_1\).
+  \item A Hodge-structured noise model gives the cochain decomposition
     \(b = h + e\), where \(h \in \ker(\Delta_1)\) and
     \(e \in \image(\delta_0) \oplus \image(\delta_1^\ast)\).
-  \item A CVP comparison separating field-linear image from discrete lattice:
-    generated subspaces can be realized as kernels, and, when
-    \(\Lambda\subseteq W\) is explicitly supplied, projecting the target onto
-    \(W\) preserves the discrete closest-vector condition on \(\Lambda\).
-  \item A hidden-operator ambiguity theorem: publicly equivalent Hodge operators
-    may disagree on harmonicity, so the CVP comparison does not make a correct
-    explicit-lattice CVP oracle into a uniform public-data HCP solver.
-  \item Constructed integral examples in the finite signed-incidence model:
-    one homological public observation has distinct nonzero harmonic targets;
-    a weighted pair shares \(b=(1,2)\) with integer coefficients two and one,
-    with a unique CVP answer for each privately presented lattice.
-  \item The supporting formal framework:
-    fibrational identity, homotopy classes, exact Hodge/cochain invariants,
-    spectral/Tsirelson admissibility, and Heyting-style public judgments.
-  \item A projection chain through Pl\"ucker coordinates and cochain commitments to a
-    canonical Reed--Solomon endpoint, with a conditional far-separation gate and
-    an MCA bad-challenge bound imported at an explicit cited theorem boundary.
+  \item Harmonic lattices in one public class can have
+    different unique closest vectors to the same cochain, so known-lattice
+    CVP access does not determine the operative answer.
 \end{enumerate}
 
 Finite Hodge theory follows the cellular-cochain framework of
 Hansen--Ghrist \cite{hansenGhrist2018sheaves}; the algebraic model used here is
-specified in \cref{sec:hcp-definition}. Kernel realization and the
-Pythagorean projection identity are elementary linear-algebraic foundations.
-Helfer's homotopy-invariant semantics \cite{helfer2019fol} motivates the public
-classifier; the constructed examples prove only the explicitly named
-nonzero-cohomology-test fragment. The selected formalization integrates these
-objects with the constructed observation ambiguities and recovery boundaries.
-It establishes neither an asymptotic CVP-hardness reduction nor a sampled
-encryption-security theorem. The independently stated Lean entry covers the
-six Hodge/CVP groups and two observation-boundary groups in its source
-crosswalk; the broader spectral, oracle and coding interfaces retain their
-separately stated assumptions and formalization status.
-
-The companion manuscript \emph{Capacity-Radius Proximity for Smooth-Domain
-Reed--Solomon Codes} \cite{vanDerVlugt2026proximity} develops the universal
-list-decoding and MCA results independently of HCP. The present paper supplies
-the HCP foundations and the application-specific projection interface. Shared
-coding definitions connect the two papers; the companion's coding theorems do
-not supply the source-to-code far-separation witness required here.
-
-The corresponding Lean definitions, reductions, gates, theorem boundaries,
-paper-to-Lean cross-reference, and file-by-file source coverage are recorded in
-the appendices.
+specified in \cref{sec:primitives}. The constructed public theories use
+the nonzero-cohomology-test fragment.
