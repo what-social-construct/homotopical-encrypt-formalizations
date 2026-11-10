@@ -1,0 +1,906 @@
+\section{Axioms and Semantics}\label{sec:mathematical-framework}
+
+\subsection{Fibrational Semantics}
+
+The path-object and fibrational part of this semantic layer is adapted from
+Helfer's first-order homotopical logic
+\cite[Sections~2--7]{helfer2019fol}. In particular, we use its replacement of
+diagonal equality by a path-space fibration, its Grothendieck-fibrational
+formulation of first-order semantics, and its homotopy-invariance theorem.
+We do not reproduce Helfer's full development of suitable model categories,
+Kan complexes, \(h^{=}\)-fibrations, or two-dimensional fibrations. Instead, we
+extract the semantic obligations consumed by HCP and add the project-specific
+public-classifier and cryptographic layers below. Helfer's external invariance
+theorem is cited as background rather than reproved in Lean.
+Lean does formalize the typed dependency needed to apply that result: a
+multi-sorted algebraic signature, finite-product interpretations, homotopy
+homomorphisms coherent with every function symbol, and componentwise
+homotopy equivalence between cofibrant-fibrant interpretations. The
+closed-formula consequence of Helfer's theorem remains an explicit hypothesis,
+from which the HCP classifier bridge is proved in
+\cref{prop:helfer-hcp-bridge}.
+We use the usual fibrational notation
+\[
+  p:E\longrightarrow B,
+  \qquad
+  E_b=p^{-1}(b)
+\]
+for a total space of hidden data over a base of public or contextual data.
+When \(x,y\in E_b\), equality in the semantic layer is interpreted through a
+path object rather than by strict equality in the ambient presentation. We
+write \(\mathcal P_X(x,y)\) for the path object from \(x\) to \(y\) in a space
+or type \(X\), and set
+\[
+  x\simeq_b y
+  \quad\Longleftrightarrow\quad
+  \mathcal P_{E_b}(x,y)\neq\varnothing .
+\]
+For a dependent family \(F:E\to\mathsf{Type}\), a path
+\(\gamma\in\mathcal P_E(x,y)\) supplies the transport map
+\[
+  \gamma_{\ast}:F_x\longrightarrow F_y.
+\]
+Thus the primitive semantic data are fibers, paths, and transport along paths.
+The cryptographic objects introduced later live over this interface; they do
+not replace it with byte-level equality.
+
+We also use the corresponding categorical fibration vocabulary. For a functor
+\(p:E\to B\), a morphism \(f:U\to V\) in \(E\) is \(p\)-Cartesian when every
+arrow \(\psi:W\to V\) and base arrow \(u:p(W)\to p(U)\) satisfying
+\[
+  p(\psi)=p(f)\circ u
+\]
+admit a unique factor \(\widetilde\psi:W\to U\) with
+\[
+  p(\widetilde\psi)=u,
+  \qquad
+  f\circ\widetilde\psi=\psi.
+\]
+A Grothendieck fibration is then a functor
+with Cartesian lifts for every base arrow. This is the categorical form of the
+transport principle used by the hidden-representative semantics. Helfer's full
+first-order interface imposes additional fiberwise products, coproducts,
+exponentials, stable indexed sums and products, and equality objects
+\cite[Definition~4.3]{helfer2019fol}; the definition here records only the
+underlying fibration vocabulary needed for the local construction.
+
+\begin{proposition}[Fibration copies preserve the categorical fibration surface]\label{prop:fibration-copy-equivalence}
+  Let \(p:E\to B\) be a Grothendieck fibration. For each tag \(n\), let
+  \(E^{(n)}\) be a tagged copy of \(E\) and let
+  \(p^{(n)}:E^{(n)}\to B\) be the induced fibration. Then
+  \(p^{(n)}\) is again a Grothendieck fibration, and \(p\) and \(p^{(n)}\) are
+  equivalent as total categories through functors commuting strictly with the
+  projections to \(B\).
+\end{proposition}
+
+\begin{proof}
+  The tagged copy has the same objects and morphisms as \(E\), with only the
+  external tag changed. The forgetful functor \(E^{(n)}\to E\) and the tagging
+  functor \(E\to E^{(n)}\) compose to the identity up to the evident natural
+  isomorphisms. Cartesian lifts in \(E^{(n)}\) are transported directly from
+  Cartesian lifts in \(E\), so the induced functor remains a Grothendieck
+  fibration. The two functors give the stated categorical equivalence over the
+  base \(B\). This tagged-copy equivalence is only a relabelling construction;
+  it is not Helfer's model-categorical homotopy equivalence of algebraic
+  interpretations and does not by itself imply hidden-kernel ambiguity.
+\end{proof}
+
+\subsection{Path-Object Semantics for Equality}
+
+Following Helfer's homotopical interpretation of intuitionistic first-order
+logic \cite[Section~2 and Definitions~6.3 and~6.6]{helfer2019fol}, let \(A\)
+be a Kan complex, or more generally an object in a suitable model category,
+and choose a path-object factorization
+\[
+  \Delta_A:A\overset{\sim}{\longrightarrow}PA
+  \twoheadrightarrow A\times A.
+\]
+In the simplicial realization one may take \(PA=A^I\), with the second map
+given by endpoint evaluation. For points \(x,y\in A\), write
+\[
+  \mathcal P_A(x,y)
+  = PA\times_{A\times A}\{(x,y)\}.
+\]
+The interpretation of the atomic equality formula \(x=y\) is this pullback.
+Its semantic inhabitation condition is therefore
+\[
+  x\simeq_A y
+  \quad\Longleftrightarrow\quad
+  \mathcal P_A(x,y)\neq\varnothing .
+\]
+As an elementary local consequence, if the chosen path data also carry
+constant paths, reversal, and composition, then \(\simeq_A\) is reflexive,
+symmetric, and transitive. This equivalence-relation observation is not being
+quoted as a separate theorem of Helfer.
+
+Helfer's homotopy-invariance theorem applies under its stated categorical
+hypotheses. Let \(M,N:\sigma\to\mathcal C_{\mathrm f}\) be base
+interpretations of an algebraic signature in a suitable model category, let
+\(\widehat M,\widehat N\) be homotopical interpretations over them, and let
+\(M\simeq N\) be a homotopy equivalence of the base interpretations. Then every
+formula-in-context has homotopy-equivalent interpretation objects over the
+induced context equivalence. In particular,
+\[
+  M\simeq N
+  \quad\Longrightarrow\quad
+  \bigl(M\models\varphi \Longleftrightarrow N\models\varphi\bigr)
+\]
+for every closed first-order formula \(\varphi\)
+\cite[Definition~7.1 and Theorem~12.3]{helfer2019fol}. We use this external
+theorem as semantic background; the local Lean interface records it as an
+obligation and does not reprove it.
+
+HCP uses this path-equality semantics as motivation for its hidden-
+representative model. The public classifier, the cryptographic hiding of a
+representative or path witness, and the verifier's evidence boundary are
+project-specific additions; they do not follow from Helfer's invariance
+theorem alone.
+
+\subsection{Public Classifier Fibers}
+
+Let \(A\) be a type of hidden representatives and let \(P\) be a type of public
+class data. A public classifier is a map
+\[
+  \pi:A\longrightarrow P.
+\]
+It determines public fibers
+\[
+  A_\alpha=\pi^{-1}(\alpha)=\{x\in A:\pi(x)=\alpha\},
+  \qquad \alpha\in\image(\pi),
+\]
+and a public equivalence relation
+\[
+  x\equiv_{\pi}y
+  \quad\Longleftrightarrow\quad
+  \pi(x)=\pi(y).
+\]
+The classifier is path-respecting when
+\[
+  x\simeq_A y\Longrightarrow x\equiv_{\pi}y,
+\]
+and nonfaithful when some public fiber contains distinct hidden
+representatives. A path \(\gamma\in\mathcal P_A(x,y)\) is a hidden witness
+that \(x\) and \(y\) lie in the same path component; under path-respect, its
+public consequence is the equality \(\pi(x)=\pi(y)\). At this stage the public
+datum is only the classifier value. The finite-code projection and
+Reed--Solomon/MCA endpoint are introduced later in
+\cref{sec:rs-proximity-projection}.
+
+Path-respecting gives only the displayed forward implication. Unless a
+separate completeness condition is imposed, equality of classifier values
+need not imply the existence of a path; a public fiber \(A_\alpha\) may be a
+coarser union of path components. Accordingly, \(\alpha\) denotes the public
+classifier value and \(A_\alpha\) its fiber, not a hidden path witness.
+
+Nor do path-respect and nonfaithfulness prove that \(\pi\) hides \(x\):
+nonfaithfulness supplies a collision, but it does not imply one-wayness,
+indistinguishability, or the absence of other private information from the
+output. Such privacy is a separate cryptographic property of the chosen
+public-view construction and its distributions.
+
+The fibration projection and public classifier describe compatible but
+distinct levels. When the hidden representatives are the objects of \(E\), a
+map \(\kappa:B\to P\) on objects supplies the compatibility condition
+\[
+  \pi=\kappa\circ p.
+\]
+Then \(p(x)\) is the fibration-base point of \(x\), while
+\(\alpha=\pi(x)=\kappa(p(x))\) is its public class label. The special case
+\(B=P\) and \(\kappa=\mathrm{id}_B\) identifies the underlying object maps
+\(\pi\) and \(p\). In general, \(\kappa\) may be lossy, and
+\[
+  A_\alpha
+  =\bigcup_{\substack{b\in B\\ \kappa(b)=\alpha}}E_b.
+\]
+This compatibility datum is additional structure; it is not implied merely by
+the requirement that \(\pi\) respect paths.
+
+\subsection{Axiom Interfaces}
+
+The hypotheses used below are grouped by mathematical interface. This grouping
+does not assert that every item below is literally a file under \lean{Axioms/}.
+The relevant interfaces are the following.
+\begin{enumerate}[label=(\roman*)]
+  \item Foundational cochain/Hodge interface: a cochain complex, a coboundary,
+  the induced Hodge--Laplacian, Hodge decomposition, and orthogonality.
+  \item Hidden semantic interface: paths, transport, fibration structure,
+  homotopy classes, public classifiers, and the nonfaithfulness of public
+  class data.
+  \item Sheaf-coherence interface: restriction-shape compatibility, naturality,
+  \(d^{k+1}d^k=0\), the induced Hodge--Laplacian identity, finiteness,
+  simpliciality, and connectedness.
+  \item Spectral and stage-admissibility interface: Tsirelson-style spectral
+  window conditions, near-boundary conditions, and object-local admissibility
+  wrappers for candidate Hodge--Laplacian data.
+  \item Public-judgment interface: finite Heyting collapse, public truth
+  equivalence, oracle query/answer conditions, and oracle-visible spectral,
+  identity, and topology judgments.
+  \item Public-artifact interface: cochain-commitment payloads, commitment
+  security assumptions, proof-system assumptions, proof-carrying artifacts, and
+  compression/observation boundaries used in \cref{sec:public-artifacts-commitments}.
+\end{enumerate}
+The well-formedness boundaries are displayed below as enumerated conditions.
+
+\begin{definition}[Helfer-derived semantic boundary]\label{def:helfer-semantic-boundary}
+  A first-order homotopical semantic datum is admissible if and only if all
+  of the following hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item Equality is interpreted by the path/diagonal condition
+      \(x\simeq_A y\Longleftrightarrow\mathcal P_A(x,y)\neq\varnothing\).
+    \item Cartesian lifting is available for the relevant fibrations.
+    \item Dependent sums and products are coherent with transport and
+      base-change along the fibration.
+    \item Homotopy-equivalent structures have the same first-order theory.
+    \item Class membership is witnessed by hidden path data, and under a
+      path-respecting public classifier its public consequence is
+      \(\pi(x)=\pi(y)\).
+  \end{enumerate}
+  Clauses (i)--(iv) extract the portion of Helfer's semantics used here;
+  clause (v) is the HCP public-classifier specialization and is not a theorem
+  stated in Helfer's paper. The path/classifier checklist corresponds to the
+  stable repository interface \lean{Axioms.HelferFOL} and its conjunction
+  \lean{Axioms.HelferFOLWellFormed}. The typed interpretation and equivalence
+  layer is \lean{Hcrypt.Helfer.Signature},
+  \lean{Hcrypt.Helfer.Interpretation}, and
+  \lean{Hcrypt.Helfer.HomotopyEquivalent}; the external closed-formula theorem
+  is exposed as \lean{Hcrypt.Helfer.ClosedFormulaInvariance}. Together these
+  are still not a complete Lean formalization of Helfer's theory.
+\end{definition}
+
+\begin{definition}[Foundation assumption boundary]\label{def:foundation-assumption-boundary}
+  A foundation datum is admissible if and only if all of the following hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item \(C^\bullet\) is a cochain complex.
+    \item Each coboundary \(d^k:C^k\to C^{k+1}\) is linear.
+    \item The Hodge--Laplacian is obtained from adjacent coboundaries and
+      adjoints.
+    \item \(C^1\) admits the Hodge decomposition
+      \[
+        C^1=\mathcal H^1\oplus\image(\delta_0)\oplus\image(\delta_1^\ast).
+      \]
+    \item The summands
+      \(\mathcal H^1\), \(\image(\delta_0)\), and
+      \(\image(\delta_1^\ast)\) are pairwise orthogonal.
+  \end{enumerate}
+  These clauses correspond to \lean{Axioms.Foundation} and
+  \lean{Axioms.FoundationWellFormed}.
+  Commitment authentication, hiding, homomorphism, context binding, and
+  partial-opening soundness belong to the separate commitment-security
+  boundary below; none is inherited merely from this foundation datum.
+\end{definition}
+
+\begin{definition}[Sheaf-coherence assumption boundary]\label{def:sheaf-coherence-assumption-boundary}
+  A sheaf-coherence datum is admissible if and only if all of the following
+  hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item Restriction maps have compatible source and target dimensions on
+      incidences.
+    \item For every edge, the two restriction/transport paths commute.
+    \item On every triangle, the face-composition maps agree.
+    \item Adjacent sheaf coboundaries square to zero:
+      \(d^{k+1}d^k=0\).
+    \item The Hodge--Laplacian is obtained from the sheaf coboundaries and
+      adjoints.
+    \item The harmonic, exact, and coexact summands are pairwise orthogonal.
+    \item The nerve is finite.
+    \item The nerve is simplicial.
+    \item The nerve is connected.
+  \end{enumerate}
+  These clauses correspond to \lean{Axioms.SheafCoherence} and
+  \lean{Axioms.SheafCoherenceWellFormed}.
+\end{definition}
+
+The preceding boundary is a condition on the ambient sheaf complex.  A
+particular serialized commitment requires an additional, element-dependent
+condition.  Let
+\[
+  \operatorname{dec}_S:\mathcal C_{\mathrm{com}}\longrightarrow C_S^1
+\]
+be the interpretation of commitment payloads in the degree-one cochain carrier
+of \(S\), and let \(c\mathrel{\mathsf{binds}}S\) denote the topology-binding
+condition for that interpretation.
+
+\begin{definition}[Committed one-cochain coherence]\label{def:committed-one-cochain-coherence}
+  A commitment payload \(c\) is coherent with a sheaf datum \(S\), written
+  \(c\in\mathcal G_S\), if and only if
+  \begin{enumerate}[label=(\roman*)]
+    \item \(c\) is well formed as a serialized commitment payload;
+    \item \(S\) satisfies the sheaf-coherence boundary of
+      \cref{def:sheaf-coherence-assumption-boundary};
+    \item \(c\mathrel{\mathsf{binds}}S\); and
+    \item there is an \(a\in C_S^0\) such that
+      \[
+        \operatorname{dec}_S(c)=\delta_0 a.
+      \]
+  \end{enumerate}
+  Thus \(c\) represents an exact one-cochain, rather than merely having a
+  valid wire shape.
+\end{definition}
+
+\begin{proposition}[Committed exact cochains are cocycles]
+\label{prop:committed-exact-cochains-are-cocycles}
+  If \(c\in\mathcal G_S\), then
+  \[
+    \delta_1\operatorname{dec}_S(c)=0.
+  \]
+\end{proposition}
+
+\begin{proof}
+  Choose \(a\in C_S^0\) with
+  \(\operatorname{dec}_S(c)=\delta_0a\).  Ambient sheaf coherence gives the
+  actual cochain-map equation \(\delta_1\delta_0=0\).  Hence
+  \[
+    \delta_1\operatorname{dec}_S(c)
+    =\delta_1\delta_0a
+    =0.
+  \]
+\end{proof}
+
+\begin{definition}[Proof-system and commitment-security boundaries]\label{def:proof-commitment-assumption-boundary}
+  The commitment-security boundary holds if and only if all of the following
+  hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item Exact-payload binding: the authenticated payload binds the serialized
+      \(C^1\) value to its topology/instance identifier. If two degree-zero
+      openings produce that value, their difference lies in \(\ker\delta_0\);
+      this is the intended opening equivalence, not a uniqueness theorem.
+    \item Hiding: the commitment distribution hides the committed witness
+      component.
+    \item Homomorphic addition:
+      \(C(m_1,r_1)+C(m_2,r_2)=C(m_1+m_2,r_1+r_2)\) when the two commitments
+      are compatible.
+    \item Homomorphic scalar multiplication:
+      \(a\,C(m,r)=C(am,ar)\) for admissible scalars \(a\).
+    \item Topology binding: a commitment is bound to its underlying
+      simplicial complex or topology identifier.
+    \item Partial opening soundness: opening a specified subset verifies the
+      corresponding local cochain constraints.
+  \end{enumerate}
+  The proof-system boundary holds if and only if all of the following hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item Completeness: an honest proof for a valid witness verifies.
+    \item Soundness: verifier acceptance implies validity of the asserted
+      mathematical statement, up to the stated error model.
+    \item Zero knowledge: the proof transcript does not identify the hidden
+      witness.
+    \item Statement binding: the proof is bound to its public statement,
+      topology, and instance context.
+  \end{enumerate}
+  These clauses correspond to
+  \lean{Axioms.CochainCommitment.CochainCommitmentAxioms},
+  \lean{Axioms.CochainCommitment.CochainCommitmentWellFormed},
+  \lean{Axioms.ZKP}, and \lean{Axioms.ZKPWellFormed}.
+\end{definition}
+
+Consensus, ledger, reliability, and Proof-of-Value records are mentioned here
+only at their mathematical interface boundary. Their runtime policy content
+belongs to the subsequent protocol paper.
+
+\subsection{Exact Structural Invariants}
+
+The exact structural invariants are not a separate source of geometry. They
+package the same foundational and sheaf-coherence hypotheses at the point
+where an object is admitted. We use the cellular-sheaf Hodge--Laplacian
+viewpoint of Hansen--Ghrist as background \cite{hansenGhrist2018sheaves}. For
+a finite cell poset \(P_X\), ordered by the face relation, a cellular sheaf is
+represented here in the face-to-coface convention as
+\[
+  P_X\xrightarrow{F}\mathsf{Vect}_{\R},
+  \qquad
+  C^0(X;F)\xrightarrow{\delta_0}C^1(X;F)
+  \xrightarrow{\delta_1}C^2(X;F).
+\]
+For a cochain complex \(C^\bullet\), the accepted data supply differentials
+\[
+  d^k:C^k\longrightarrow C^{k+1}
+\]
+with \(d^{k+1}d^k=0\). Together with adjoints, these give the degree-\(k\)
+Hodge--Laplacian
+\[
+  \Delta_k=d^{k-1}(d^{k-1})^\ast+(d^k)^\ast d^k.
+\]
+In the sheaf setting, the corresponding coherence assumptions assert that
+restriction maps, local data, and gluing data are compatible with this
+cochain/Hodge structure. The only structural consequences used later are the
+adjacent differential identity \(d^{k+1}d^k=0\) and the Hodge--Laplacian
+identity above.
+For the projection chain, we additionally require the maps used to pass from
+hidden sheaf data to public cochain-facing data to commute with the
+coboundary:
+\[
+\begin{array}{ccc}
+  F(V) & \xrightarrow{\eta_V} & G(V)\\
+  \delta_F\downarrow\phantom{\delta_F} & & \phantom{\delta_G}\downarrow\delta_G\\
+  F(E) & \xrightarrow{\eta_E} & G(E)
+\end{array}
+\qquad
+\eta_E\circ\delta_F=\delta_G\circ\eta_V .
+\]
+This is the functorial/naturality diagram used in the paper. It is a
+cochain-level coherence condition, not a runtime statement about byte transport
+or consensus execution.
+
+\begin{proposition}[Exact structural preconditions]\label{prop:exact-structural-preconditions}
+  If a sheaf exact-gate bundle is accepted as well formed, then its
+  sheaf-coherence data supply
+  \[
+    d^{k+1}d^k=0
+    \qquad\text{and}\qquad
+    \Delta_k=d^{k-1}(d^{k-1})^\ast+(d^k)^\ast d^k
+  \]
+  for the cochain complex under discussion.
+\end{proposition}
+
+\begin{proof}
+  Well-formedness of the exact-gate bundle includes the sheaf-coherence
+  condition. By definition of that condition, the adjacent coboundaries
+  compose to zero and the recorded Laplacian is the displayed sum of the two
+  coboundary terms. Projecting these two fields from the well-formedness
+  witness gives the stated identities.
+\end{proof}
+
+\subsection{Spectral-Gap Admissibility}
+
+The spectral condition is an object-level admissibility condition. It is not the
+source of HCP hardness, not a reconstruction theorem for the hidden fibration,
+and not introduced here as a consensus rule. In this paper, the
+Proof-of-Value (PoV)/Tsirelson
+spectral window is a mathematical condition on candidate
+degree-one Hodge--Laplacian data; its use as a protocol-level admissibility rule belongs to
+the subsequent protocol paper. The terminology is
+Tsirelson-style because the admissible window uses the familiar \(\sqrt 2\)
+scale from Tsirelson's bound \cite{tsirelson1980bell}. For a Hermitian
+positive semidefinite operator \(\Delta\), write
+\[
+  \lambda_1^+(\Delta)
+  =
+  \inf\{\lambda:\lambda\text{ is an eigenvalue of }\Delta,\ \lambda\ne 0\},
+\]
+with \(\lambda_1^+(\Delta)=0\) when \(\Delta\) has no nonzero spectral value.
+The Tsirelson-style admissibility axiom is the spectral window
+\[
+  \frac{\sqrt{2}}{2}
+  \le
+  \lambda_1^+(\Delta)
+  \le
+  2\sqrt{2}.
+\]
+A separate boundary condition marks \(\Delta\) as \(\varepsilon\)-near one of
+the two endpoints:
+\[
+  \left|\lambda_1^+(\Delta)-\frac{\sqrt 2}{2}\right|\le \varepsilon
+  \quad\text{or}\quad
+  \left|\lambda_1^+(\Delta)-2\sqrt 2\right|\le \varepsilon .
+\]
+This condition records near-boundary status only; runtime policy for such values
+belongs to the subsequent protocol paper.
+
+The corresponding Grassmannian/Laplacian interface makes the hidden-kernel
+search space concrete. Throughout this subsection, set \(R=\mathbb R\), with its
+standard inner product. Let
+\[
+  \mathcal L_\beta(R^n)
+  =
+  \{\Delta:\Delta=\Delta^\ast,\ \Delta\succeq 0,\ \dim_R\ker\Delta=\beta\}
+\]
+be the Laplacian space at kernel dimension \(\beta\). For
+\(W\in\Gr(k,R^n)\), let \(P_W\) be the orthogonal projection onto \(W\) and set
+\[
+  \Delta_W = I-P_W .
+\]
+Thus \(\ker(\Delta_W)=W\), and the Grassmannian family is
+\[
+  \Omega_k
+  =
+  \{\Delta_W:W\in\Gr(k,R^n)\}.
+\]
+Equivalently, a point of \(\Gr(k,R^n)\) is a \(k\)-dimensional harmonic
+subspace \(W\), and the map \(W\mapsto\Delta_W\) sends it to the corresponding
+projection Laplacian. In particular, \(\Omega_1\) is the Grassmannian family
+of one-dimensional harmonic kernels.
+
+\begin{proposition}[Grassmannian Laplacian search space]\label{prop:grassmannian-search-space}
+  For every \(k\le n\), the family \(\Omega_k\) is nonempty and satisfies
+  \[
+    \Omega_k
+    \subseteq
+    \{\Delta_W:W\subset R^n\text{ a linear subspace}\}.
+  \]
+  Moreover, every element of \(\Omega_k\) has a \(k\)-dimensional harmonic
+  kernel, so \(\Omega_k\subseteq\mathcal L_k(R^n)\).
+\end{proposition}
+
+\begin{proof}
+  If \(k\le n\), choose \(k\) coordinate basis vectors in \(R^n\). Their span
+  is a \(k\)-dimensional subspace \(W\), and \(\Delta_W\in\Omega_k\), proving
+  nonemptiness. The displayed containment is immediate from the definition of
+  \(\Omega_k\). Since \(\Delta_W=I-P_W=P_{W^\perp}\), its kernel is exactly
+  \(W\), hence has dimension \(k\).
+\end{proof}
+
+\begin{proposition}[Injectivity of the Grassmannian Laplacian map]\label{prop:grassmannian-laplacian-injective}
+  If \(W_1,W_2\subset R^n\) are subspaces and
+  \[
+    \Delta_{W_1}=\Delta_{W_2},
+  \]
+  then \(W_1=W_2\). Consequently \(W\mapsto\Delta_W\) is injective on
+  \(\Gr(k,R^n)\).
+\end{proposition}
+
+\begin{proof}
+  The equality \(\Delta_{W_1}=\Delta_{W_2}\) is the equality
+  \(I-P_{W_1}=I-P_{W_2}\), hence \(P_{W_1}=P_{W_2}\). For any
+  \(x\in W_1\), \(P_{W_1}x=x\), so \(P_{W_2}x=x\), and therefore
+  \(x\in W_2\). Thus \(W_1\subseteq W_2\). The reverse containment is
+  identical, so \(W_1=W_2\).
+\end{proof}
+
+The higher-rank Grassmannian search spaces contain explicit one-parameter
+families. Fix \(1\le k<n\). Choose linearly independent vectors \(u,v\in R^n\)
+and a \((k-1)\)-dimensional subspace \(W_0\) disjoint from
+\(\operatorname{span}\{u,v\}\). For \(t\in R\), set
+\[
+  W(t)=\operatorname{span}\{u+t v\}+W_0.
+\]
+Then \(W(t)\) has dimension \(k\), and varying \(t\) gives a corresponding
+family
+\[
+  \Delta_{W(t)}=I-P_{W(t)}.
+\]
+
+\begin{proposition}[Parametric Laplacian search space]\label{prop:parametric-laplacian-search-space}
+  If \(1\le k<n\), then there exist \(u,v,W_0\) as above such that the map
+  \[
+    R\longrightarrow\Gr(k,R^n),
+    \qquad
+    t\longmapsto W(t)
+  \]
+  is injective. Hence \(t\mapsto\Delta_{W(t)}\) is an injective
+  one-parameter family in \(\Omega_k\).
+\end{proposition}
+
+\begin{proof}
+  The existence of \(u,v,W_0\) follows by choosing a \((k-1)\)-plane and then
+  two independent directions outside it; the inequality \(k<n\) leaves enough
+  room for this choice. The dimension computation uses the disjointness:
+  \[
+    \dim W(t)
+    =
+    \dim\operatorname{span}\{u+tv\}+\dim W_0
+    =
+    1+(k-1)=k.
+  \]
+  If \(W(t_1)=W(t_2)\), then \(u+t_1v\) lies in
+  \(\operatorname{span}\{u+t_2v\}+W_0\). Modulo \(W_0\), this gives a linear
+  dependence between \(u\) and \(v\) unless \(t_1=t_2\). Since \(u,v\) were
+  chosen independent and \(W_0\) was disjoint from their span, \(t_1=t_2\).
+  Injectivity of \(t\mapsto\Delta_{W(t)}\) follows from
+  \cref{prop:grassmannian-laplacian-injective}.
+\end{proof}
+
+\begin{proposition}[Projection spectrum and spectral gap]\label{prop:projection-spectrum-gap}
+  For every \(W\subset R^n\), the projection Laplacian
+  \(\Delta_W=I-P_W=P_{W^\perp}\) has spectrum contained in \(\{0,1\}\).
+  Its kernel is \(W\), its image is \(W^\perp\), and, if
+  \(W\ne R^n\), its least nonzero eigenvalue and largest eigenvalue are both
+  \(1\). Thus the relative spectral gap is \(1\) for the Grassmannian
+  projection family with \(k<n\).
+\end{proposition}
+
+\begin{proof}
+  If \(x\in W\), then \(\Delta_Wx=0\). If \(x\in W^\perp\), then
+  \(\Delta_Wx=x\). Since \(R^n=W\oplus W^\perp\), these two subspaces exhaust
+  the eigenspace decomposition. Therefore the only possible eigenvalues are
+  \(0\) and \(1\), with \(0\)-eigenspace \(W\) and \(1\)-eigenspace
+  \(W^\perp\). When \(W^\perp\ne 0\), the nonzero spectral values consist
+  only of \(1\), so both \(\lambda_1^+\) and \(\lambda_{\max}\) are \(1\).
+\end{proof}
+
+The likelihood surface records the corresponding adversary vocabulary. A
+classical adversary is a map from an observation \(b\) to a guessed Laplacian;
+the density-based interface assigns a probability density to candidate
+Laplacians. For a
+noise scale \(\sigma>0\), the Gaussian likelihood of a candidate \(A\) at
+observation \(b\) is written abstractly as
+\[
+  L_\sigma(b,A)
+  =
+  \exp\left(-\frac{\|A b\|_2^2}{2\sigma^2}\right),
+\]
+with normalized classical and density-based likelihood scores obtained by
+integrating or maximizing this likelihood over the chosen family
+\(\Omega_k\). These likelihood objects are comparison surfaces for quantitative
+security statements; they are not assumptions used to prove the hidden-operator
+separation in \cref{prop:cvp-insufficient}.
+
+\begin{definition}[Adversary likelihood surfaces]\label{def:adversary-likelihood-surfaces}
+  A classical adversary on \(R^n\) is a function
+  \[
+    \mathcal A_{\mathrm{cl}}:R^n\to M_n(R)
+  \]
+  from an observation to a guessed Laplacian. The interface called a
+  \emph{quantum adversary} in the Lean development is a nonnegative density
+  on a candidate family \(\Omega_k\):
+  \[
+    \mathcal A_{\mathrm q}:R^n\times\Omega_k\to R_{\ge 0}.
+  \]
+  Its integral over \(\Omega_k\), with respect to a chosen measure \(\mu\),
+  is \(1\) for each observation. With the standard Gaussian prior on
+  observations, the corresponding normalized likelihood scores are obtained
+  from
+  \[
+    \int_{R^n}
+      L_\sigma\bigl(b,\mathcal A_{\mathrm{cl}}(b)\bigr)
+      e^{-\|b\|_2^2/2}\,db
+  \]
+  in the classical case and
+  \[
+    \int_{R^n}
+      \left(
+        \int_{\Omega_k}
+          \mathcal A_{\mathrm q}(b,A)L_\sigma(b,A)\,d\mu(A)
+      \right)
+      e^{-\|b\|_2^2/2}\,db
+  \]
+  in the quantum-density case, up to the usual Gaussian normalization factor.
+\end{definition}
+
+These scores measure consistency with an observation. They do not by
+themselves measure recovery of the operative hidden operator or formalize a
+quantum computation model.
+
+The likelihood is written with the Euclidean norm. The norm-convention check is
+that the default function-space norm may be the supremum norm, so the Euclidean
+likelihood must be represented by passing to the \(\ell^2\) norm explicitly. The
+mathematical surface used here is the corrected Euclidean one.
+The corrected pointwise likelihood and Gaussian factorization have Lean
+endpoints. The displayed Euclidean integrated scores are not identified with
+the legacy \lean{success_prob_*} functions, which use the function-space
+supremum-norm likelihood; those integrated endpoints are outside the selected
+Hodge/CVP entry.
+
+\begin{proposition}[Likelihood for a projection Laplacian]\label{prop:likelihood-projection-laplacian}
+  For \(A=\Delta_W\), the Euclidean Gaussian likelihood is
+  \[
+    L_\sigma(b,\Delta_W)
+    =
+    \exp\left(
+      -\frac{\|P_{W^\perp}b\|_2^2}{2\sigma^2}
+    \right).
+  \]
+\end{proposition}
+
+\begin{proof}
+  By \cref{prop:projection-harmonicity-equivalences},
+  \(\Delta_Wb=P_{W^\perp}b\). Substitute this identity into the definition of
+  \(L_\sigma(b,A)\).
+\end{proof}
+
+\begin{proposition}[Single-observation optimal classical guess]\label{prop:single-observation-optimal-guess}
+  If \(b\ne 0\) and \(W_b=\operatorname{span}\{b\}\), then
+  \[
+    L_\sigma(b,\Delta_{W_b})=1.
+  \]
+  Equivalently, the projection residual of \(b\) against the Laplacian whose
+  kernel is \(\operatorname{span}\{b\}\) is zero.
+\end{proposition}
+
+\begin{proof}
+  Since \(b\in W_b\), \(\Delta_{W_b}b=0\). Hence
+  \(L_\sigma(b,\Delta_{W_b})=\exp(0)=1\).
+\end{proof}
+
+This candidate achieves maximum consistency with each observation, but it
+need not be the operative hidden kernel. Likelihood maximization alone
+therefore does not recover the HCP target.
+
+\begin{proposition}[Gaussian prior factorization]\label{prop:gaussian-prior-factorization}
+  For \(x=(x_i)_{i=1}^n\in R^n\),
+  \[
+    \exp\left(-\frac{\|x\|_2^2}{2}\right)
+    =
+    \prod_{i=1}^n
+    \exp\left(-\frac{x_i^2}{2}\right).
+  \]
+\end{proposition}
+
+\begin{proof}
+  Since \(\|x\|_2^2=\sum_i x_i^2\), the left hand side is
+  \[
+    \exp\left(\sum_i -\frac{x_i^2}{2}\right),
+  \]
+  which equals the product of the exponentials.
+\end{proof}
+
+\begin{definition}[Spectral fingerprint]\label{def:spectral-fingerprint}
+  Let \(L:V\to V\) be a self-adjoint positive semidefinite operator on a
+  finite-dimensional inner-product space, such as a cellular sheaf Laplacian.
+  Its spectral fingerprint is the multiset
+  \[
+    \operatorname{Spec}_{\mathrm{multi}}(L)
+  \]
+  of eigenvalues counted with multiplicity. Two Laplacians are spectrally
+  equivalent when these multisets agree. A separate kernel-rank relation
+  records only harmonic dimension:
+  \[
+    L_1\equiv_{\dim\ker}L_2
+    \quad\Longleftrightarrow\quad
+    \dim\ker L_1=\dim\ker L_2.
+  \]
+  This relation is not Helfer homotopy equivalence and is not a chain-isometric
+  equivalence of hidden presentations.
+\end{definition}
+
+The order of determination is important. The public classifier value
+\(\alpha\) gives the public fiber \(A_\alpha\); it is not itself a fibration
+ID. A hidden representative \(x\in A_\alpha\) determines the operative
+Hodge--Laplacian \(\Delta_x\). Once an HCP witness has selected or certified
+the hidden Hodge data \((\Delta_x,h,e)\), write
+\[
+  \operatorname{FID}(x):=
+  \operatorname{Spec}_{\mathrm{multi}}(\Delta_x).
+\]
+This is a spectral-class tag in the certified Hodge layer, not an injective
+identifier of \(x\) or of its full presentation. In particular, isometrically
+conjugate Laplacians have the same fingerprint. The tag remains downstream of
+harmonic-cochain recovery and is not part of the public classifier value.
+
+\begin{proposition}[Spectrum is not determined by harmonic dimension]\label{prop:spectrum-not-determined-by-kernel-dimension}
+  There exist self-adjoint positive semidefinite Laplacians \(L_1,L_2\) with
+  \[
+    \dim\ker L_1=\dim\ker L_2
+  \]
+  but
+  \[
+    \operatorname{Spec}_{\mathrm{multi}}(L_1)
+    \ne
+    \operatorname{Spec}_{\mathrm{multi}}(L_2).
+  \]
+\end{proposition}
+
+\begin{proof}
+  Take \(V=R\), \(L_1=\operatorname{id}_R\), and
+  \(L_2=2\operatorname{id}_R\). Both kernels are zero, so the harmonic
+  dimensions agree. The spectral fingerprints are the singleton multisets
+  \(\{1\}\) and \(\{2\}\), respectively, so the operators are not spectrally
+  equivalent.
+\end{proof}
+
+\begin{proposition}[Spectral-gap admissibility]\label{prop:spectral-admissibility}
+  If a candidate Hodge--Laplacian geometry carries a by-construction
+  PoV/Tsirelson admissibility witness, then
+  \[
+    \lambda_1^+(\Delta)\in
+    \left[\frac{\sqrt{2}}{2},\,2\sqrt{2}\right].
+  \]
+\end{proposition}
+
+\begin{proof}
+  The by-construction witness contains
+  \[
+    \frac{\sqrt{2}}{2}\le\lambda_1^+(\Delta)
+    \qquad\text{and}\qquad
+    \lambda_1^+(\Delta)\le 2\sqrt{2}.
+  \]
+  These two inequalities are exactly membership in the displayed closed
+  interval.
+\end{proof}
+
+Thus the by-construction witness is an admissibility certificate for the
+displayed spectral window. It constrains which candidate objects are admissible;
+it does not remove hidden-operator ambiguity. The HCP hardness mechanism in
+\cref{sec:hcp-definition} remains the hidden fibration, hidden Laplacian, and
+hidden kernel.
+
+For a nonempty family \(\Omega\subseteq\mathcal L_1(R^n)\), the associated
+classical and quantum adversary-bound forms are spectral-statistical targets,
+not HCP hardness assumptions. The corresponding empty-family statements are
+only boundary checks; they are not nontrivial hardness bounds.
+
+\subsection{Heyting and Oracle Judgment Surface}
+
+Let \(\Omega\) be the carrier of hidden truth values. The ownership split is:
+\[
+\begin{array}{rcl}
+\text{hidden equality} &:&
+  x\simeq y\Longleftrightarrow \mathcal P(x,y)\neq\varnothing,\\[2pt]
+\text{public class data} &:&
+  x\equiv_\pi y\Longleftrightarrow \pi(x)=\pi(y),\\[2pt]
+\text{public truth data} &:&
+  q:\Omega\longrightarrow\Omega_3 .
+\end{array}
+\]
+The first line is the Helfer path/diagonal interface
+\cite[Section~2]{helfer2019fol}. The second line is the public classifier interface
+defined above. The third line is the finite public judgment interface. We take
+\[
+  \Omega_3=\{\bot,\, ?,\, \top\},
+  \qquad
+  \bot< ? <\top,
+\]
+with meet and join given by minimum and maximum in the chain. Its implication
+is the residuated operation characterized by
+\[
+  c\le (a\Rightarrow b)
+  \quad\Longleftrightarrow\quad
+  a\wedge c\le b.
+\]
+We assume that the public collapse \(q\) is nonfaithful, in the sense that
+\[
+  \exists\,\omega_1\ne\omega_2
+  \quad\text{with}\quad
+  q(\omega_1)=q(\omega_2).
+\]
+
+The oracle-specific part is the query/answer mechanism that produces these
+public judgments. For this boundary we use oracle-modality terminology
+compatible with Ahman--Bauer \cite{ahmanBauer2026oracle}: oracle-visible
+conditions such as vertex compatibility, Betti-number compatibility, public
+identity-hash compatibility, and spectral compatibility are evaluated in the
+finite public Heyting algebra.
+Thus an oracle answer is a public quotient of hidden semantic evidence, not a
+reconstruction of the hidden representative, hidden path witness, fibration,
+Laplacian, or harmonic kernel.
+
+Operational maps out of \(\Omega_3\), such as protocol actions attached to the
+intermediate public judgment \(?\), belong to the subsequent protocol paper's
+runtime and consensus semantics. They are not the Heyting implication operation
+and do not alter the residuation law above.
+
+The identity hash used by the oracle interface is an observation obtained from
+the public Hodge projection and quantization path. It is not a cochain
+commitment payload. The corresponding stability assumption says that equal
+public identity inputs give the same identity hash; it is a determinism
+condition for public identity observations, not a uniqueness or binding theorem
+for cochain commitments.
+Similarly, topological observations such as Betti-number compatibility are
+homotopy-invariant public judgments. Spectral fingerprints are post-recovery
+spectral-class tags: they are not determined by harmonic dimension alone by
+\cref{prop:spectrum-not-determined-by-kernel-dimension}. The oracle interface
+therefore keeps Betti/topology observations, spectral admissibility, identity
+hashes, and cochain commitments as separate public conditions.
+
+This modular split is part of the mathematical statement: cryptographic
+assumptions, public classifiers, and Hodge-theoretic claims are not identified.
+Exact and oracle invariants are used here as mathematical acceptance conditions;
+their full computational and protocol treatment is deferred to the subsequent
+protocol paper.
+
+\subsection*{Lean Cross-Reference}
+
+\begin{leanledger}
+The semantic and axiom interfaces in this section correspond to
+\lean{Sheaf.OrientedTwoComplex}, \lean{Sheaf.CellularSheaf},
+\lean{Sheaf.CellularSheaf.Morphism},
+\lean{Sheaf.CellularSheaf.Morphism.mapC1_delta0},
+\lean{Sheaf.CellularSheaf.Morphism.mapC2_delta1},
+\lean{Sheaf.CellularSheaf.delta1_comp_delta0},
+\lean{Sheaf.CellularSheaf.degreeOneLaplacian},
+\lean{Sheaf.CellularSheaf.ker_degreeOneLaplacian},
+\lean{Axioms.HelferFOL}, \lean{Axioms.Fibration},
+\lean{Hcrypt.Helfer.Signature}, \lean{Hcrypt.Helfer.Interpretation},
+\lean{Hcrypt.Helfer.HomotopyHomomorphism},
+\lean{Hcrypt.Helfer.HomotopyEquivalent},
+\lean{Hcrypt.Helfer.ClosedFormulaInvariance},
+\lean{Axioms.PublicClassifierFactorization},
+\lean{Axioms.PublicClassifierFactorization.publicFiber_eq_iUnion_baseFibers},
+\lean{Axioms.HomotopyClass}, \lean{Axioms.Foundation},
+\lean{Axioms.FoundationWellFormed}, \lean{Axioms.SheafCoherence},
+\lean{Axioms.SheafCoherenceWellFormed},
+\lean{Axioms.CommittedCochainWellFormed},
+\lean{Axioms.RepresentsExactOneCochain},
+\lean{Axioms.IsOneCocycle},
+\lean{Axioms.oneCocycle_of_committedCochainWellFormed}, \lean{Gates.Exact},
+\lean{Gates.structural_preconditions_of_sheaf_exact_gates},
+\lean{Axioms.SpectralBounds}, \lean{Tsirelson},
+\lean{Gates.Spectral}, \lean{Axioms.StageAdmissibility},
+\lean{Gates.Stage}, \lean{Axioms.Heyting}, and
+\lean{Axioms.OracleModality}.
+Here \lean{Axioms.HelferFOL} is an extracted specification boundary: Lean
+proves the local reflexivity, symmetry, transitivity, fiber-membership, and
+classifier consequences built from its path interface. The typed Helfer
+modules formalize the algebraic-interpretation equivalence used by HCP, but
+Helfer's general formula-in-context invariance proof remains external; its
+closed-formula consequence is passed explicitly to the Lean bridge rather than
+asserted globally.
+\end{leanledger}

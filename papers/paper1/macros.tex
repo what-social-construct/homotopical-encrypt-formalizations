@@ -1,0 +1,69 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{aliascnt}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\emergencystretch=6em
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{assumption}{theorem}
+\newtheorem{assumption}[assumption]{Assumption}
+\aliascntresetthe{assumption}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{assumption}{Assumption}{Assumptions}
+\crefname{remark}{Remark}{Remarks}
+
+\newcommand{\HE}{Homotopical Encryption}
+\newcommand{\HCP}{\mathrm{HCP}}
+\newcommand{\CVP}{\mathrm{CVP}}
+\newcommand{\MCA}{\mathrm{MCA}}
+\newcommand{\RS}{\mathrm{RS}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Gr}{\operatorname{Gr}}
+\newcommand{\Path}{\operatorname{Path}}
+\newcommand{\Fib}{\operatorname{Fib}}
+\newcommand{\image}{\operatorname{im}}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Public}{\mathsf{Public}}
+\newcommand{\Hidden}{\mathsf{Hidden}}
+\newcommand{\Lean}{\textsc{Lean}}
+\newcommand{\lean}[1]{\begingroup\Urlmuskip=0mu plus 1mu\path{#1}\endgroup}
+\newcommand{\leanOmega}[1]{\ensuremath{\Omega}\lean{#1}}
+\newenvironment{leanledger}{\small\raggedright}{\par}
+\newcommand{\todo}[1]{\textcolor{red!65!black}{[TODO: #1]}}

@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+
+\input{macros}
+
+\title{Homotopical Encryption: Hidden Hodge Operators and the Harmonic Cochain Problem}
+\author{Chloe van der Vlugt}
+\date{}
+
+\hypersetup{
+  pdftitle={Homotopical Encryption: Hidden Hodge Operators and the Harmonic Cochain Problem},
+  pdfauthor={Chloe van der Vlugt}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We introduce the Harmonic Cochain Problem (HCP): recovering the operative
+harmonic component \(h=P_{\ker(\Delta_1)}b\) from public data
+\((\alpha,b)\). The degree-one Hodge--Laplacian \(\Delta_1\) is induced by
+an operative hidden representative \(x\in A_\alpha=\pi^{-1}(\alpha)\) of
+the public classifier value \(\alpha\). Its adjacent coboundaries
+\(\delta_0,\delta_1\) determine the Hodge decomposition \(b=h+e\), with
+\(e\in\image(\delta_0)\oplus\image(\delta_1^\ast)\).
+We compare HCP with the closest-vector problem (CVP), distinguishing the
+field-linear image \(\mathcal V_B(R)=\{Bx:x\in R^n\}\) from the discrete
+lattice \(\Lambda_B=B\mathbb Z^n\). The former can be realized as a linear
+kernel. For an explicitly supplied inclusion \(\Lambda_B\subseteq W\),
+orthogonal projection onto the harmonic subspace \(W\) preserves the closest
+lattice vectors. We then prove a hidden-operator separation: if publicly
+equivalent hidden operators disagree on harmonicity, a correct known-lattice
+CVP oracle cannot supply a uniformly exact public-data HCP solver.
+
+We instantiate this non-identifiability with integral examples in a finite
+signed-incidence cellular model. Two presentations have the same public
+observation in a proved homological-test fragment of Helfer semantics but
+distinct nonzero harmonic targets. A weighted pair has the shared observation
+\(b=(1,2)\) with integer coefficients two and one, while each privately
+presented lattice has its own unique CVP answer. Further results separate
+full-sample recovery from an exact-component observation and reconstruct a
+subspace and its fixed-metric projector from full projective Pl\"ucker data.
+These are exact recovery and observation results, rather than asymptotic
+hardness or sampled encryption-security theorems. The wider semantic and
+Reed--Solomon interfaces are recorded with their explicit hypotheses;
+the independent Lean entry selects the eight Hodge/CVP and observation groups
+identified in the manuscript crosswalk.
+\end{abstract}
+
+\tableofcontents
+
+\input{sections/01-introduction}
+\input{sections/02-harmonic-cochain-problem}
+\input{sections/03-cvp-comparison}
+\input{sections/04-axioms-and-semantics}
+\input{sections/05-public-artifacts-and-commitments}
+\input{sections/06-rs-mca-projection}
+\input{sections/08-future-directions}
+\input{sections/appendices}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

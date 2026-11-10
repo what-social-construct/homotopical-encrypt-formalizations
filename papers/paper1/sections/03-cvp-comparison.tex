@@ -1,0 +1,455 @@
+\section{CVP Comparison and Kernel Ambiguity}
+
+CVP asks for a closest vector in an explicitly presented lattice
+\cite{micciancioGoldwasser2002}. HCP asks for
+the projection of \(b\) into the kernel of the operative hidden Hodge operator.
+In the \HE{} model,
+public data need not determine the corresponding harmonic kernel.
+
+\subsection{Known-Lattice CVP}
+
+An explicit Euclidean CVP instance consists of a full-column-rank generator
+matrix \(B\in\mathbb R^{m\times n}\) and a target \(t\in\mathbb R^m\). Its
+discrete lattice is
+\[
+  \Lambda_B=B\mathbb Z^n=\{Bz:z\in\mathbb Z^n\}.
+\]
+The injectivity of \(z\mapsto Bz\) records that the displayed columns are a
+lattice basis. A correct closest-vector answer is a vector
+\(v\in\Lambda_B\) such that
+\[
+  \|t-v\|^2\le \|t-w\|^2
+  \qquad
+  \text{for every }w\in\Lambda_B.
+\]
+Thus, for fixed dimensions, a CVP oracle \(O\) is correct when
+\[
+\begin{aligned}
+  \mathsf{CVP}_{\mathrm{corr}}(O)
+  &\quad\Longleftrightarrow\quad
+  \forall\text{ full-column-rank }B,t,\\
+  &\qquad O(B,t)\in\Lambda_B
+  \quad\text{and}\quad
+  \forall w\in\Lambda_B,\\
+  &\qquad \|t-O(B,t)\|^2\le \|t-w\|^2.
+\end{aligned}
+\]
+The weaker output condition is merely lattice membership:
+\[
+  \forall B,t,\ O(B,t)\in\Lambda_B .
+\]
+Fix a class \(\mathcal C\) of admissible algorithms, such as polynomial-time or
+probabilistic polynomial-time algorithms. The external CVP hardness assumption
+is the schema
+\[
+\begin{aligned}
+  \mathsf{CVP}_{\mathrm{hard}}(\mathcal C)
+  \quad\Longleftrightarrow\quad
+  \neg\exists O,\ 
+    O\in\mathcal C\wedge\mathsf{CVP}_{\mathrm{corr}}(O).
+\end{aligned}
+\]
+This is the separation between the known-lattice interface and the
+hidden-operator interface: a CVP oracle receives \(B\) and \(t\), while a
+public HCP procedure sees only public class values, hashes, commitments, and
+verifier-facing artifacts unless extra hidden-operator information is supplied.
+
+\subsection{Presented Linear Images}
+
+Let \(R\) be a field. The field-linear image of \(B\) is a different object:
+\[
+  \mathcal V_B(R)=BR^n=\{Bx:x\in R^n\}.
+\]
+Over a field this is a linear subspace, not the discrete lattice
+\(B\mathbb Z^n\). The following comparison is therefore linear algebra; it is
+not a reduction from discrete CVP.
+
+Let \(B\) present \(\mathcal V_B(R)\). If a matrix
+\(\Delta\) satisfies \(\ker(\Delta)=\mathcal V_B(R)\), then any solver satisfying
+\[
+  \Delta S(\Delta,t)=0
+\]
+returns \(S(\Delta,t)\in\mathcal V_B(R)\).
+
+\begin{proposition}[Kernel realization for explicit generated subspaces]\label{prop:hcp-to-cvp}
+  Let \(B\in R^{n\times n}\) be an explicit square generator matrix over a
+  field and set
+  \(\mathcal V_B(R)=\{Bx:x\in R^n\}\). There exists a matrix \(\Delta\) such that
+  \[
+    \ker(\Delta)=\mathcal V_B(R) .
+  \]
+  Consequently, any solver \(S(\Delta,b)\) whose output is
+  \(\Delta\)-harmonic for every
+  presented \(\Delta\) returns a vector in the explicit generated subspace
+  \(\mathcal V_B(R)\) when run on this realized operator.
+\end{proposition}
+
+\begin{proof}
+  Let \(B\in R^{n\times n}\) be an explicit generator matrix over a field
+  \(R\), set
+    \[
+      \mathcal V_B(R)=\{Bx:x\in R^n\}\subseteq R^n,
+    \]
+    and let \(t\in R^n\) be the solver input. We construct a matrix \(\Delta\)
+    with
+  \[
+    \ker(\Delta)=\mathcal V_B(R).
+  \]
+  Put \(V=\mathcal V_B(R)\). Since \(R^n\) is finite-dimensional over a field,
+  choose a complementary subspace \(W\) with
+  \[
+    V+W=R^n,
+    \qquad
+    V\cap W=0 .
+  \]
+  Thus every \(y\in R^n\) has a unique decomposition
+  \[
+    y=v+w,
+    \qquad
+    v\in V,\quad w\in W.
+  \]
+  Equivalently, there is a unique element \(w_y\in W\) such that
+  \(y-w_y\in V\). Define
+  \[
+    P(y)=w_y.
+  \]
+  The uniqueness of the \(V\oplus W\) decomposition gives linearity: for
+  \(y,z\in R^n\), the vector \(P(y)+P(z)\) lies in \(W\), and
+  \[
+    (y+z)-(P(y)+P(z))
+    =
+    (y-P(y))+(z-P(z))\in V,
+  \]
+  so \(P(y+z)=P(y)+P(z)\). Similarly, for \(a\in R\),
+  \(aP(y)\in W\) and
+  \[
+    ay-aP(y)=a(y-P(y))\in V,
+  \]
+  so \(P(ay)=aP(y)\).
+
+  We now compute the kernel. If \(y\in V\), then \(0\in W\) and \(y-0\in V\),
+  hence uniqueness gives \(P(y)=0\). Conversely, if \(P(y)=0\), then
+  \(y-P(y)=y\in V\). Therefore
+  \[
+    \ker P=V=\mathcal V_B(R).
+  \]
+  Let \(\Delta\) be the matrix of the linear map \(P\). Then, for every
+  \(y\in R^n\),
+  \[
+    \Delta y=0
+    \quad\Longleftrightarrow\quad
+    y\in\ker P
+    \quad\Longleftrightarrow\quad
+    y\in\mathcal V_B(R)
+    \quad\Longleftrightarrow\quad
+    \exists x,\ Bx=y .
+  \]
+
+    Let \(S:R^{n\times n}\times R^n\to R^n\) be a presented-operator Hodge
+  solver satisfying
+  \[
+    \forall \Delta\, b,\qquad
+    \Delta(S(\Delta,b))=0.
+  \]
+    Applying this to the \(\Delta\) constructed above and \(b=t\) gives
+  \[
+    \Delta(S(\Delta,t))=0.
+  \]
+  By the kernel calculation, there exists \(x\) with
+  \[
+    Bx=S(\Delta,t).
+  \]
+    Hence \(S(\Delta,t)\in\mathcal V_B(R)\).
+\end{proof}
+
+When \(R=\mathbb R\), if a presented-operator solver additionally minimizes
+Euclidean distance among \(\Delta\)-harmonic vectors, the same kernel equality
+says that it returns the continuous closest point of \(\mathcal V_B(\mathbb
+R)\). This is still not discrete CVP unless a separate lattice is supplied.
+
+\subsection{Explicit Harmonic-Lattice Bridge}
+
+The discrete bridge requires both kinds of data: a real harmonic subspace and
+an integer lattice contained in it. Let \(W\subseteq\mathbb R^m\) be the
+operative harmonic subspace, let \(P_W\) be its orthogonal projection, and let
+\(\Lambda_B=B\mathbb Z^n\subseteq W\) be an explicitly presented lattice. Set
+\[
+  \Delta_W=I-P_W.
+\]
+The inclusion \(\Lambda_B\subseteq W\) does not identify the discrete lattice
+with the real subspace.
+
+\begin{proposition}[Discrete CVP through harmonic projection]\label{prop:hodge-projection-is-cvp}
+  For \(t\in\mathbb R^m\), put \(t_W=P_Wt\). Then:
+  \begin{enumerate}[label=(\roman*)]
+    \item \(t_W\) and every \(\lambda\in\Lambda_B\) are
+      \(\Delta_W\)-harmonic;
+    \item for every \(\lambda\in\Lambda_B\),
+      \[
+        \|t-\lambda\|^2
+        =
+        \|t-t_W\|^2+\|t_W-\lambda\|^2;
+      \]
+    \item a lattice vector \(\lambda\) is closest to \(t\) in
+      \(\Lambda_B\) if and only if it is closest to \(t_W\) in
+      \(\Lambda_B\).
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  Since \(t_W\in W\), every \(\lambda\in\Lambda_B\) also lies in \(W\), and
+  \(\ker(\Delta_W)=W\), the harmonicity claims follow. For the distance
+  identity, write
+  \[
+    t-\lambda=(t-t_W)+(t_W-\lambda).
+  \]
+  Orthogonal projection gives \(t-t_W\in W^\perp\), while
+  \(t_W-\lambda\in W\). The two summands are orthogonal, so the Pythagorean
+  identity gives (ii). The term \(\|t-t_W\|^2\) is independent of
+  \(\lambda\); consequently, for any \(\lambda,\mu\in\Lambda_B\),
+  \[
+    \|t-\lambda\|^2\le \|t-\mu\|^2
+    \quad\Longleftrightarrow\quad
+    \|t_W-\lambda\|^2\le \|t_W-\mu\|^2.
+  \]
+  This is exactly (iii).
+\end{proof}
+
+The continuous projection \(t_W=P_Wt\) is the closest harmonic vector to
+\(t\), but it need not lie in \(\Lambda_B\). Thus projection transports the
+target to the harmonic subspace while preserving the discrete minimizers; it
+does not perform the remaining lattice search. The proposition also presumes
+that \(W\) and the inclusion \(\Lambda_B\subseteq W\) have been supplied. It
+does not discover the operative hidden subspace from public class data.
+
+\subsection{Oracle Insufficiency}
+
+The oracle-insufficiency direction uses the typed realization from
+\cref{def:typed-hcp-realization}. A public Hodge solver may call an
+explicit-lattice CVP oracle and receives the actual public observation
+\((\alpha,b)\), but it receives no hidden representative or operative
+Laplacian. Correctness is required only for representatives admitted by the
+realization, rather than for every matrix of the ambient size.
+
+\begin{definition}[Public-data Hodge solver contract]\label{def:public-hodge-solver-contract}
+  Let
+  \[
+    S:\mathcal O_{\mathrm{CVP}}\times
+      (P\times\mathbb R^n)\longrightarrow\mathbb R^n,
+  \]
+  where \(\mathcal O_{\mathrm{CVP}}\) is the class of explicit-lattice CVP
+  oracles. For a realization \(x\mapsto(M_x,\Delta_x)\) and
+  \(O\in\mathcal O_{\mathrm{CVP}}\), define
+  \[
+  \begin{aligned}
+    \mathsf H_O(S)
+    &\Longleftrightarrow
+    \forall x:A,\quad
+    \forall b\in\mathbb R^n,\quad
+    \Delta_x\bigl(S(O,(\pi(x),b))\bigr)=0,\\
+    \mathsf F_O(S)
+    &\Longleftrightarrow
+    \forall x:A,\quad
+    \forall b\in\mathbb R^n,\quad
+    \Delta_xb=0\Rightarrow S(O,(\pi(x),b))=b.
+  \end{aligned}
+  \]
+  The public-data-only contract is
+  \[
+    \exists S,\quad
+    \forall O,\quad
+    \mathsf{CVP}_{\mathrm{corr}}(O)\Rightarrow
+    \bigl(
+      \mathsf H_O(S)
+      \wedge
+      \mathsf F_O(S)
+    \bigr).
+  \]
+\end{definition}
+
+\begin{proposition}[Typed HCP ambiguity and CVP oracle insufficiency]\label{prop:cvp-insufficient}
+  Let \(x,y\in A\) be representatives in a typed HCP semantic realization.
+  Suppose that \(M_x\) and \(M_y\) are homotopy equivalent and that some
+  \(b\in\mathbb R^n\) satisfies
+  \[
+    \Delta_xb=0,
+    \qquad
+    \Delta_yb\ne0.
+  \]
+  If at least one correct explicit-lattice CVP oracle exists, then
+  \[
+    \neg\exists S,\quad
+    \forall O,\quad
+    \mathsf{CVP}_{\mathrm{corr}}(O)\Rightarrow
+    \bigl(
+      \mathsf H_O(S)
+      \wedge
+      \mathsf F_O(S)
+    \bigr).
+  \]
+  Hence a correct oracle for explicit known-lattice CVP does not by itself
+  determine the operative Hodge--Laplacian kernel.
+\end{proposition}
+
+\begin{proof}
+  By \cref{prop:helfer-hcp-bridge},
+  \(\pi(x)=\pi(y)\). Suppose
+  \(\exists O,\mathsf{CVP}_{\mathrm{corr}}(O)\), and choose such an \(O\).
+  Suppose, for contradiction, that \(S\) satisfies the displayed
+  public-data-only contract. Then
+  \[
+    \mathsf H_O(S)\wedge\mathsf F_O(S).
+  \]
+  Since \(\Delta_xb=0\), exactness at \(x\) gives
+  \[
+    S(O,(\pi(x),b))=b.
+  \]
+  Soundness at \(y\) gives
+  \[
+    \Delta_yS(O,(\pi(y),b))=0.
+  \]
+  Replacing \(\pi(y)\) by \(\pi(x)\) and using the exactness equality yields
+  \(\Delta_yb=0\), contradicting the separation hypothesis.
+\end{proof}
+
+The obstruction is kernel ambiguity: the same public observation may be
+compatible with multiple hidden operators whose harmonic kernels differ. A CVP
+oracle can solve a closest-vector problem after the lattice is presented. The
+bridge in \cref{prop:hodge-projection-is-cvp} applies only after the operative
+harmonic subspace and the lattice inclusion have also been supplied; it does
+not determine which hidden kernel is compatible with the public data.
+
+For every dimension at least two, the Lean development also constructs the
+elementary matrix witness \(L=0\),
+\(L'=\operatorname{diag}(1,0,\ldots,0)\), and \(b=e_1\) under the constant
+projection to a one-point public type. This is a sanity example showing that
+the abstract ambiguity predicates are inhabited. It is not used as evidence
+that an arbitrary HCP realization admits the required semantic and Hodge
+extension witness. That witness remains an explicit hypothesis of
+\cref{prop:cvp-insufficient}; the following family constructs one for its
+stated semantic fragment.
+
+\subsection{A Constructed Integral Cellular Family}
+
+The preceding implication has a concrete instantiation in a stated
+homological fragment of the typed Helfer interface. Take one vertex, one edge
+and one face with incidence numbers \(\partial_1=0\), \(\partial_2=1\),
+and stalks \(0,\mathbb R^2,\mathbb R\), respectively. This is the algebraic
+finite signed-incidence model of \cref{sec:hcp-definition}; no regular CW or
+simplicial realization of this displayed base is asserted. Two cellular
+sheaves in that model have
+\[
+  \delta_{0,0}=\delta_{0,1}=0,
+  \qquad
+  \delta_{1,0}(x_0,x_1)=x_0,
+  \qquad
+  \delta_{1,1}(x_0,x_1)=x_1.
+\]
+Their true degree-one Hodge operators are
+\[
+  \Delta_0=\operatorname{diag}(1,0),
+  \qquad
+  \Delta_1=\operatorname{diag}(0,1).
+\]
+Coordinate exchange is a degreewise chain isometry. Both operators have
+positive spectral gap \(1\). Standard integral stalk lattices give harmonic
+lattices \(\mathbb Z e_1\) and \(\mathbb Z e_0\), each with an explicit
+full-span presentation.
+
+Interpret these actual complexes in the bounded-below real cochain Quillen
+model category. For this example the closed tests ask whether cohomology in
+an integer degree is nonzero. Their invariance is proved under every typed
+Helfer equivalence, using quasi-isomorphisms. The chain isometry therefore
+makes the two actual closed theories equal. This proves invariance for this
+homological test fragment; it does not formalize Helfer's full first-order
+formula syntax or general fibrational invariance theorem.
+
+\Needspace{10\baselineskip}
+\begin{proposition}[One observation, two nonzero integral harmonic targets]
+  \label{prop:cellular-axis-ambiguity}
+  Let \(p\) be the common closed theory of these two presentations in the
+  stated fragment, and let \(b=e_0+e_1\). There are structured Hodge samples
+  with that same observation \((p,b)\), harmonic messages \(e_1\) and \(e_0\),
+  and zero exact components. Their operative targets are distinct and nonzero.
+  For each presentation's explicit harmonic lattice, its message is also the
+  unique closest lattice vector to \(b\).
+\end{proposition}
+
+\begin{proof}
+  In the first presentation use harmonic message \(e_1\), exact opening zero
+  and coexact opening \(1\), producing noise \(e_0\). In the second use
+  message \(e_0\), exact opening zero and coexact opening \(1\), producing
+  noise \(e_1\). Both sums equal \(b\), and both messages belong to their
+  standard integral harmonic lattices. The actual Hodge projections recover
+  those messages. Orthogonality gives the Pythagorean identity from
+  \cref{prop:hodge-projection-is-cvp}; any other lattice point has strictly
+  positive squared distance from the recovered message. Thus each message
+  is the unique CVP answer in its presented lattice.
+\end{proof}
+
+For the same realization, the fixed coordinate \(e_1\) is harmonic for
+\(\Delta_0\) and not for \(\Delta_1\). This constructs the separation witness
+used in \cref{prop:cvp-insufficient}. The existing no-uniform-recovery theorem
+therefore applies, and its explicit-CVP-oracle corollary applies under its
+oracle-existence premise. Equality of the public theory is derived from the
+actual semantic equivalence, rather than imposed by a one-point classifier.
+The matrix-level public projection is extended from the two admitted
+operators; no semantic realization is asserted for other matrices.
+
+The displayed pair uses coefficient \(1\) in each presentation's own
+harmonic-lattice basis. Its distinct ambient targets therefore do not alone
+assert distinct encoded integer plaintexts. A second constructed pair makes
+the encoding explicit: take \(b=e_0+2e_1\), harmonic messages \(2e_1\) and
+\(e_0\), and complementary coexact noise \(e_0\) and \(2e_1\). Their integer
+coefficients in the same declared lattice presentations are \(2\) and \(1\).
+Both messages are nonzero, both exact components remain zero, and the public
+observation is again shared. No function of that observation can return the
+correct coefficient for both presentations. This is a finite exact-recovery
+obstruction for the specified integer encoding, not a distributional security
+experiment. Each message remains the unique CVP answer in its actual lattice.
+
+This example fixes the mathematical observation to \((p,b)\). Its equal zero
+exact components do not assert equality of complete storage records. The
+application adapter requires the actual operator and snapshot classifier to
+agree with the semantic realization before deriving message/operative-target
+and CVP agreement. Existing payload acceptance, decoder, hash and envelope
+bindings remain explicit. Paper~2 owns those concrete visibility/storage,
+rotation and key-delivery profiles; this example establishes no distributional
+anonymity or plaintext-security experiment.
+
+\subsection*{Lean Cross-Reference}
+
+\begin{leanledger}
+The discrete CVP definitions correspond to \lean{CVP.ExplicitLattice},
+\lean{CVP.Instance}, \lean{CVP.InExplicitLattice},
+\lean{CVP.squaredEuclideanDistance},
+\lean{CVP.IsClosestLatticeVector}, \lean{CVP.Solution},
+\lean{CVP.OracleCorrect}, and \lean{CVP.HardnessAssumption}. The separate
+field-linear comparison is \lean{exists_matrix_ker_eq_range} and
+\lean{Hodge_GeneratedSubspace_Reduction_Proof}. The explicit
+harmonic-lattice bridge is \lean{HarmonicCVPBridge},
+\lean{HarmonicCVPBridge.squaredDistance_projection_decomposition},
+\lean{HarmonicCVPBridge.isClosestLatticeVector_iff_projectedTarget},
+and \lean{HarmonicCVPBridge.solution_iff_projectedTarget}. The
+closest-harmonic and hidden-operator surfaces are
+\lean{ClosestHarmonicSolution},
+\lean{ProjectionClosestHarmonicSolution},
+\lean{matrix_harmonic_iff_projection_isHarmonic},
+\lean{Hcrypt.HCPBridge.Observation}, \lean{Hcrypt.HCPBridge.Solver},
+\lean{Hcrypt.HCPBridge.SolverSoundOn},
+\lean{Hcrypt.HCPBridge.SolverExactOnHarmonic},
+\lean{Hcrypt.HCPBridge.no_solver_on_kernelSeparation}, and
+\lean{Hcrypt.HCPBridge.cvpOracle_insufficient_of_kernelSeparation}.
+The concrete instance is \lean{Hcrypt.HCP.AxisFamily.realization},
+\lean{shared_observation_distinct_nonzero_targets},
+\lean{no_exact_public_solver}, \lean{cvp_oracle_insufficient},
+\lean{cvp_solution_iff_message}, and \lean{cvp_existsUnique} in that namespace.
+The explicit integer-encoding variant is \lean{weightedSample},
+\lean{weighted_public_observations_eq},
+\lean{weighted_cvp_solution_iff_operativeTarget}, and
+\lean{no_exact_encoded_message_decoder} in the same namespace.
+Its actual cellular objects are in \lean{Sheaf/HCPAxisFamily.lean}; the
+proved homological semantics is in \lean{Helfer/CochainModel.lean}.
+\lean{TCB/HCPRealization.lean} and \lean{TCB/HCPAxisFamily.lean} own the
+conditional same-object application adapters.
+\end{leanledger}

@@ -1,0 +1,24 @@
+name: Protected Palomar preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: Fresh 12-character lowercase alphanumeric request identifier
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    uses: PalomarRegistry/PalomarSubmission/.github/workflows/submission.yml@14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+    with:
+      repository: ${{ github.repository }}
+      commit: ${{ github.sha }}
+      pipeline_commit: 14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+      request_id: ${{ inputs.request_id }}
+      mode: full
+      execution_profile: palomar-standard-v1
+      options: '{"project_path":"lean","comparator_config_path":"lean/Palomar/PaperOne/comparator.json","formalization_metadata_path":"lean/Palomar/PaperOne/formalization.yaml","authorization_relationship":"I am a responsible author or maintainer"}'

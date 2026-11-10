@@ -1,0 +1,186 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Hidden Hodge Targets and Discrete Closest Vectors"
+  description: >-
+    We formalize finite real Hodge decomposition with unique components,
+    private harmonic and presented-coefficient recovery, and the exact
+    preservation of discrete closest-vector answers by projection onto a
+    subspace containing the supplied lattice. In the declared algebraic finite
+    signed-incidence cellular model, integral examples have equal
+    cohomological public observations but distinct
+    nonzero operative harmonic targets; a weighted example gives different
+    integer coefficients at the same input. The general oracle statements
+    retain their invariance, separation and correct-oracle existence
+    hypotheses. Further results show an exact-component observation
+    obstruction and recover subspaces and fixed-metric projectors from full
+    projective Plucker data. These are exact mathematical comparison and
+    recovery results; no asymptotic hardness or cryptographic security claim
+    is made.
+  authors:
+    - "Chloe van der Vlugt"
+  responsible_maintainers:
+    - "Chloe van der Vlugt"
+  license: "MIT"
+
+classification:
+  arxiv: ["math.AT", "math.LO"]
+  msc2020: ["55N30", "55U35", "15A63", "15A75"]
+
+sources:
+  - title: "Homotopical Encryption: Hidden Hodge Operators and the Harmonic Cochain Problem"
+    authors:
+      - "Chloe van der Vlugt"
+    type: "paper"
+    id: "https://github.com/what-social-construct/homotopical-encrypt/blob/299663b12ed7d4d743ec6e325ef996631f756b1c/papers/paper1/main.tex"
+    location: "Sections 2.1, 3.2--3.5, 6.2 and the corresponding appendices; groups P1-S01--S06 and P1-B01--B02 in the entry README."
+    relationship: "formalizes"
+    note: >-
+      Immutable manuscript source for the eight selected result groups.
+      This reference includes the final model, source and likelihood-scope
+      corrections. The entry states these groups independently and adapts
+      the unchanged canonical development's proofs;
+      separate RS/MCA, protocol and cryptographic claims are outside its scope.
+  - title: "First-order homotopical logic"
+    authors:
+      - "Joseph Helfer"
+    type: "paper"
+    id: "https://doi.org/10.1017/jsl.2023.68"
+    location: "Homotopy-invariant interpretation and closed-formula semantics; arXiv:1908.08944v2."
+    relationship: "background"
+    note: >-
+      Provides the semantic framework motivating the typed interpretation and
+      invariance interface. The constructed family uses the stated
+      nonzero-cohomology-test fragment in the real cochain model. The entry
+      does not formalize Helfer's complete first-order syntax or general
+      fibrational invariance theorem.
+  - title: "Toward a Spectral Theory of Cellular Sheaves"
+    authors:
+      - "Jakob Hansen"
+      - "Robert Ghrist"
+    type: "paper"
+    id: "https://arxiv.org/abs/1808.01513v2"
+    location: "Sections 2--3: cellular cochains, coboundaries and Hodge theory."
+    relationship: "adapts"
+    note: >-
+      The finite coordinate cellular model uses incidence-weighted stalk
+      restriction maps and the actual adjoint Hodge operator. This adapts
+      that mathematical setup for the declared finite real model; it is not
+      a formalization of the whole paper.
+
+status:
+  scope: >-
+    One proposed entry covers eight manuscript groups through 21 manuscript-facing
+    theorem declarations and 25 supporting declarations selected by
+    comparator.json. Challenge imports only Mathlib and gives transparent
+    ordinary definitions of the mathematical objects. Solution identifies
+    those presentations with the canonical cellular, Hodge, lattice,
+    semantic and Plucker objects through proof adapters. Two pure
+    finite-product helpers retain their canonical Hcrypt.Helfer names in
+    the independent Challenge. There are no definition holes. This directory
+    belongs to the substantive development, rather than a separately pinned
+    wrapper repository.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Quot.sound"
+    - "Classical.choice"
+  validation:
+    solution_build: "Passed locally: lake build Palomar.PaperOne.Solution, 3666 jobs."
+    challenge_check: "Passed independently: lake build Palomar.PaperOne.Challenge, 3516 jobs."
+    entry_axiom_audit: "Fresh #print axioms audit passes all 46 selected Solution declarations: 44 exact-three and two subsets. Combined audit: 946 standard-only reports; all 900 prior sets unchanged."
+    local_comparator: "Passed statement/definition comparison, Lean default kernel and NanoDa; macOS diagnostic with --inadvisably-no-sandbox."
+    protected_linux_verification: "Not run."
+    note: >-
+      Zero proof-hole counts describe Solution and exclude the 23 deliberate
+      theorem placeholders in Challenge. The local diagnostic is not protected
+      preflight evidence; no Palomar review or registration is claimed.
+  main_results:
+    - declaration: "Hcrypt.Palomar.PaperOne.Hodge_Decomposition_Theorem"
+    - declaration: "Hcrypt.Palomar.PaperOne.Hodge_Decomposition_unique"
+    - declaration: "Hcrypt.Palomar.PaperOne.exists_matrix_ker_eq_range"
+    - declaration: "Hcrypt.Palomar.PaperOne.Hodge_GeneratedSubspace_Reduction_Proof"
+    - declaration: "Hcrypt.Palomar.PaperOne.squaredDistance_projection_decomposition"
+    - declaration: "Hcrypt.Palomar.PaperOne.solution_iff_projectedTarget"
+    - declaration: "Hcrypt.Palomar.PaperOne.concreteSheafHCP_CVP_solution_iff_message"
+    - declaration: "Hcrypt.Palomar.PaperOne.concreteSheafHCP_CVP_existsUnique"
+    - declaration: "Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain.harmonicOneProjection_observed"
+    - declaration: "Hcrypt.Palomar.PaperOne.CellularSheaf.HarmonicLatticePresentation.decodeCoefficients_encrypt"
+    - declaration: "Hcrypt.Palomar.PaperOne.Plucker.recoverSubspace_frame"
+    - declaration: "Hcrypt.Palomar.PaperOne.Plucker.recoverHarmonicProjector_frame"
+    - declaration: "Hcrypt.Palomar.PaperOne.Plucker.recover_eq_operativeHarmonicComponent"
+    - declaration: "Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain.not_residual_norm_factors_exactComponent"
+    - declaration: "Hcrypt.Palomar.PaperOne.CellularSheaf.HodgeEncryptedCochain.not_far_preserving_exactComponent"
+    - declaration: "Hcrypt.Palomar.PaperOne.HCPBridge.operativeTargets_ne_of_kernelSeparation"
+    - declaration: "Hcrypt.Palomar.PaperOne.HCPBridge.cvpOracle_insufficient_of_kernelSeparation"
+    - declaration: "Hcrypt.Palomar.PaperOne.HCPBridge.cvpOracle_insufficient_for_operativeTarget"
+    - declaration: "Hcrypt.Palomar.PaperOne.AxisFamily.cellular_axis_ambiguity"
+    - declaration: "Hcrypt.Palomar.PaperOne.AxisFamily.cvp_oracle_insufficient"
+    - declaration: "Hcrypt.Palomar.PaperOne.AxisFamily.weighted_axis_recovery_obstruction"
+
+automation:
+  methods:
+    - method: "agent"
+      framework: "OpenAI Codex"
+      tool_setup: >-
+        Author-directed statement selection and iterative agent-assisted Lean
+        implementation, local compilation, source comparison and documentation.
+      prompting_notes: >-
+        The author directed the mathematical scope and object reuse. Agents
+        implemented statement presentations and canonical proof adapters and
+        checked the manuscript correspondence. Exact model identifiers were
+        not recorded. Entry-specific verification remains at the status above.
+
+fidelity:
+  divergences: >-
+    Finite real matrix statements use orthonormal coordinates. The generated
+    subspace result concerns a field-linear image and does not prove integer
+    lattice membership. Discrete CVP comparisons retain the explicit lattice,
+    its harmonic-subspace inclusion and orthogonal projection; coefficient
+    recovery is noncomputable in a supplied integral harmonic presentation.
+    General ambiguity is conditional on the declared closed-test invariance,
+    kernel separation and, for the oracle corollaries, existence of a correct
+    explicit-lattice CVP oracle with the stated uniform-solver quantifiers.
+    The cellular carrier records finite graded cells and integer incidences;
+    no regular CW or simplicial realization of the example's base is asserted.
+    The family constructs the homological test fragment, not full
+    first-order semantics. The exact-component obstruction requires an allowed
+    nonzero coexact direction and does not prove factorization of a concrete
+    wire serializer. Plucker recovery uses full exact-real projective data
+    and a fixed metric; operative recovery additionally identifies the
+    recovered carrier with the actual matrix kernel. No asymptotic hardness,
+    distributional security, efficient decoding, digest inversion or novelty
+    claim follows from the selected theorems.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "OpenAI Codex agents"
+  notes: >-
+    Agent review compared the selected statement groups, explicit hypotheses,
+    object definitions and proof adapters with the canonical implementation
+    and manuscript. The README supplies the eight-group crosswalk. This
+    records agent review, not independent human review or registry endorsement.
+    Entry-specific local Comparator and kernel checks pass as recorded above;
+    protected Linux verification remains pending.
+
+alignment:
+  namespace: "Hcrypt.Palomar.PaperOne"
+  challenge_module: "Palomar.PaperOne.Challenge"
+  solution_module: "Palomar.PaperOne.Solution"
+  proof_file: "lean/Palomar/PaperOne/Solution.lean"
+  comparator_config: "lean/Palomar/PaperOne/comparator.json"
+  crosswalk: "lean/Palomar/PaperOne/README.md"
+  groups:
+    - "P1-S01: Hodge decomposition, uniqueness and private recovery."
+    - "P1-S02: Kernel realization of a field-linear generated subspace."
+    - "P1-S03: Exact discrete CVP comparison under projection."
+    - "P1-S04: Unique CVP recovery for actual cellular Hodge samples."
+    - "P1-S05: General and constructed cellular public-target ambiguity."
+    - "P1-S06: Weighted integer-coefficient recovery obstruction."
+    - "P1-B01: Exact-component observation limitation."
+    - "P1-B02: Full projective Plucker recovery at a fixed metric."
+
+acknowledgements: "Lean 4 and Mathlib provide the proof language and library; OpenAI Codex assisted implementation and review."

@@ -1,0 +1,645 @@
+\section{The Harmonic Cochain Problem}\label{sec:hcp-definition}
+
+The formal cellular model is algebraic: finite graded cell carriers, integer
+incidence numbers and face-to-coface linear stalk maps determine adjacent
+coboundaries satisfying \(\delta_1\delta_0=0\). It adapts the finite Hodge
+setup of \cite{hansenGhrist2018sheaves} without assuming a regular CW or
+simplicial realization for every admitted incidence structure. All cellular
+examples below use this declared model; stronger topological realization and
+the separate simplicial-coherence conditions require additional data.
+
+Let \(A\) denote the type of hidden representatives, let \(P\) denote the type
+of public class data, and let
+\[
+  \pi:A\to P,\qquad
+  \alpha\in\image(\pi),\qquad
+  A_\alpha=\pi^{-1}(\alpha)=\{x\in A:\pi(x)=\alpha\}.
+\]
+For \(x\in A\), we also write
+\([x]_\pi:=A_{\pi(x)}\). Thus, whenever \(\alpha=\pi(x)\), the two
+descriptions agree: \(A_\alpha=[x]_\pi\).
+
+\begin{definition}[Harmonic Cochain Problem]\label{def:hcp}
+  The \emph{Harmonic Cochain Problem} (HCP) asks, given public data
+  \((\alpha,b)\) consisting of a realized public classifier value
+  \(\alpha\in\image(\pi)\) and a cochain-facing observation \(b\), to recover
+  the operative harmonic component
+  \[
+    h=P_{\ker(\Delta_1)}b\in\ker(\Delta_1),
+  \]
+  equivalently the harmonic term in the orthogonal Hodge decomposition of
+  \(b\). Here \(\Delta_1\) is the degree-one Hodge--Laplacian induced by the
+  operative hidden representative \(x\in A_\alpha=\pi^{-1}(\alpha)\) bound to
+  the instance by its hidden witness.
+\end{definition}
+
+In the \HE{} public-sample model, the visible cochain has the form
+\[
+  b = h + e,
+  \qquad
+  h \in \ker(\Delta_1),
+  \qquad
+  e \in \image(\delta_0) \oplus \image(\delta_1^\ast).
+\]
+Here \(h\) is the degree-one harmonic cochain, equivalently a harmonic
+representative of its degree-one cohomology class, and \(e\) is
+Hodge-structured noise. The hidden-operator ambiguity studied below is the
+condition that the public data do not determine a unique \(\Delta_1\) or
+\(\ker(\Delta_1)\).
+The algebraic recovery chain is
+\[
+  x
+  \longmapsto
+  \{R_{\sigma\to\tau}\}_{\sigma\prec\tau}
+  \longmapsto
+  (\delta_0,\delta_1)
+  \longmapsto
+  \Delta_1
+  \longmapsto
+  P_H:C^1\to\ker(\Delta_1),
+\]
+where \(x\in A_\alpha\) is a hidden representative and
+\(R_{\sigma\to\tau}\) are the face-to-coface restriction maps, including
+vertex-to-edge and edge-to-face maps, that determine the adjacent coboundaries
+\[
+  \delta_0:C^0\to C^1,
+  \qquad
+  \delta_1:C^1\to C^2,
+\]
+and
+\[
+  \Delta_1=\delta_0\delta_0^\ast+\delta_1^\ast\delta_1
+\]
+is the induced degree-one Hodge--Laplacian. The map \(P_H\) is the
+orthogonal projection onto \(\ker(\Delta_1)\). When the degree is fixed, we
+write \(\Delta\) for this operative Laplacian.
+A concrete public artifact may commit to or certify values derived from this
+chain without revealing the restriction maps or the induced operator.
+
+\begin{definition}[Matrix harmonicity]\label{def:matrix-harmonicity}
+  For a hidden linear Hodge operator \(\Delta\), a cochain
+  \(h\in\mathbb R^N\)
+  is \(\Delta\)-harmonic when
+  \[
+    \Delta h=0.
+  \]
+  Thus the harmonic kernel is \(\ker(\Delta)\). In the projection model this
+  agrees with the condition \(h\in W\) for the kernel-normalized operator
+  \(\Delta_W=I-P_W\).
+\end{definition}
+
+\begin{definition}[Kernel-normalized operator, harmonic projection, and residual]\label{def:projection-laplacian}
+  Let \(V=\mathbb R^n\) be equipped with its standard inner product, and let
+  \(W\subset V\) be a linear subspace. Write
+  \[
+    P_W:V\to W\subset V
+    \qquad\text{and}\qquad
+    P_{W^\perp}:V\to W^\perp\subset V
+  \]
+  for the orthogonal projections. The kernel-normalized projection operator
+  attached to \(W\) is
+  \[
+    \Delta_W = I-P_W.
+  \]
+  For \(b\in V\), define the residual vector and residual score by
+  \[
+    r_W(b)=\Delta_W b,\qquad
+    \rho_W(b)=\|r_W(b)\|.
+  \]
+  We say that \(b\) is \(W\)-harmonic when \(r_W(b)=0\).
+  This operator records exactly the harmonic kernel and its orthogonal
+  projection. It is not asserted to equal a cellular Hodge--Laplacian
+  \(\delta_0\delta_0^\ast+\delta_1^\ast\delta_1\), or to have the same
+  positive spectrum, unless the cellular Laplacian additionally acts as the
+  identity on \(W^\perp\).
+\end{definition}
+
+\begin{proposition}[Projection harmonicity equivalences]\label{prop:projection-harmonicity-equivalences}
+  For every \(b\in V\),
+  \[
+    r_W(b)=P_{W^\perp}b,
+    \qquad
+    \rho_W(b)=\|P_{W^\perp}b\|,
+    \qquad
+    \rho_W(b)\ge 0.
+  \]
+  Moreover
+  \[
+    P_Wb\in W,\qquad
+    r_W(P_Wb)=0,
+  \]
+  and the following conditions are equivalent:
+  \[
+    r_W(b)=0
+    \quad\Longleftrightarrow\quad
+    \rho_W(b)=0
+    \quad\Longleftrightarrow\quad
+    b\in W.
+  \]
+\end{proposition}
+
+\begin{proof}
+  Since \(V=W\oplus W^\perp\) orthogonally, every \(b\in V\) decomposes
+  uniquely as
+  \[
+    b=P_Wb+P_{W^\perp}b.
+  \]
+  Hence
+  \[
+    (I-P_W)b=b-P_Wb=P_{W^\perp}b,
+  \]
+  giving \(r_W(b)=P_{W^\perp}b\) and the displayed formula for
+  \(\rho_W(b)\). Nonnegativity is the nonnegativity of the norm.
+  The projection \(P_Wb\) lies in \(W\), so its orthogonal component is zero;
+  therefore \(r_W(P_Wb)=0\). Finally,
+  \(r_W(b)=0\) iff \(P_{W^\perp}b=0\), which holds iff \(b\in W\). The
+  equivalence with \(\rho_W(b)=0\) follows from \(\|x\|=0\) iff \(x=0\).
+\end{proof}
+
+\begin{proposition}[Hodge decomposition surface]\label{prop:hodge-decomposition}
+  Let the three consecutive cochain spaces be finite-dimensional real inner
+  product spaces, and let the displayed stars denote adjoints. Suppose
+  \[
+    d_{\mathrm{next}}d_{\mathrm{prev}}=0,
+    \qquad
+    \Delta=d_{\mathrm{prev}}d_{\mathrm{prev}}^\ast
+      +d_{\mathrm{next}}^\ast d_{\mathrm{next}} .
+  \]
+  Then every cochain \(b\) admits a decomposition
+  \[
+    b=h+e_1+e_2
+  \]
+  with
+  \[
+    \Delta h=0,\qquad
+    e_1\in\image(d_{\mathrm{prev}}),\qquad
+    e_2\in\image(d_{\mathrm{next}}^\ast),
+  \]
+  and
+  \[
+    \langle h,e_1\rangle=\langle h,e_2\rangle=\langle e_1,e_2\rangle=0.
+  \]
+  The decomposition is unique.
+\end{proposition}
+
+\begin{proof}
+  Each summand defining \(\Delta\) is self-adjoint, so \(\Delta\) is
+  self-adjoint. In finite dimension,
+  \(\image(\Delta)=(\ker\Delta)^\perp\), and hence the ambient cochain
+  space decomposes as
+  \[
+    \ker(\Delta)\oplus\image(\Delta).
+  \]
+  Since
+  \[
+    \image(\Delta)
+    \subseteq
+    \image(d_{\mathrm{prev}})+\image(d_{\mathrm{next}}^\ast),
+  \]
+  every cochain \(b\) can be written as \(h+e_1+e_2\) with \(h\in\ker\Delta\),
+  \(e_1\in\image(d_{\mathrm{prev}})\), and
+  \(e_2\in\image(d_{\mathrm{next}}^\ast)\). From \(\Delta h=0\), one obtains
+  \[
+    \|d_{\mathrm{prev}}^\ast h\|^2+\|d_{\mathrm{next}}h\|^2=0,
+  \]
+  hence \(d_{\mathrm{prev}}^\ast h=0\) and \(d_{\mathrm{next}}h=0\). These
+  identities give \(\langle h,e_1\rangle=0\) and
+  \(\langle h,e_2\rangle=0\), while \(d_{\mathrm{next}}d_{\mathrm{prev}}=0\)
+  gives \(\langle e_1,e_2\rangle=0\). Hence the harmonic, exact, and
+  coexact subspaces are pairwise orthogonal. Their sum is therefore direct,
+  which makes the three components unique.
+\end{proof}
+
+\subsection{Hodge Encryption and Correctness}
+
+For a hidden representative \(x\), write
+\[
+  \mathcal H_x=\ker(\Delta_x),
+  \qquad
+  \mathcal E_x=\mathcal H_x^\perp.
+\]
+The Hodge decomposition identifies the noise space as the orthogonal direct
+sum
+\[
+  \mathcal E_x
+  =
+  \image(\delta_{0,x})
+  \oplus^\perp
+  \image(\delta_{1,x}^{\ast}),
+\]
+and gives the orthogonal decomposition
+\[
+  C_x^1=\mathcal H_x\oplus^\perp\mathcal E_x.
+\]
+Consequently,
+\[
+\begin{aligned}
+  \operatorname{combine}_x:
+    \mathcal H_x\times\mathcal E_x&\longrightarrow C_x^1,
+  &(h,e)&\longmapsto h+e,\\
+  \operatorname{split}_x:C_x^1&\longrightarrow
+    \mathcal H_x\times\mathcal E_x,
+  &b&\longmapsto
+    \bigl(P_{\mathcal H_x}b,P_{\mathcal E_x}b\bigr)
+\end{aligned}
+\]
+are inverse linear bijections. Orthogonality also gives
+\[
+  \|h+e\|^2=\|h\|^2+\|e\|^2.
+\]
+
+This bijection is the algebraic encryption/decryption construction. Given a
+harmonic message \(h\in\mathcal H_x\), randomized Hodge encryption samples, or
+otherwise chooses, admissible noise \(e\in\mathcal E_x\) and sets
+\[
+  \mathsf{Enc}_x(h;e)=
+  \operatorname{combine}_x(h,e)=h+e.
+\]
+Full coordinate recovery is \(\operatorname{split}_x\); message decryption
+retains its harmonic coordinate:
+\[
+  \mathsf{Dec}_x(b)
+  =
+  \operatorname{pr}_{\mathcal H_x}
+    \bigl(\operatorname{split}_x(b)\bigr)
+  =
+  P_{\mathcal H_x}b.
+\]
+For every admissible noise value,
+\[
+  \mathsf{Dec}_x\bigl(\mathsf{Enc}_x(h;e)\bigr)=h,
+  \qquad
+  \operatorname{split}_x\bigl(\operatorname{combine}_x(h,e)\bigr)=(h,e).
+\]
+Thus the bijection is between the full message--randomness pair and \(C_x^1\).
+After randomness is sampled, \(\mathsf{Enc}_x\) is a randomized procedure and
+\(\mathsf{Dec}_x\) is its message-correct left inverse; this does not assert
+that a randomized map from messages alone is a bijection.
+
+The subscript \(x\) is essential. The hidden representative---and, in a keyed
+instantiation, the private material selecting or opening it---determines
+\(\Delta_x\), the two summands, and the splitting map. The correctness identity
+is pointwise and requires no uniform distribution on an infinite noise space.
+It is not an indistinguishability or one-wayness claim; those require separate
+assumptions about key generation, randomness, and the public view.
+
+When several presentation-dependent spaces \(C_x^1\) are compared using one
+public coordinate vector, we fix isometric coordinate charts
+\(\iota_x:C_x^1\overset{\sim}{\longrightarrow}V\) into a common
+finite-dimensional real inner-product space \(V\). Operators denoted
+\(\Delta_x\in\operatorname{End}(V)\) below are the corresponding conjugated
+operators. The charts are comparison data; they are not asserted to be
+recoverable from the public classifier.
+
+\begin{proposition}[Exact-component obstruction]
+\label{prop:exact-component-obstruction}
+  Suppose \(v\in C^2\) and \(\delta_1^*v\ne0\). On the unrestricted
+  Hodge-noise carrier, the samples
+  \[
+    b_t=t\delta_1^*v,\qquad t\in\mathbb R,
+  \]
+  have zero harmonic message and zero exact component, while
+  \[
+    \|P_{\mathcal H^\perp}b_t\|
+      =|t|\,\|\delta_1^*v\|.
+  \]
+  Thus this full-observation residual does not factor through the exact
+  component. If an extraction depends only on that component and its zero
+  image has target distance zero, it cannot preserve any positive target
+  far radius uniformly on this unrestricted carrier, at any source radius.
+\end{proposition}
+\begin{proof}
+  A coexact vector is orthogonal to \(\mathcal H\), so its orthogonal
+  projection onto \(\mathcal H^\perp\) is itself. Homogeneity gives the
+  displayed norm. The exact-component view is constantly zero, whereas
+  this norm is zero at \(t=0\) and positive at \(t=1\), proving
+  nonfactorization. For any fixed source radius, choose positive \(t\)
+  large enough to exceed it. The extracted value still has distance zero,
+  contradicting every positive target far radius.
+\end{proof}
+
+This statement concerns a map factoring through the decoded exact
+component. Equal decoded components do not by themselves imply equal raw
+payload bytes for an arbitrary decoder. A restricted noise or authenticated
+realization profile may exclude this family; a theorem about such a profile
+requires its explicit hypotheses. The statement does not identify distance
+to exactness with the full HCP residual.
+
+\subsection{Public and Hidden Data}
+
+\begin{definition}[Public observation]\label{def:public-observation}
+  A public observation is the data exposed to a verifier or adversary without
+  revealing a hidden representative. In the abstract model it consists of a
+  realized public classifier value \(\alpha\), together with a
+  cochain-facing observation \(b\). In the \HE{} instantiation, the fully
+  public handles are hashes, roots,
+  topology hashes, nullifiers, and bounded public summaries; cochain
+  commitments and proof-carrying cochain payloads sit in the verifier-facing
+  artifact layer; full cochains and openings remain witness data unless an
+  explicit protocol path exposes them.
+\end{definition}
+
+Thus \((\alpha,b)\) is the protocol-independent vector-level abstraction of
+the concrete artifact-and-commitment layer in
+\cref{sec:public-artifacts-commitments}: \(\alpha\) records the public
+classifier value, while \(b\) is the full cochain actually released by the
+selected observation profile. Acceptance of an exact payload, an opening of
+its exact component, or a proof about that component does not by itself
+expose \(b\). Instantiating the vector-level interface requires a relation
+binding the full sample to the artifact and an explicit disclosure or
+specified extraction of that sample. The bound-observation construction in
+\cref{sec:public-artifacts-commitments} records this distinction. The
+hidden-kernel ambiguity comparison uses the resulting mathematical pair;
+equality of a larger artifact or storage view requires its own hypotheses.
+
+The public observation is not the hidden Hodge system. It classifies a public
+equivalence class of possible hidden representatives. Fibrational and
+homotopical semantics enter through this distinction: public equality is
+equality after applying a public classifier, not strict equality of hidden
+representatives. Section~\ref{sec:mathematical-framework} develops this
+semantic layer.
+
+\begin{definition}[Hidden-operator public projection]\label{def:hidden-operator-public-projection}
+  For a public class type \(P\), a public projection is a map
+  \[
+    \pi_\Delta:\{\text{hidden Hodge operators }\Delta\}\longrightarrow P.
+  \]
+  Two hidden operators are publicly equivalent when
+  \(\pi_\Delta(\Delta)=\pi_\Delta(\Delta')\). The hidden operator fiber over
+  \(\alpha\in P\) is
+  \[
+    \operatorname{Fib}_{\pi_\Delta}(\alpha)
+    =\pi_\Delta^{-1}(\alpha)
+    =\{\Delta:\pi_\Delta(\Delta)=\alpha\},
+  \]
+  and the hidden class of \(\Delta\) is
+  \(\operatorname{Fib}_{\pi_\Delta}(\pi_\Delta(\Delta))\).
+\end{definition}
+
+\begin{definition}[Lossiness and kernel ambiguity]\label{def:kernel-ambiguity}
+  The public projection \(\pi_\Delta\) is \emph{lossy} if there exist
+  \(\Delta\ne\Delta'\) with
+  \(\pi_\Delta(\Delta)=\pi_\Delta(\Delta')\). The two
+  operators have the same harmonic kernel if
+  \[
+    \forall v,\quad \Delta v=0\Longleftrightarrow \Delta'v=0.
+  \]
+  The projection is \emph{kernel-ambiguous} if there are publicly equivalent
+  operators \(\Delta,\Delta'\) whose harmonic kernels are not the same.
+\end{definition}
+
+\begin{definition}[Public-compatible Hodge ambiguity]\label{def:public-compatible-hodge-ambiguity}
+  Public-compatible Hodge ambiguity means that there exist publicly equivalent
+  operators \(\Delta,\Delta'\) and a cochain-facing observation \(b\) such that
+  \[
+    \Delta b=0
+    \qquad\text{but}\qquad
+    \Delta'b\ne 0.
+  \]
+\end{definition}
+
+\begin{definition}[Typed HCP semantic realization]\label{def:typed-hcp-realization}
+  Fix a multi-sorted algebraic signature \(\sigma\), a model category
+  \(\mathcal C\) with terminal object and binary products, and, for each
+  hidden representative \(x\in A\), a base
+  interpretation \(M_x:\sigma\to\mathcal C_{\mathrm f}\) together with
+  homotopical formula semantics over \(M_x\). Write
+  \[
+    \operatorname{Th}(M_x)
+    =\{\varphi\text{ closed}:M_x\vDash\varphi\}
+  \]
+  for its closed first-order theory. Use the chosen coordinate charts to
+  compare cochains in a common finite-dimensional real inner-product space
+  \(V\). A typed HCP semantic realization consists additionally of maps
+  \[
+  \begin{aligned}
+    x&\longmapsto\Delta_x\in\operatorname{End}(V),\\
+    \kappa&:\{\text{closed theories}\}\longrightarrow P,\\
+    \pi_\Delta&:\{\text{Hodge operators}\}\longrightarrow P,
+  \end{aligned}
+  \]
+  satisfying the two factorization identities
+  \[
+    \pi(x)=\kappa(\operatorname{Th}(M_x)),
+    \qquad
+    \pi_\Delta(\Delta_x)=\pi(x).
+  \]
+  The Laplacian \(\Delta_x\) is presentation-level Hodge data extending the
+  semantic core \(M_x\); it is not silently included among the symbols whose
+  closed theory is asserted to be homotopy invariant.
+\end{definition}
+
+\begin{proposition}[Helfer-to-HCP classifier bridge]\label{prop:helfer-hcp-bridge}
+  Let \(x,y\in A\) belong to a typed HCP semantic realization. If
+  \(M_x\) and \(M_y\) are homotopy equivalent interpretations in the sense of
+  Helfer, then
+  \[
+    \pi(x)=\pi(y)
+    \qquad\text{and}\qquad
+    \pi_\Delta(\Delta_x)=\pi_\Delta(\Delta_y).
+  \]
+  If, independently, there is a cochain \(b\) for which
+  \[
+    \Delta_xb=0,
+    \qquad
+    \Delta_yb\ne0,
+  \]
+  then \(\pi_\Delta\) has public-compatible Hodge ambiguity, and hence is
+  kernel-ambiguous and lossy.
+\end{proposition}
+
+\begin{proof}
+  The closed-formula case of Helfer's homotopy-invariance theorem
+  \cite[Theorem~12.3]{helfer2019fol} gives, for every closed
+  \(\sigma\)-formula \(\varphi\),
+  \[
+    M_x\vDash\varphi
+    \quad\Longleftrightarrow\quad
+    M_y\vDash\varphi.
+  \]
+  Hence \(\operatorname{Th}(M_x)=\operatorname{Th}(M_y)\). Applying
+  \(\kappa\) and then the two factorization identities gives
+  \[
+    \pi(x)=\pi(y),
+    \qquad
+    \pi_\Delta(\Delta_x)=\pi_\Delta(\Delta_y).
+  \]
+  The additional displayed harmonicity and non-harmonicity conditions now
+  exhibit \((\Delta_x,\Delta_y,b)\) as a public-compatible Hodge-ambiguity
+  witness. The ambiguity hierarchy below supplies kernel ambiguity and
+  lossiness.
+\end{proof}
+
+The direction in \cref{prop:helfer-hcp-bridge} is one-way. Homotopy-equivalent
+interpretations have the same factored public value, but equality of public
+values need not reconstruct a homotopy equivalence: a classifier fiber may be
+strictly coarser than an equivalence class. Likewise, the equivalence itself
+does not produce kernel disagreement. If \(\Delta\)-harmonicity were included
+in the invariant first-order signature, and the common coordinate \(b\) were
+named compatibly in both interpretations, Helfer's theorem would instead rule
+out the displayed disagreement.
+
+There is a second, geometric distinction. Suppose an equivalence of hidden
+presentations induces degreewise linear isometric equivalences
+\(U_0,U_1,U_2\) satisfying
+\[
+  U_1\delta_{0,x}=\delta_{0,y}U_0,
+  \qquad
+  U_2\delta_{1,x}=\delta_{1,y}U_1.
+\]
+After conjugating by the fixed coordinate charts, \(U_1\) is an isometry of
+the common comparison space \(V\).
+Because the \(U_k\) preserve inner products, the adjoints transport as well,
+and hence
+\[
+  \Delta_yU_1=U_1\Delta_x,
+  \qquad
+  U_1(\ker\Delta_x)=\ker\Delta_y.
+\]
+The corresponding orthogonal projections commute with transport:
+\[
+  U_1P_{\ker\Delta_x}b
+  =
+  P_{\ker\Delta_y}U_1b.
+\]
+Thus a transported observation preserves both the operative target and
+harmonicity:
+\[
+  \Delta_xb=0
+  \quad\Longleftrightarrow\quad
+  \Delta_y(U_1b)=0.
+\]
+The ambiguity witness in \cref{prop:helfer-hcp-bridge} deliberately compares
+the same untransported public coordinate \(b\in V\), not the pair
+\((b,U_1b)\). Under the displayed conjugacy, its extra separation condition is
+equivalently
+\[
+  b\in\ker\Delta_x,
+  \qquad
+  b\notin U_1(\ker\Delta_x).
+\]
+It therefore requires a nonstabilization witness in addition to the
+equivalence, and it models a public view that neither reveals nor applies the
+private transport \(U_1\). If the observation were transported together with
+the hidden presentation, this particular ambiguity would disappear.
+
+\begin{proposition}[Ambiguity hierarchy]\label{prop:ambiguity-hierarchy}
+  Public-compatible Hodge ambiguity implies kernel ambiguity, and kernel
+  ambiguity implies that the public projection is lossy.
+\end{proposition}
+
+\begin{proof}
+  If \(b\) is harmonic for \(\Delta\) but not for \(\Delta'\), then the two
+  operators cannot have the same harmonic kernel. This gives kernel ambiguity.
+  If publicly equivalent operators have different kernels, they cannot be the
+  same operator, since equality of operators implies equality of kernels.
+  Therefore the public projection identifies two distinct hidden operators.
+\end{proof}
+
+\begin{definition}[Hidden Hodge witness]\label{def:hidden-hodge-witness}
+  A hidden Hodge witness for a public observation \((\alpha,b)\) is a hidden
+  representative \(x\in A\) satisfying \(\pi(x)=\alpha\). Through the typed
+  realization, it selects the operative operator \(\Delta_x\). The witness and
+  \(b\) then determine, rather than independently assume, the coordinates
+  \[
+    h_x(b):=P_{\ker(\Delta_x)}b,
+    \qquad
+    e_x(b):=b-h_x(b).
+  \]
+  For a genuine degree-one Hodge operator
+  \(\Delta_x=\delta_{0,x}\delta_{0,x}^\ast+
+  \delta_{1,x}^\ast\delta_{1,x}\), the Hodge decomposition gives
+  \[
+    h_x(b)\in\ker(\Delta_x),\qquad
+    e_x(b)\in
+      \image(\delta_{0,x})\oplus\image(\delta_{1,x}^\ast),\qquad
+    b=h_x(b)+e_x(b).
+  \]
+\end{definition}
+
+The hidden data include the fibration representative, restriction maps, the
+induced Laplacian, its harmonic kernel, and private witness/cochain data. Public
+data may bind to this hidden data through commitments or proof-carrying
+artifacts, but it does not present the operative kernel.
+
+\begin{definition}[HCP solution]\label{def:hcp-solution}
+  Relative to an operative hidden witness \(x\), a solution to an
+  HCP instance \((\alpha,b)\) is the cochain
+  \(h'=h_x(b)=P_{\ker(\Delta_x)}b\). A public-data-only solver is
+  \emph{uniformly exact}
+  if the same output has this value for every hidden witness compatible with
+  its public input. The hidden-operator separation concerns this uniform
+  contract; it does not deny that decryption succeeds once the operative
+  private geometry is supplied.
+\end{definition}
+
+\subsection{Recovery Target}
+
+The recovery target is the orthogonal projection of \(b\) into the operative
+kernel,
+not the entire kernel subspace. Thus CVP asks for a closest vector in a
+presented lattice, while HCP asks for
+\(P_{\ker(\Delta_x)}b\) for the operative hidden representative.
+
+In the metric variant used for comparison with CVP, the continuous target is
+the closest harmonic cochain to \(b\). Presenting \(\Delta\) or a basis for
+\(\ker(\Delta)\) presents a real subspace, not a discrete lattice. A genuine
+CVP instance additionally requires an explicit lattice
+\(\Lambda\subseteq\ker(\Delta)\); \cref{prop:hodge-projection-is-cvp} shows
+that projection onto the kernel preserves the closest vectors of that supplied
+lattice. The hidden-operator model withholds the operative subspace itself.
+
+\subsection{Computational Model}
+
+The computational model separates three layers.
+\begin{enumerate}[label=(\roman*)]
+  \item The mathematical layer defines public projections, hidden operator
+    fibers, harmonicity, and kernel ambiguity.
+  \item External hardness assumptions and cited coding-theory theorems enter at
+    explicitly labeled theorem boundaries.
+  \item Runtime requirements such as byte parsing, canonical encodings, hash
+    domain separation, proof verification, and state transition are outside the
+    mathematical HCP definition.
+\end{enumerate}
+
+This paper treats the first two layers. The runtime layer belongs to the
+subsequent protocol paper.
+
+\subsection*{Lean Cross-Reference}
+
+\begin{leanledger}
+
+The matrix-level HCP definitions and ambiguity hierarchy are
+\lean{MatrixIsHarmonic}, \lean{PublicProjection},
+\lean{HiddenOperatorFiber}, \lean{HiddenOperatorClass},
+\lean{SameKernel}, \lean{KernelAmbiguous},
+\lean{PublicCompatibleHodgeAmbiguity},
+\lean{kernelAmbiguous_implies_lossy}, and
+\lean{kernelAmbiguous_of_publicCompatibleHodgeAmbiguity}, all in
+\lean{HCP.lean}. The Hodge-coordinate cipher and operative target are
+\lean{Hcrypt.HCP.hodgeDecompositionEquiv},
+\lean{Hcrypt.HCP.decrypt_encrypt},
+\lean{Hcrypt.HCP.decrypt_coe_eq_harmonicProjection},
+\lean{Hcrypt.HCP.operativeHarmonicComponent},
+\lean{Hcrypt.HCP.operativeHarmonicComponent_idempotent},
+\lean{Hcrypt.HCPBridge.HiddenHodgeWitness},
+\lean{Hcrypt.HCPBridge.operativeTarget}, and
+\lean{Hcrypt.HCPBridge.IsOperativeSolution}. The typed semantic and
+fixed-coordinate bridge uses
+\lean{Hcrypt.HCPBridge.Realization},
+\lean{Hcrypt.HCPBridge.samePublicClass_of_homotopyEquivalent},
+\lean{Hcrypt.HCPBridge.publiclyEquivalent_laplacians_of_homotopyEquivalent},
+\lean{Hcrypt.HCPBridge.IsometricPresentationEquivalence},
+\lean{Hcrypt.HCPBridge.IsometricPresentationEquivalence.map_matrixHarmonicSubspace},
+\lean{Hcrypt.HCPBridge.IsometricPresentationEquivalence.operativeHarmonicComponent_naturality},
+\lean{Hcrypt.HCPBridge.FixedCoordinateNonstabilization}, and
+\lean{Hcrypt.HCPBridge.kernelSeparationWitness_of_isometricNonstabilization}.
+Concrete Laplacian and kernel transport are proved by
+\lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv.degreeOneLaplacian_naturality}
+and
+\lean{Hcrypt.Sheaf.CellularSheaf.IsometricCochainEquiv.map_ker_degreeOneLaplacian}
+in \lean{Sheaf/Equivalence.lean}. The three-part decomposition and concrete
+ambiguity example remain \lean{Hodge_Decomposition_Theorem} and
+\lean{Hodge_Ambiguity} in \lean{Hardness.lean}.
+
+\end{leanledger}
