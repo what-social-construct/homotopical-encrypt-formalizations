@@ -4,22 +4,19 @@ version: "v0.4"
 project:
   name: "Hidden Hodge Targets and Discrete Closest Vectors"
   description: >-
-    We formalize finite real Hodge decomposition with unique components,
-    private harmonic and presented-coefficient recovery, and the exact
-    preservation of discrete closest-vector answers by projection onto a
-    subspace containing the supplied lattice. In the declared algebraic finite
-    signed-incidence cellular model, integral examples have equal
-    cohomological public observations but distinct
-    nonzero operative harmonic targets; a weighted example gives different
-    integer coefficients at the same input. Under closed-test invariance and
-    an optional reflection condition, public fibers are exactly the declared
-    typed homotopy classes; the admitted cellular family proves that condition. The general oracle statements
-    retain their invariance, separation and correct-oracle existence
-    hypotheses. A derived corollary fixes the same correct rank-one oracle:
-    the supplied operative lattice yields its unique answer, while a shared
-    public class and cochain do not select the hidden member's answer.
-    These are exact mathematical comparison and recovery results; no
-    asymptotic hardness or cryptographic security claim is made.
+    We formalize unique finite real Hodge decomposition, private harmonic and
+    lattice coefficient recovery, and preservation of discrete closest-vector
+    answers under projection onto a subspace containing the supplied lattice.
+    Finite signed-incidence examples share cohomological public observations
+    but have distinct nonzero harmonic targets or integer coefficients. Under
+    closed-test invariance and optional reflection, public fibers coincide
+    with the declared typed homotopy classes; the constructed family satisfies
+    this profile. General oracle results retain their invariance, separation
+    and correct-oracle existence hypotheses. One fixed correct rank-one CVP
+    oracle recovers the target given the operative lattice, while the shared
+    public class and cochain cannot select the hidden member’s answer. These
+    are exact recovery and comparison results, without asymptotic hardness or
+    cryptographic security claims.
   authors:
     - "Chloe van der Vlugt"
   responsible_maintainers:
